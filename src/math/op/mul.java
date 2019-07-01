@@ -1,5 +1,6 @@
 package math.op;
 
+import math.Config;
 import math.core.Constant;
 import math.core.Variable;
 import math.core.func;
@@ -330,7 +331,8 @@ public class mul extends func
         for(func u:f){
             l.add(u.substitude0(v,p));
         }
-        return new mul(l).simplify();
+        func m=new mul(l);
+        return Config.mul.simplify?m.simplify():m;
     }
 
     @Override

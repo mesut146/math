@@ -44,7 +44,7 @@ public class sigma extends func
         double d=0;
         for (int i=start;i<=end;i++){
             d+= fx.get2(var,i);
-			System.out.println(d);
+			//System.out.println(d);
         }
         return d;
     }

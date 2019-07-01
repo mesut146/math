@@ -38,9 +38,11 @@ public class Main
 		//a();
 	}
 	static void integral(){
-		func f=func.parse("2*fx");
-		System.out.println(f.integrate(0,1));
-		System.out.println(func.parse("0 +i*0.001").simplify());
+		//func f=func.parse("2*x");
+		//System.out.println(f.integrate(0,1));
+		//System.out.println(func.parse("0 +i*0.001").simplify());
+		func fx=func.parse("0.002*n");
+		System.out.println(fx.get2(new Variable("n"),2));
 	}
 	
 	static void b(){

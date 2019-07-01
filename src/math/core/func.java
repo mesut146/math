@@ -1,5 +1,6 @@
 package math.core;
 
+import math.Config;
 import math.op.*;
 import java.util.*;
 
@@ -26,7 +27,7 @@ public abstract class func
 	public List<func> alter=new LinkedList<>();
 	public static HashMap<func,func> rules=new HashMap<>();
 	//public HashMap<func,func> rules=new HashMap<>();
-    static boolean simplifyAdd=false,simplifyMul=false;
+    //static boolean simplifyAdd=false,simplifyMul=false;
 
 	public static void addRule(func a, func b)
     {
@@ -98,7 +99,8 @@ public abstract class func
 		double n=1000.0;
 		double h=(b - a) / n;
 		double sum=0;
-		sigma s=new sigma(this.substitude0(Variable.x, func.parse(a + "+i*" + h).simplify()), new Variable("i"), 0, (int)n);
+		func fx=func.parse(a + "+n*" + h).simplify();
+		sigma s=new sigma(this.substitude0(Variable.x, fx), new Variable("n"), 0, (int)n);
 		sum = s.get() * h;
 		return sum;
 	}
@@ -143,7 +145,7 @@ public abstract class func
     public func add(func f)
     {
         func x=new add(this, f);
-        if (simplifyAdd)
+        if (Config.add.simplify)
         {
             x = x.simplify();
         }
@@ -157,7 +159,7 @@ public abstract class func
     public func sub(func f)
     {
         func x=new add(this, f.negate());
-        if (simplifyAdd)
+        if (Config.add.simplify)
         {
             x = x.simplify();
         }
@@ -176,7 +178,7 @@ public abstract class func
             return f.mul(this);
         }
         func x=new mul(this, f);
-        if (simplifyMul)
+        if (Config.mul.simplify)
         {
             x = x.simplify();
         }
