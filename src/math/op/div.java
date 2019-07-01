@@ -1,12 +1,13 @@
 package math.op;
 
-import math.core.Constant;
-import math.core.Variable;
-import math.core.func;
+
+import math.Constant;
+import math.Variable;
+import math.func;
 
 public class div extends func {
 
-    public div(func f1,func f2){
+    public div(func f1, func f2){
         a=f1;
         b=f2;
     }
@@ -22,7 +23,9 @@ public class div extends func {
 
     @Override
     public String toLatex() {
-        return null;
+        StringBuilder sb=new StringBuilder();
+        sb.append(String.format("\\frac{%s}_{%s}",a,b));
+        return sb.toString();
     }
 
     @Override

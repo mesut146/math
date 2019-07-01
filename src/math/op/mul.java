@@ -9,8 +9,23 @@ public class mul extends func
     @Override
     public String toLatex()
     {
-        // TODO: Implement this method
-        return null;
+        StringBuilder sb=new StringBuilder();
+        func x;
+        for(int i=0;i<f.size();i++){
+            x=f.get(i);
+            if(x.isAdd()){
+                sb.append("(");
+                sb.append(x.toLatex());
+                sb.append(")");
+            }else{
+                sb.append(x.toLatex());
+            }
+            
+            if(i<f.size()-1){
+                sb.append("*");
+            }
+        }
+        return sb.toString();
     }
 
     

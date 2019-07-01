@@ -21,9 +21,9 @@ public class Main
 		//func.addRule("ln(e)=1");
 		//func.addRule("ln(f(x)^g(x))=g(x)*ln(f(x))");
         //func ex=func.parse("e^f(x)");
-		//f=func.parse("(x-e)*(x-e^2)");
+		f=func.parse("(x-e)*(x-e^2)");
 		//b();
-        //System.out.println();
+        System.out.println(f.toLatex());
         /*ero ee=ero.init();
         ee.next(3);*/
         //System.out.println(ee);

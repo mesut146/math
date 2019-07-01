@@ -9,8 +9,19 @@ public class add extends func
     @Override
     public String toLatex()
     {
-        // TODO: Implement this method
-        return null;
+        StringBuilder sb=new StringBuilder();
+        for(int i=0;i<f.size();i++){
+            sb.append(f.get(i).toLatex());
+            if(i<f.size()-1){
+                if(f.get(i+1).sign==-1){
+                    sb.append("-");
+                }else{
+                    sb.append("+");
+                }
+                
+            }
+        }
+        return sb.toString();
     }
 
     
