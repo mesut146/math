@@ -1,0 +1,72 @@
+package math.op;
+
+import math.*;
+
+public class sub extends func
+{
+
+    public sub(func f1, func f2){
+        a=f1;
+        b=f2;
+		type=types.sub;
+    }
+
+    @Override
+    public func get(Variable v, double d)
+    {
+        return a.get(v,d).sub(b.get(v,d));
+    }
+
+    @Override
+    public func derivative(Variable v)
+    {
+        return a.derivative(v).sub(b.derivative(v));
+    }
+
+    @Override
+    public func integrate(Variable v)
+    {
+        return a.integrate(v).sub(b.integrate(v));
+    }
+    
+
+    @Override
+    public String toString2()
+    {
+        return a+"-"+b;
+    }
+
+    public func simplify(){
+        if(b.is(0)){
+            return a;
+        }
+        if(a.is(0)){
+            return b.negate();
+        }
+		//System.out.println("ab="+a+","+b);
+        if(a.isConstant()&&b.isConstant()){
+            return new Constant(a.cons()-b.cons());
+        }
+        return this;
+    }
+
+	@Override
+	public boolean eq2(func f)
+	{
+		if(a.eq(f.a)&&b.eq(f.b)){
+			return true;
+		}
+		return false;
+	}
+
+    @Override
+    public func substitude(Variable v, func p)
+    {
+        return a.substitude(v,p).sub(b.substitude(v,p));
+    }
+
+    @Override
+    public func copy0() {
+        return new sub(a,b);
+    }
+}
