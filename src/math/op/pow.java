@@ -1,6 +1,9 @@
 package math.op;
 
 import math.*;
+import math.core.Constant;
+import math.core.Variable;
+import math.core.func;
 import math.funcs.ln;
 
 public class pow extends func

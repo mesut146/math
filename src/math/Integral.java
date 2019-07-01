@@ -1,5 +1,9 @@
 package math;
 
+import math.core.Constant;
+import math.core.Variable;
+import math.core.func;
+
 public class Integral extends func
 {
 
@@ -39,7 +43,7 @@ public class Integral extends func
 	}
 
 	@Override
-	public func get(Variable v,Constant c)
+	public func get(Variable v, Constant c)
 	{
         Integral i=(Integral)copy();
         if(lim){

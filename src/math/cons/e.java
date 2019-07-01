@@ -1,5 +1,6 @@
 package math.cons;
-import math.*;
+import math.core.Constant;
+import math.core.func;
 
 public class e extends Constant
 {

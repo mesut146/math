@@ -2,6 +2,9 @@ package math.parser;
 import java.lang.reflect.*;
 import math.*;
 import math.cons.*;
+import math.core.Constant;
+import math.core.Variable;
+import math.core.func;
 
 public class Token{
     String name;

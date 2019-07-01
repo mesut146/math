@@ -1,5 +1,9 @@
 package math;
 
+import math.core.Constant;
+import math.core.Variable;
+import math.core.func;
+
 public class limit extends func
 {
 

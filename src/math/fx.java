@@ -1,4 +1,8 @@
 package math;
+import math.core.Constant;
+import math.core.Variable;
+import math.core.func;
+
 import java.util.*;
 
 public class fx extends func
@@ -18,7 +22,7 @@ public class fx extends func
 		this("f");
 	}
 	public fx(String s){
-		this(s,Variable.x);
+		this(s, Variable.x);
 	}
 	public fx(String s,func f){
 		name=s;

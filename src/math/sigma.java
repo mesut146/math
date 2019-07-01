@@ -1,5 +1,9 @@
 package math;
 
+import math.core.Constant;
+import math.core.Variable;
+import math.core.func;
+
 public class sigma extends func
 {
 
@@ -25,7 +29,7 @@ public class sigma extends func
     }
 
     public func sum(){
-        func d=Constant.ZERO;
+        func d= Constant.ZERO;
 		System.out.println("f="+x);
 		//System.out.println(x.get(v,1));
         for (int i=start;i<=end;i++){

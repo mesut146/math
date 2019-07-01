@@ -1,5 +1,7 @@
 package math;
 
+import math.core.Constant;
+import math.core.func;
 import math.funcs.*;
 import math.cons.*;
 

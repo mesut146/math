@@ -1,7 +1,9 @@
 package math.cons;
 
+import math.core.Constant;
+import math.core.Variable;
+import math.core.func;
 import math.funcs.*;
-import math.*;
 
 public class i extends Constant
 {

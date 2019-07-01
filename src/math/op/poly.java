@@ -1,5 +1,7 @@
 package math.op;
-import math.*;
+import math.core.Variable;
+import math.core.func;
+
 import java.util.*;
 
 public class poly extends add

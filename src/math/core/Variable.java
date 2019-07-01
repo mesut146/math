@@ -1,4 +1,4 @@
-package math;
+package math.core;
 
 public class Variable extends func
 {

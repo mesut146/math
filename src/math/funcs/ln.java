@@ -1,5 +1,8 @@
 package math.funcs;
 import math.*;
+import math.core.Constant;
+import math.core.Variable;
+import math.core.func;
 import math.op.*;
 
 public class ln extends func

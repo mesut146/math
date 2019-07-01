@@ -1,7 +1,8 @@
 package math;
 
-import math.op.*;
-import math.funcs.*;
+import math.core.Constant;
+import math.core.Variable;
+import math.core.func;
 
 public class Main
 {
@@ -21,9 +22,8 @@ public class Main
 		//func.addRule("ln(e)=1");
 		//func.addRule("ln(f(x)^g(x))=g(x)*ln(f(x))");
         //func ex=func.parse("e^f(x)");
-		f=func.parse("(x-e)*(x-e^2)");
-		//b();
-        System.out.println(f.toLatex());
+		f=func.parse("e^(x^2)");
+        System.out.println(f.derivative());
         /*ero ee=ero.init();
         ee.next(3);*/
         //System.out.println(ee);

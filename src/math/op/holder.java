@@ -1,6 +1,6 @@
 package math.op;
 
-import math.func;
+import math.core.func;
 
 import java.util.List;
 

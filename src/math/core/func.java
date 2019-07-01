@@ -1,10 +1,11 @@
-package math;
+package math.core;
 
 import math.op.*;
 import java.util.*;
 
 import math.parser.Parser;
 import math.funcs.*;
+import math.sigma;
 
 public abstract class func
 {
@@ -367,7 +368,7 @@ public abstract class func
 		}
 		if (f.name().equals("fx"))
         {
-			((fx)f).b = this;
+			((math.fx)f).b = this;
 			//System.out.println("a="+f);
 			return true;
 		}

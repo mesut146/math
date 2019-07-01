@@ -1,5 +1,7 @@
 package math;
 
+import math.core.Constant;
+
 public class Consfunc extends Constant
 {
 

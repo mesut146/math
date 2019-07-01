@@ -1,7 +1,8 @@
 package math.funcs;
 import math.*;
-
-import java.util.HashMap;
+import math.core.Constant;
+import math.core.Variable;
+import math.core.func;
 
 public class sin extends func
 {
