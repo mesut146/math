@@ -3,10 +3,10 @@ import java.util.*;
 
 public class Rules
 {
-    static String li="1/ln(x)=Li(x)";
-    static String ei="e^x/x=Ei(x)";
-    static String sin1="1/sinx(x)=-ln(csc(x)+cot(x))";
-    static String cos1="1/cosx(x)=ln(sec(x)+tan(x))";
+    static String li="1/ln(fx)=Li(fx)";
+    static String ei="e^fx/fx=Ei(fx)";
+    static String sin1="1/sinx(fx)=-ln(csc(fx)+cot(fx))";
+    static String cos1="1/cosx(fx)=ln(sec(fx)+tan(fx))";
     static HashMap<String,String> h;
     static HashMap<String,String> func=new HashMap<>();
 

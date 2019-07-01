@@ -55,11 +55,11 @@ public class Anti extends func
         if(a.isDiv()){
             if(a.a.is(1)&&a.b.type==types.ln&&a.b.a.isVariable()){
                 //1/lnx
-                return "li(x)";
+                return "li(fx)";
             }
             if(a.a.isPow()&&a.a.b.isVariable()&&a.b.isVariable()){
-                //e^x/x
-                return "Ei(x)";
+                //e^fx/fx
+                return "Ei(fx)";
             }
         }
         return "integrate("+a+")";

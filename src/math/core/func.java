@@ -90,14 +90,17 @@ public abstract class func
     public final func derivative(String s)
     {return derivative(new Variable(s));}
 
-    public final func integrate()
-    {return integrate(Variable.x);}
+    public final func integrate() {return integrate(Variable.x);}
 	public abstract func integrate(Variable v);
 
-	public func integrate(double lower, double upper)
+	public double integrate(double a, double b)
     {
-		func i=integrate();
-		return i.get(upper).sub(i.get(lower));
+		double n=1000.0;
+		double h=(b - a) / n;
+		double sum=0;
+		sigma s=new sigma(this.substitude0(Variable.x, func.parse(a + "+i*" + h).simplify()), new Variable("i"), 0, (int)n);
+		sum = s.get() * h;
+		return sum;
 	}
 
 	public func der(int n)
@@ -444,14 +447,6 @@ public abstract class func
 		return r;
 	}
 
-	public double integ(int a, int b)
-    {
-		double n=1000.0;
-		double h=(b - a) / n;
-		double sum=0;
-		sigma s=new sigma(this.substitude0(Variable.x, func.parse(a + "+i*" + h)), new Variable("i"), 0, (int)n);
-		sum = s.get() * h;
-		return sum;
-	}
+
 }
 

@@ -24,7 +24,7 @@ public class Integral extends func
     func a1,a2;
     //boolean bound=false;
 	
-	//f(x),dx,lower,upper
+	//f(fx),dx,lower,upper
 	public Integral(func f,func v,func i1,func i2){
 		a=f;
 		this.v=(Variable) v;

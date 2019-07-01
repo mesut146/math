@@ -20,21 +20,27 @@ public class Main
 		
 		func f=null,g=null;
 		//func.addRule("ln(e)=1");
-		//func.addRule("ln(f(x)^g(x))=g(x)*ln(f(x))");
-        //func ex=func.parse("e^f(x)");
-		f=func.parse("e^(x^2)");
-        System.out.println(f.derivative());
+		//func.addRule("ln(f(fx)^g(fx))=g(fx)*ln(f(fx))");
+        //func ex=func.parse("e^f(fx)");
+		integral();
+		//f=func.parse("e^(fx^2)");
+        //System.out.println(f.derivative());
         /*ero ee=ero.init();
         ee.next(3);*/
         //System.out.println(ee);
         /*for(int i=1;i<=10;i++){
-            f=f.der(1,new Variable("x"));        
+            f=f.der(1,new Variable("fx"));
             System.out.println("f"+i+"(0)="+f.get2(0));
         }*/
         
 		//System.out.println(f.get(Variable.from("b"),1));
                                         
 		//a();
+	}
+	static void integral(){
+		func f=func.parse("2*fx");
+		System.out.println(f.integrate(0,1));
+		System.out.println(func.parse("0 +i*0.001").simplify());
 	}
 	
 	static void b(){

@@ -14,7 +14,7 @@ public class Complex
         f=a.add(i.i.mul(b));
     }
     func exp(){
-        //e^x+iy
+        //e^fx+iy
         return Constant.E.pow(a).mul(new cos(b).add(i.i.mul(new sin(b))));
     }
 

@@ -15,12 +15,12 @@ public class sigma extends func
     }
 
     int start,end;
-    func x;
-    Variable v;
+    func fx;
+    Variable var;
 
     public sigma(func f, Variable v, int s, int e){
-        this.x=f;
-        this.v=v;
+        this.fx =f;
+        this.var =v;
         this.start=s;
         this.end=e;
     }
@@ -30,11 +30,11 @@ public class sigma extends func
 
     public func sum(){
         func d= Constant.ZERO;
-		System.out.println("f="+x);
-		//System.out.println(x.get(v,1));
+		System.out.println("f="+ fx);
+		//System.out.println(fx.get(var,1));
         for (int i=start;i<=end;i++){
-            //System.out.println(x.get(i));
-            d=d.add(x.get(v,i));
+            //System.out.println(fx.get(i));
+            d=d.add(fx.get(var,i));
 			//System.out.println(d);
         }
         return d;
@@ -43,14 +43,14 @@ public class sigma extends func
     public double get(){
         double d=0;
         for (int i=start;i<=end;i++){
-            d+=x.get2(v,i);
+            d+= fx.get2(var,i);
 			System.out.println(d);
         }
         return d;
     }
     @Override
     public func get(Variable v, Constant c) {
-        if(this.v.eq2(v)){
+        if(this.var.eq2(v)){
 
         }
         return this;
@@ -68,17 +68,17 @@ public class sigma extends func
 
     @Override
     public func derivative(Variable v) {
-        return new sigma(x.derivative(),this.v,start,end);
+        return new sigma(fx.derivative(),this.var,start,end);
     }
 
     @Override
     public func integrate(Variable v) {
-        return new sigma(x.integrate(v),v,start,end);
+        return new sigma(fx.integrate(v),v,start,end);
     }
 
     @Override
     public String toString2() {
-        return "sum("+v+"="+start+" to "+end+","+x+")";
+        return "sum("+ var +"="+start+" to "+end+",fx="+ fx +")";
     }
 
     @Override
@@ -93,6 +93,6 @@ public class sigma extends func
 
     @Override
     public func copy0() {
-        return new sigma(x,v,start,end);
+        return new sigma(fx, var,start,end);
     }
 }
