@@ -62,7 +62,7 @@ public class Variable extends func
     @Override
     public func integrate(Variable v)
     {
-        if (eq2(v)) return pow(2).div(2);
+        if (eq2(v)) return this.pow(2).div(2);
         return mul(v);
     }
 
