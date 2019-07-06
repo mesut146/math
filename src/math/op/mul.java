@@ -56,11 +56,11 @@ public class mul extends func
     }
 
 	@Override
-	public double get2(Variable v, double d)
+	public double eval(Variable v, double d)
 	{
 		double m=1;
         for(func f1:f){
-            m*=f1.get2(v,d);
+            m*=f1.eval(v,d);
         }
 		return sign*m;
 	}
@@ -252,13 +252,13 @@ public class mul extends func
 			func p=f.get(i);
 			//System.out.println("p="+p);
 			if(p.isConstant()&&!p.cons().functional){
-				c*=p.get();
+				c*=p.eval();
 				//System.out.println("c="+c);
 			}else{
 				l.add(p);
 			}
 		}
-        //System.out.println("l="+l.get(0).getClass());
+        //System.out.println("l="+l.eval(0).getClass());
 		if(c<0){
 		    sign=-sign;
         }else if (c!=1){

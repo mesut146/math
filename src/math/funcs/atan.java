@@ -25,10 +25,10 @@ public class atan extends func
 	}
 
 	@Override
-	public double get2(Variable v, double d)
+	public double eval(Variable v, double d)
 	{
 		// TODO: Implement this method
-		return sign*Math.atan(a.get2(v,d));
+		return sign*Math.atan(a.eval(v,d));
 	}
 
 	@Override

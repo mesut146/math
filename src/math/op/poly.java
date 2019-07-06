@@ -44,9 +44,9 @@ public class poly extends add
             if(pw.eq(Variable.x)){
                 return 1;
             }
-            return (int)pw.b.get();
+            return (int)pw.b.eval();
         }else if(p.isPow()){
-            return (int)p.b.get();
+            return (int)p.b.eval();
         }
         return 0;
     }

@@ -17,7 +17,7 @@ public class Main
 		Variable z=Variable.z;
         Constant e=Constant.E;
         Constant pi=Constant.PI;
-		
+
 		func f=null,g=null;
 		//func.addRule("ln(e)=1");
 		//func.addRule("ln(f(fx)^g(fx))=g(fx)*ln(f(fx))");
@@ -30,11 +30,11 @@ public class Main
         //System.out.println(ee);
         /*for(int i=1;i<=10;i++){
             f=f.der(1,new Variable("fx"));
-            System.out.println("f"+i+"(0)="+f.get2(0));
+            System.out.println("f"+i+"(0)="+f.eval(0));
         }*/
-        
-		//System.out.println(f.get(Variable.from("b"),1));
-                                        
+
+		//System.out.println(f.eval(Variable.from("b"),1));
+
 		//a();
 	}
 	static void integral(){
@@ -43,12 +43,12 @@ public class Main
 		//System.out.println(func.parse("0 +i*0.001").simplify());
 		func fx=func.parse("3*n");
 		//System.out.println(fx.substitude(new Variable("n"),func.parse("e^x")));
-		System.out.println(fx.get2(new Variable("n"),2));
+		System.out.println(fx.eval(new Variable("n"),2));
 	}
-	
+
 	static void b(){
-		
-		
+
+
 		for(int k=4;k<50;k+=4){
 			for(int i=1;i<k;i+=2){
 				Linear l=new Linear(k,i);
@@ -56,11 +56,11 @@ public class Main
 			}
 			System.out.println("------------");
 		}
-		
-		
+
+
 	}
-	
-    
+
+
 	static void a(){
 		int o=11;
 		int p=o-1;
@@ -70,5 +70,5 @@ public class Main
 		}
 	}
 
-    
+
 }

@@ -31,7 +31,7 @@ public class cos extends func
     public func simplify() {
         if (a.isConstant()){
 			if(!a.cons().functional){
-				return new Constant(Math.cos(a.get()));
+				return new Constant(Math.cos(a.eval()));
 			}
             
         }
@@ -50,9 +50,9 @@ public class cos extends func
     }
 
 	@Override
-	public double get2(Variable v, double d)
+	public double eval(Variable v, double d)
 	{
-		return sign*Math.cos(a.get2(v,d));
+		return sign*Math.cos(a.eval(v,d));
 	}
 
 

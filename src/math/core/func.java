@@ -50,11 +50,7 @@ public abstract class func
      return sign==-1?"-":"";
      }*/
 
-    public double get()
-    {
-        //System.out.println("fget this="+this);
-        return get2(Variable.x, 0);
-    }
+
     public final func get(Constant c)
     { 
 		//System.out.println("fget(c)="+c);
@@ -65,22 +61,31 @@ public abstract class func
 		//System.out.println("fget(d)="+d);
         return get(Variable.x, new Constant(d));
     }
-	public final double get2(String s, double d)
-    {
-		return get2(new Variable(s), d);
-	}
     public final func get(Variable v, double d)
     {
-		//System.out.println("fget(v,d)="+v+","+d);
+        //System.out.println("fget(v,d)="+v+","+d);
         return get(v, new Constant(d));
     }
 
-    public abstract func get(Variable v, Constant c);
-	public abstract double get2(Variable v, double d);
 
-	public double get2(double d)
+    public abstract func get(Variable v, Constant c);
+
+	public double eval()
+	{
+		//System.out.println("fget this="+this);
+		return eval(Variable.x, 0);
+	}
+
+	public final double eval(String s, double d)
     {
-		return get2(Variable.x, d);
+		return eval(new Variable(s), d);
+	}
+
+	public abstract double eval(Variable v, double d);
+
+	public double eval(double d)
+    {
+		return eval(Variable.x, d);
 	}
 
     public abstract String toLatex();
@@ -101,7 +106,7 @@ public abstract class func
 		double sum=0;
 		func fx=func.parse(a + "+n*" + h).simplify();
 		sigma s=new sigma(this.substitude0(Variable.x, fx), new Variable("n"), 0, (int)n);
-		sum = s.get() * h;
+		sum = s.eval() * h;
 		return sum;
 	}
 
@@ -218,7 +223,7 @@ public abstract class func
     public boolean is(double d)
     {
 		//System.out.println(cons().functional);
-        return isConstant() && !cons().functional && get() == d;
+        return isConstant() && !cons().functional && eval() == d;
     }
 
     public String getType()
@@ -323,7 +328,7 @@ public abstract class func
      int i=0,max=1000;
      double eps=0.000000000000001;
      while(i<max){
-     y=x.sub(p.get(x.get()));
+     y=x.sub(p.eval(x.eval()));
      System.out.println(y);
      if(Math.abs(x-y)<=eps){
      break;
@@ -341,7 +346,7 @@ public abstract class func
      BigDecimal eps=BigDecimal.TEN.pow(-len);
      MathContext mc=new MathContext(len);
      while(i<max){
-     //y=x-p.get(x);
+     //y=x-p.eval(x);
      y=x.subtract(null,mc);
      if(x.subtract(y,mc).abs(mc).compareTo(eps)<=0){
 

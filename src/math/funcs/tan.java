@@ -26,9 +26,9 @@ public class tan extends func
     }
 
 	@Override
-	public double get2(Variable v, double d)
+	public double eval(Variable v, double d)
 	{
-		return sign*Math.tan(a.get2(v,d));
+		return sign*Math.tan(a.eval(v,d));
 	}
 
 	

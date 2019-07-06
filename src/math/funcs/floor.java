@@ -25,9 +25,9 @@ public class floor extends func
 	}
 
 	@Override
-	public double get2(Variable v, double d)
+	public double eval(Variable v, double d)
 	{
-		return Math.floor(a.get2(v,d));
+		return Math.floor(a.eval(v,d));
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class floor extends func
 	public func simplify()
 	{
 		if(a.isConstant()){
-			return new Constant(get());
+			return new Constant(eval());
 		}
 		return super.simplify();
 	}

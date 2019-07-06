@@ -28,19 +28,19 @@ public class pow extends func
     {
 		func p=a.get(v,c);
 		func q=b.get(v,c);
-        if(p.isConstant()&&q.isConstant()){
-			//System.out.println("getif "+new Constant(Math.pow(p.get(),q.get())).s(sign));
+        /*if(p.isConstant()&&q.isConstant()){
+			//System.out.println("getif "+new Constant(Math.pow(p.eval(),q.eval())).s(sign));
 			//System.out.println("s="+sign);
-            return new Constant(Math.pow(p.get(),q.get())).s(sign);
-        }
+            return new Constant(Math.pow(p.eval(),q.eval())).s(sign);
+        }*/
         return p.pow(q).s(sign);
     }
 
 	@Override
-	public double get2(Variable v, double d)
+	public double eval(Variable v, double d)
 	{
-		//System.out.println("get2");
-		return sign*Math.pow(a.get2(v,d),b.get2(v,d));
+		//System.out.println("eval");
+		return sign*Math.pow(a.eval(v,d),b.eval(v,d));
 	}
 	
     @Override
@@ -118,6 +118,7 @@ public class pow extends func
 			//System.out.println("y");
             return Constant.ONE.s(sign);
         }
+        //e^ln(x)
         if(a.eq(Constant.E)&&b.type==types.ln){
             return b.a;
         }
@@ -131,7 +132,7 @@ public class pow extends func
 			return a.a.pow(a.b.mul(b));
 		}
 		if(a.sign==-1&&b.isConstant()){
-			if(b.get()%2==0){
+			if(b.eval()%2==0){
 				a.sign=1;
 			}else{
 				sign*=a.sign;

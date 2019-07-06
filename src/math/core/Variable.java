@@ -42,7 +42,7 @@ public class Variable extends func
     }
 	
 	@Override
-    public double get2(Variable v, double d)
+    public double eval(Variable v, double d)
     {
         if(eq(v)){
             return d;

@@ -51,11 +51,11 @@ public class add extends func
     }
 
 	@Override
-	public double get2(Variable v, double d)
+	public double eval(Variable v, double d)
 	{
 		double s=0;
 		for(func f1:f){
-			s+=f1.get2(v,d);
+			s+=f1.eval(v,d);
 		}
 		return sign*s;
 	}
@@ -122,7 +122,7 @@ public class add extends func
 		for(int i=0;i<f.size();i++){		
 			func p=f.get(i);
 			if(p.isConstant()&&!p.isConsfunc()){
-				c+=p.get();
+				c+=p.eval();
 			}else{
 				l.add(p);
 			}
@@ -188,7 +188,7 @@ public class add extends func
 		List<func> l1=getFree();
 		for(func p:t.f){
 			if(p.isConstant()&&!p.cons().functional){
-				d1*=p.get();
+				d1*=p.eval();
 			}else{
 				l1.add(p);
 			}

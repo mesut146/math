@@ -28,9 +28,9 @@ public class sqrt extends func
 	}
 
 	@Override
-	public double get2(Variable v, double d)
+	public double eval(Variable v, double d)
 	{
-		return sign*b.get2(v,d);
+		return sign*b.eval(v,d);
 	}
 
 	@Override

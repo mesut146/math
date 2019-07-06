@@ -83,10 +83,10 @@ public class Constant extends func
     }
 
 	@Override
-	public double get2(Variable v, double d)
+	public double eval(Variable v, double d)
 	{
 		if(functional){
-            //return sign*ff.get2(v,d);
+            //return sign*ff.eval(v,d);
         }
         return sign*val;
 	}
@@ -146,7 +146,7 @@ public class Constant extends func
             //System.out.println(getClass()==f.getClass());
 			return getClass()==f.getClass();
         }
-		if(val==f.get()){
+		if(val==f.eval()){
 			return true;
 		}
 		return false;

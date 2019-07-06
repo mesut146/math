@@ -31,19 +31,19 @@ public class sigma extends func
     public func sum(){
         func d= Constant.ZERO;
 		System.out.println("f="+ fx);
-		//System.out.println(fx.get(var,1));
+		//System.out.println(fx.eval(var,1));
         for (int i=start;i<=end;i++){
-            //System.out.println(fx.get(i));
+            //System.out.println(fx.eval(i));
             d=d.add(fx.get(var,i));
 			//System.out.println(d);
         }
         return d;
     }
 
-    public double get(){
+    public double eval(){
         double d=0;
         for (int i=start;i<=end;i++){
-            d+= fx.get2(var,i);
+            d+= fx.eval(var,i);
 			//System.out.println(d);
         }
         return d;
@@ -57,7 +57,7 @@ public class sigma extends func
     }
 
 	@Override
-	public double get2(Variable v, double d)
+	public double eval(Variable v, double d)
 	{
 		// TODO: Implement this method
 		return 0;

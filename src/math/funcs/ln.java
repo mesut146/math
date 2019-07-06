@@ -31,9 +31,9 @@ public class ln extends func
 	}
 
 	@Override
-	public double get2(Variable v, double d)
+	public double eval(Variable v, double d)
 	{
-		return sign*Math.log(a.get2(v,d));
+		return sign*Math.log(a.eval(v,d));
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class ln extends func
 			if(r.getClass()==getClass()){
 				if(this.eq(r)){
                     //matcher?
-					func g=rules.get(r).simplify();
+					func g=rules.eval(r).simplify();
 					//System.out.println("g="+g);
 					return r.name().equals("fx")?g.b:g;
 				}

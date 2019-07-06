@@ -24,9 +24,9 @@ public class exp extends pow
     }
 
 	@Override
-	public double get2(Variable v, double d)
+	public double eval(Variable v, double d)
 	{
-		return sign*super.get2(v,d);
+		return sign*super.eval(v,d);
 	}
 
 
