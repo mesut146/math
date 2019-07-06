@@ -67,8 +67,10 @@ public abstract class func
         return get(v, new Constant(d));
     }
 
-
-    public abstract func get(Variable v, Constant c);
+	public func get(Variable v, Constant c){
+    	return get(new Variable[]{v},new Constant[]{c});
+	}
+    public abstract func get(Variable[] v, Constant[] c);
 
 	public double eval()
 	{
@@ -81,7 +83,11 @@ public abstract class func
 		return eval(new Variable(s), d);
 	}
 
-	public abstract double eval(Variable v, double d);
+	public abstract double eval(Variable[] v, double[] d);
+
+	public double eval(Variable v, double d){
+		return eval(new Variable[]{v},new double[]{d});
+	}
 
 	public double eval(double d)
     {
@@ -99,15 +105,19 @@ public abstract class func
     public final func integrate() {return integrate(Variable.x);}
 	public abstract func integrate(Variable v);
 
-	public double integrate(double a, double b)
-    {
-		double n=1000.0;
+	public double integrate(double a, double b,Variable v){
+
+		double n=Config.integral.interval;
 		double h=(b - a) / n;
-		double sum=0;
-		func fx=func.parse(a + "+n*" + h).simplify();
-		sigma s=new sigma(this.substitude0(Variable.x, fx), new Variable("n"), 0, (int)n);
+		double sum;
+		func fx=new add(new Constant(a),new mul(new Variable("n"),new Constant(h))).simplify();
+		sigma s=new sigma(this.substitude0(v, fx), new Variable("n"), 0, (int)n);
 		sum = s.eval() * h;
 		return sum;
+	}
+	public double integrate(double a, double b)
+    {
+		return integrate(a,b,Variable.x);
 	}
 
 	public func der(int n)

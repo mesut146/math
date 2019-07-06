@@ -18,13 +18,13 @@ public class exp extends pow
     }
 
     @Override
-    public func get(Variable v, Constant c)
+    public func get(Variable[] v, Constant[] c)
     {
         return new exp(a.get(v, c)).s(sign);
     }
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		return sign*super.eval(v,d);
 	}

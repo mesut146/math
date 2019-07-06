@@ -46,7 +46,7 @@ public class mul extends func
     }
 
     @Override
-    public func get(Variable v, Constant c)
+    public func get(Variable[] v, Constant[] c)
     {
         func t=Constant.ONE;
         for(func f1:f){
@@ -56,7 +56,7 @@ public class mul extends func
     }
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		double m=1;
         for(func f1:f){
@@ -69,6 +69,7 @@ public class mul extends func
     @Override
     public func derivative(Variable v)
     {
+        //a*b ==> a'*b+a*b'
 		func p=f.get(0);
 		func q=f.size()==2?f.get(1):new mul(f.subList(1,f.size()));
 		func o=p.derivative(v).mul(q).add(p.mul(q.derivative(v)));
@@ -167,42 +168,39 @@ public class mul extends func
     
     public func simplify(){
 		List<func> l=getFree();
-        //System.out.println("c1="+pr(f));
-        //System.out.println("l="+f);
+        //System.out.println("before f="+f);
 		for(func p:f){
-            //System.out.println("p="+p);
+            if(p.is(0)){
+                return Constant.ZERO;
+            }
 			if(p.isMul()){
 				l.addAll(p.f);
                 sign*=p.sign;
-			}else{
-				l.add(p);
 			}
+			else if(!p.is(1)){
+                l.add(p);
+            }
 		}
 		f=l;
-        //System.out.println("c2="+pr(f));
-		l=getFree();
-		//System.out.println("f1="+f+","+l);
-		for(int i=0;i<f.size();i++){
+        if (f.size()==0){
+            return Constant.ONE.sign(sign);
+        }if(f.size()==1){
+            return f.get(0).sign(sign);
+        }
+        //System.out.println("after f="+f);
+		//l.clear();
+		/*for(int i=0;i<f.size();i++){
 			func p=f.get(i).copy();
             sign*=p.sign;
             p.sign=1;
-			if(p.is(0)){
-				return Constant.ZERO;
-            }else if(!p.is(1)){
-				l.add(p);
-			}
-		}
-		f=l;
-        //System.out.println("c3="+pr(f));
-		if (f.size()==0){
+
+		}*/
+		//f=l;
+		/*if (f.size()==0){
 			return Constant.ONE.sign(sign);
 		}
-        //System.out.println("l="+f);
-        //System.out.println("cl="+pr(f));
 		cons0();
-        //System.out.println("l2="+f);
 		mu();
-        //System.out.println("l3="+f);
 		if(f.size()==1){
 			return f.get(0).sign(sign);
 		}
@@ -219,7 +217,8 @@ public class mul extends func
 			}
 		}
         if(b) return p.simplify().div(q.simplify());
-		sort();
+		sort();*/
+
 		return this;
     }
 

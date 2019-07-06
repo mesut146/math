@@ -71,7 +71,7 @@ public class Constant extends func
         type=types.constant;
     }
     @Override
-    public func get(Variable v, Constant c)
+    public func get(Variable[] v, Constant[] c)
     {
         if(functional){
 			if(ff==null){
@@ -83,10 +83,11 @@ public class Constant extends func
     }
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		if(functional){
-            //return sign*ff.eval(v,d);
+            //System.out.println("ff="+ff);
+            return sign*ff.eval(v,d);
         }
         return sign*val;
 	}

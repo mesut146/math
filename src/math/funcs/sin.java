@@ -28,13 +28,13 @@ public class sin extends func
     }
 
     @Override
-    public func get(Variable v, Constant c)
+    public func get(Variable[] v, Constant[] c)
     {
         return new sin(a.get(v, c),sign).simplify();
     }
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		return sign*Math.sin(a.eval(v,d));
 	}

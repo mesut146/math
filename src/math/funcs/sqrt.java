@@ -22,13 +22,13 @@ public class sqrt extends func
 	    this(new Constant(d));
     }
 	@Override
-	public func get(Variable v, Constant c)
+	public func get(Variable[] v, Constant[] c)
 	{
 		return b.get(v,c).s(sign);
 	}
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		return sign*b.eval(v,d);
 	}

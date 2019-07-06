@@ -24,7 +24,7 @@ public class pow extends func
     }
 
     @Override
-    public func get(Variable v, Constant c)
+    public func get(Variable[] v, Constant[] c)
     {
 		func p=a.get(v,c);
 		func q=b.get(v,c);
@@ -33,11 +33,12 @@ public class pow extends func
 			//System.out.println("s="+sign);
             return new Constant(Math.pow(p.eval(),q.eval())).s(sign);
         }*/
-        return p.pow(q).s(sign);
+        return new pow(p,q).s(sign);
+        //return p.pow(q).s(sign);
     }
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		//System.out.println("eval");
 		return sign*Math.pow(a.eval(v,d),b.eval(v,d));

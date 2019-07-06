@@ -42,6 +42,7 @@ public class sigma extends func
 
     public double eval(){
         double d=0;
+        //System.out.println("fx="+fx);
         for (int i=start;i<=end;i++){
             d+= fx.eval(var,i);
 			//System.out.println(d);
@@ -49,15 +50,15 @@ public class sigma extends func
         return d;
     }
     @Override
-    public func get(Variable v, Constant c) {
-        if(this.var.eq2(v)){
+    public func get(Variable[] v, Constant[] c) {
+        /*if(this.var.eq2(v)){
 
-        }
+        }*/
         return this;
     }
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		// TODO: Implement this method
 		return 0;

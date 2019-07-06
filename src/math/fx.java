@@ -46,14 +46,14 @@ public class fx extends func
         return null;
     }
 	@Override
-	public func get(Variable v, Constant c)
+	public func get(Variable[] v, Constant[] c)
 	{
 		// TODO: Implement this method
 		return null;
 	}
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		// TODO: Implement this method
 		return 0;

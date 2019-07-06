@@ -3,6 +3,7 @@ package math;
 import math.core.Constant;
 import math.core.Variable;
 import math.core.func;
+import math.funcs.gamma;
 
 public class Main
 {
@@ -19,12 +20,10 @@ public class Main
         Constant pi=Constant.PI;
 
 		func f=null,g=null;
-		//func.addRule("ln(e)=1");
-		//func.addRule("ln(f(fx)^g(fx))=g(fx)*ln(f(fx))");
-        //func ex=func.parse("e^f(fx)");
+
 		integral();
-		//f=func.parse("e^(fx^2)");
-        //System.out.println(f.derivative());
+		/*f=func.parse("e^(x^2*y)");
+        System.out.println(f.derivative());*/
         /*ero ee=ero.init();
         ee.next(3);*/
         //System.out.println(ee);
@@ -38,12 +37,13 @@ public class Main
 		//a();
 	}
 	static void integral(){
-		//func f=func.parse("2*x");
-		//System.out.println(f.integrate(0,1));
-		//System.out.println(func.parse("0 +i*0.001").simplify());
-		func fx=func.parse("3*n");
-		//System.out.println(fx.substitude(new Variable("n"),func.parse("e^x")));
-		System.out.println(fx.eval(new Variable("n"),2));
+		gamma gamma=new gamma(Variable.x);
+		System.out.println(gamma);
+	}
+	static void rule(){
+		//func.addRule("ln(e)=1");
+		//func.addRule("ln(f(fx)^g(fx))=g(fx)*ln(f(fx))");
+		//func ex=func.parse("e^f(fx)");
 	}
 
 	static void b(){

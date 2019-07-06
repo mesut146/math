@@ -7,7 +7,9 @@ a simple math library written in java
 - taking derivatives in multivariables
 - numeric derivatives
 - numeric intregration
-- outputs latex code 
+- outputs latex code
+- basic level simplification
+
 
 
 ## Example:

@@ -41,7 +41,7 @@ public class add extends func
     }
 	
     @Override
-    public func get(Variable v, Constant c)
+    public func get(Variable[] v, Constant[] c)
     {
         func t=Constant.ZERO;
 		for(func f1:f){
@@ -51,7 +51,7 @@ public class add extends func
     }
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		double s=0;
 		for(func f1:f){

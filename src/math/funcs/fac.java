@@ -21,13 +21,13 @@ public class fac extends func
 		a=new Constant(i);
 	}
 	@Override
-	public func get(Variable v, Constant c)
+	public func get(Variable[] v, Constant[] c)
 	{
 		return new fac(a.get(v, c)).s(sign);
 	}
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		return sign*f((int)a.eval(v,d));
 	}

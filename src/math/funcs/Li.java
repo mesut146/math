@@ -16,13 +16,13 @@ public class Li extends func
 
 
     @Override
-    public func get(Variable v, Constant c)
+    public func get(Variable[] v, Constant[] c)
     {
         return this;
     }
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		// TODO: Implement this method
 		return 0;

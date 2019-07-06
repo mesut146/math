@@ -1,4 +1,4 @@
-package math;
+package math.core;
 
 import math.core.Constant;
 

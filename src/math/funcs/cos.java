@@ -44,13 +44,13 @@ public class cos extends func
     }
 
     @Override
-    public func get(Variable v, Constant c)
+    public func get(Variable[] v, Constant[] c)
     {
         return new cos(a.get(v, c),sign).simplify();
     }
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		return sign*Math.cos(a.eval(v,d));
 	}

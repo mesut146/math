@@ -43,7 +43,7 @@ public class Integral extends func
 	}
 
 	@Override
-	public func get(Variable v, Constant c)
+	public func get(Variable[] v, Constant[] c)
 	{
         Integral i=(Integral)copy();
         if(lim){
@@ -55,7 +55,7 @@ public class Integral extends func
 	}
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		// TODO: Implement this method
 		return 0;
@@ -98,9 +98,9 @@ public class Integral extends func
 	public String toString2()
 	{
 		if(lim){
-			return String.format("I{%s d%s,%s,%s}",a,v,a1,a2);
+			return String.format("Integral{%s d%s,%s,%s}",a,v,a1,a2);
 		}
-		return String.format("I{%s d%s}",a,v);
+		return String.format("Integral{%s d%s}",a,v);
 	}
 
 	@Override

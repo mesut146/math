@@ -21,12 +21,12 @@ public class tan extends func
     }
 
     @Override
-    public func get(Variable v, Constant c) {
+    public func get(Variable[] v, Constant[] c) {
         return alter.get(0).get(v, c).s(sign);
     }
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		return sign*Math.tan(a.eval(v,d));
 	}

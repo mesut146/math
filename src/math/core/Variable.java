@@ -2,7 +2,6 @@ package math.core;
 
 public class Variable extends func
 {
-
     @Override
     public String toLatex()
     {
@@ -33,20 +32,27 @@ public class Variable extends func
 	}
     
     @Override
-    public func get(Variable v, Constant c)
+    public func get(Variable[] v, Constant[] c)
     {
-        if(eq2(v)){
-            return new Constant(c).s(sign);
+        for(int i=0;i<v.length;i++){
+            if(eq2(v[i])){
+                //TODO: mutable or not?
+                return new Constant(c[i]).s(sign);
+            }
         }
+
         return Constant.ZERO;
     }
 	
 	@Override
-    public double eval(Variable v, double d)
+    public double eval(Variable[] v, double[] d)
     {
-        if(eq(v)){
-            return d;
+        for(int i=0;i<v.length;i++){
+            if(eq2(v[i])){
+                return d[i]*sign;
+            }
         }
+
         return 0;
     }
 

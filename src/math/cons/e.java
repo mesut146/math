@@ -1,5 +1,6 @@
 package math.cons;
 import math.core.Constant;
+import math.core.Variable;
 import math.core.func;
 
 public class e extends Constant
@@ -10,7 +11,12 @@ public class e extends Constant
 		ff=this;
 	}
 
-    @Override
+	@Override
+	public double eval(Variable[] v, double[] d) {
+		return val;
+	}
+
+	@Override
     public func copy0()
     {
         return new e();

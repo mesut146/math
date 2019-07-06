@@ -38,7 +38,7 @@ public class limit extends func
         this.c=new Constant(c);
     }
     @Override
-    public func get(Variable v, Constant c) {
+    public func get(Variable[] v, Constant[] c) {
         if(!this.c.isInf()){
             return a.get(this.v, this.c.val).get(v, c);
         }
@@ -46,7 +46,7 @@ public class limit extends func
     }
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		// TODO: Implement this method
 		return 0;

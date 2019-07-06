@@ -62,7 +62,7 @@ public class i extends Constant
 	}
 
 	@Override
-	public func get(Variable v, Constant c)
+	public func get(Variable[] v, Constant[] c)
 	{
 		return null;
 	}

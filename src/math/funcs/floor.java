@@ -19,13 +19,13 @@ public class floor extends func
 	}
 
 	@Override
-	public func get(Variable v, Constant c)
+	public func get(Variable[] v, Constant[] c)
 	{
 		return new floor(a.get(v,c)).simplify();
 	}
 
 	@Override
-	public double eval(Variable v, double d)
+	public double eval(Variable[] v, double[] d)
 	{
 		return Math.floor(a.eval(v,d));
 	}

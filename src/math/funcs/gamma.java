@@ -14,11 +14,15 @@ public class gamma extends Integral
 	}
 
 	@Override
-	public func get(Variable v, Constant c)
+	public func get(Variable[] v, Constant[] c)
 	{
 		// TODO: Implement this method
 		return super.get(v, c);
 	}
-	
-	
+
+
+	@Override
+	public String toString2() {
+		return "gamma("+v+")";
+	}
 }
