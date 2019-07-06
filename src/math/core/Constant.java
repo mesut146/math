@@ -77,7 +77,8 @@ public class Constant extends func
 			if(ff==null){
 				return new Constant(val).s(sign);
 			}
-            return ff.get(v, c).s(sign);
+            //System.out.println("ff="+ff);
+            //return ff.get(v, c).s(sign);
         }
         return this;
     }

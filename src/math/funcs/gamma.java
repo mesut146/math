@@ -21,6 +21,13 @@ public class gamma extends Integral
 	}
 
 
+    //d for v
+	@Override
+	public double eval(double d) {
+
+		return a.get(v,d).integrate(0,1000,Variable.t);
+	}
+
 	@Override
 	public String toString2() {
 		return "gamma("+v+")";

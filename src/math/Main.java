@@ -38,7 +38,8 @@ public class Main
 	}
 	static void integral(){
 		gamma gamma=new gamma(Variable.x);
-		System.out.println(gamma);
+		func f=func.parse("e^-t*t^5");
+		System.out.println(f.integrate(0,1000,Variable.t));
 	}
 	static void rule(){
 		//func.addRule("ln(e)=1");
