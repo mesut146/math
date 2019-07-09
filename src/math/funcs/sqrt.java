@@ -9,8 +9,7 @@ public class sqrt extends func
     @Override
     public String toLatex()
     {
-        // TODO: Implement this method
-        return null;
+        return "\\sqrt{"+a.toLatex()+"}";
     }
 
 

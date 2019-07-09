@@ -11,7 +11,7 @@ public class cos extends func
     public String toLatex()
     {
         // TODO: Implement this method
-        return null;
+        return "cos("+a.toLatex()+")";
     }
 
     
@@ -31,7 +31,10 @@ public class cos extends func
     public func simplify() {
         if (a.isConstant()){
 			if(!a.cons().functional){
-				return new Constant(Math.cos(a.eval()));
+			    /*if (Config.trigonomety.stay){
+
+                }*/
+				return new Constant(eval());
 			}
             
         }

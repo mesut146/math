@@ -12,6 +12,11 @@ public class e extends Constant
 	}
 
 	@Override
+	public String toLatex() {
+		return "e";
+	}
+
+	@Override
 	public double eval(Variable[] v, double[] d) {
 		return val;
 	}

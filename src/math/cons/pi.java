@@ -8,8 +8,7 @@ public class pi extends Constant
     @Override
     public String toLatex()
     {
-        // TODO: Implement this method
-        return null;
+        return "\\pi";
     }
 
 	public pi(){

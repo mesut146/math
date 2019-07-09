@@ -9,8 +9,7 @@ public class fac extends func
     @Override
     public String toLatex()
     {
-        // TODO: Implement this method
-        return null;
+        return toString();
     }
 
 
@@ -44,6 +43,9 @@ public class fac extends func
 	public func derivative(Variable v)
 	{
 		// TODO: Implement this method
+		if (a.isConstant()){
+			return Constant.ZERO;
+		}
 		return null;
 	}
 
@@ -69,14 +71,12 @@ public class fac extends func
 	@Override
 	public boolean eq2(func f)
 	{
-		// TODO: Implement this method
 		return a.eq(f);
 	}
 
 	@Override
 	public func substitude0(Variable v, func p)
 	{
-		// TODO: Implement this method
 		return new fac(a.substitude0(v,p)).s(sign);
 	}
 

@@ -1,4 +1,5 @@
 package math.funcs;
+import math.Config;
 import math.core.Constant;
 import math.core.Variable;
 import math.core.func;
@@ -9,8 +10,7 @@ public class atan extends func
     @Override
     public String toLatex()
     {
-        // TODO: Implement this method
-        return null;
+        return "atan("+a.toLatex()+")";
     }
 
 
@@ -20,22 +20,22 @@ public class atan extends func
 	@Override
 	public func get(Variable[] v, Constant[] c)
 	{
-		// TODO: Implement this method
-		return null;
+		a.get(v,c);
+		return this;
 	}
 
 	@Override
 	public double eval(Variable[] v, double[] d)
 	{
-		// TODO: Implement this method
 		return sign*Math.atan(a.eval(v,d));
 	}
 
 	@Override
 	public func derivative(Variable v)
 	{
-		// TODO: Implement this method
-		return null;
+		//f=atany tanf=y sinf/cosf=y
+		//cos^2(f)+sin^2(f)/cos^2(f)=1/cos^2(f)=y'
+		return a.derivative(v).div(Constant.ONE.add(a.pow(2)));
 	}
 
 	@Override
@@ -48,29 +48,26 @@ public class atan extends func
 	@Override
 	public func copy0()
 	{
-		// TODO: Implement this method
-		return null;
+		return new atan(a).s(sign);
 	}
 
 	@Override
 	public String toString2()
 	{
-		// TODO: Implement this method
-		return null;
+		return "atan("+a.toString()+")";
 	}
 
 	@Override
 	public boolean eq2(func f)
 	{
-		// TODO: Implement this method
-		return false;
+		return a.eq(f.a);
 	}
 
 	@Override
 	public func substitude0(Variable v, func p)
 	{
-		// TODO: Implement this method
-		return null;
+		a.substitude(v,p);
+		return this;
 	}
 	
 }

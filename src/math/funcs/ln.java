@@ -17,13 +17,8 @@ public class ln extends func {
 		}*/
     }
 
-    public static func pull(func f) {
-        return null;
-    }
-
     @Override
     public String toLatex() {
-        // TODO: Implement this method
         return "ln(" + a.toLatex() + ")";
     }
 

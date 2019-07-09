@@ -10,7 +10,6 @@ public class sin extends func
     @Override
     public String toLatex()
     {
-        // TODO: Implement this method
         return "sin("+a.toLatex()+")";
     }
 

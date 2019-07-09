@@ -62,8 +62,19 @@ public class Constant extends func
     @Override
     public String toLatex()
     {
-        // TODO: Implement this method
-        return toString();
+        if (functional){
+            return a.toLatex();
+        }
+        if(nan){
+            return "NaN";
+        }
+        if(inf){
+            return "inf";
+        }
+        if(isInteger()){
+            return Integer.toString((int)val);
+        }
+        return Double.toString(val);
     }
 
     @Override
@@ -88,6 +99,13 @@ public class Constant extends func
         }
         return sign*val;
 	}
+
+	public boolean isInteger(){
+        if (!functional){
+            return val==(int)val;
+        }
+        return false;
+    }
 
     public boolean isInf(){
         return inf;
@@ -117,7 +135,7 @@ public class Constant extends func
         if(functional){
             return ff.toString();
         }
-        if((double)(int)val==val){
+        if(isInteger()){
             return Integer.toString((int)val);
         }
         return Double.toString(val);

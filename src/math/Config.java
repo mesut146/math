@@ -14,4 +14,7 @@ public abstract class Config {
         public static int interval=1000000;
         public static boolean converge=false;
     }
+    public abstract static class trigonomety{
+        public static boolean stay=true;
+    }
 }
