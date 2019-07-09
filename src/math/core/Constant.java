@@ -4,13 +4,6 @@ import math.cons.*;
 public class Constant extends func
 {
 
-    @Override
-    public String toLatex()
-    {
-        // TODO: Implement this method
-        return toString();
-    }
-
     public static final Constant ZERO=new Constant(0);
     public static final Constant ONE=new Constant(1);
 	public static final Constant TWO=new Constant(2);
@@ -18,6 +11,10 @@ public class Constant extends func
     public static final Constant INF;
     public static final Constant E=new e();
     public static final Constant PI=new pi();
+    public boolean functional=false;
+    protected func ff;
+    public double val=0;
+    boolean nan=false,inf=false;
 	//public static final Constant PI2,PI3,PI4,PI5,PI6;
 
     static{
@@ -25,6 +22,7 @@ public class Constant extends func
         NaN.nan=true;
         INF=new Constant();
         INF.inf=true;
+        INF.val=Double.MAX_VALUE;
 		/*PI2=(Constant)PI.div(2);
 		PI3=(Constant)PI.div(3);
 		PI4=(Constant)PI.div(4);
@@ -33,10 +31,7 @@ public class Constant extends func
 		*/
     }
 
-    public boolean functional=false;
-    protected func ff;
-    public double val=0;
-    boolean nan=false,inf=false;
+
     
     public Constant(double d){
         if(d<0){
@@ -46,6 +41,12 @@ public class Constant extends func
         val=d;
         type=types.constant;
     }
+    public Constant(func f){
+        ff=f;
+        functional=true;
+        type=types.constant;
+    }
+
     public Constant(){
         type=types.constant;
     }
@@ -58,18 +59,13 @@ public class Constant extends func
         return new Constant(val);
     }
 
-	/*@Override
-	public func negate()
-	{
-		System.out.println("adf");
-		return new Constant(-val);
-	}*/
-
-    public Constant(func f){
-        ff=f;
-        functional=true;
-        type=types.constant;
+    @Override
+    public String toLatex()
+    {
+        // TODO: Implement this method
+        return toString();
     }
+
     @Override
     public func get(Variable[] v, Constant[] c)
     {
