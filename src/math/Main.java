@@ -1,9 +1,9 @@
 package math;
 
-import math.core.Constant;
-import math.core.Variable;
-import math.core.func;
-import math.funcs.gamma;
+import java.util.*;
+import math.core.*;
+import math.funcs.*;
+import math.op.*;
 
 public class Main
 {
@@ -21,7 +21,11 @@ public class Main
 
 		func f=null,g=null;
 
-		integral();
+		//integral();
+        //col();
+        //taylor();
+        /*for(int i=0;i<1000;i++)
+            System.out.println(random(100));*/
 		/*f=func.parse("e^(x^2*y)");
         System.out.println(f.derivative());*/
         /*ero ee=ero.init();
@@ -36,9 +40,62 @@ public class Main
 
 		//a();
 	}
+    
+    static void col(){
+        col.p1();
+    }
+    
+    static void taylor(){
+        func f=func.parse("cos(x)");
+        System.out.println(f.taylor());
+    }
+    
+    static func random(int max){
+        Random r=new Random();
+        int n=r.nextInt(5);
+        if(max<=1){
+            n=4;
+        }
+        //max--;
+        func f=null;
+        //add,mul,pow,var,cons
+        if(n==0){//add
+            //need m random funcs
+            f=Constant.ZERO;
+            int m=r.nextInt(max-2)+2;
+            for(int i=0;i<m;i++){
+                f=f.add(random(max/2));
+            }
+        }else if(n==1){//mul
+            f=Constant.ONE;
+            int m=r.nextInt(max-1);
+            for(int i=0;i<m;i++){
+                f=f.mul(random(max/2));
+            }
+        }else if(n==2){//pow
+            func a=random(max/2);
+            func b=random(max/2);
+            f=a.pow(b);
+        }else if(n==3){//var
+            f=getVar();
+        }else if(n==4){
+            f=getCons();
+        }
+        return f;
+    }
+    
+    static func getVar(){
+        int c=new Random().nextInt('z'-'a');
+        return new Variable((char)('a'+c));
+    }
+    static func getCons(){
+        int len=new Random().nextInt(4)+1;
+        return new Constant(new Random().nextInt((int)Math.pow(10,len)));
+    }
+    
 	static void integral(){
 		gamma gamma=new gamma(Variable.x);
-		func f=func.parse("e^-t*t^5");
+		func f=func.parse("e^-t*t^0.5");
 		System.out.println(f.integrate(0,1000,Variable.t));
 	}
 	static void rule(){

@@ -78,9 +78,14 @@ public abstract class func
 		return eval(Variable.x, 0);
 	}
 
-	public final double eval(String s, double d)
+	public final double eval(String s, double...d)
     {
-		return eval(new Variable(s), d);
+        Variable[] v=new Variable[d.length];
+        String[] sp=s.split(",");
+        for(int i=0;i<d.length;i++){
+            v[i]=new Variable(sp[i]);
+        }
+		return eval(v, d);
 	}
 
 	public abstract double eval(Variable[] v, double[] d);
@@ -106,13 +111,17 @@ public abstract class func
 	public abstract func integrate(Variable v);
 
 	public double integrate(double a, double b,Variable v){
-
-		double n=Config.integral.interval;
-		double h=(b - a) / n;
-		double sum;
-		func fx=new add(new Constant(a),new mul(new Variable("n"),new Constant(h))).simplify();
-		sigma s=new sigma(this.substitude0(v, fx), new Variable("n"), 0, (int)n);
-		sum = s.eval() * h;
+        double sum=0;
+        if(Config.integral.converge){
+            
+        }else{
+            double n=Config.integral.interval;
+            double h=(b - a) / n;
+            func fx=new add(new Constant(a),new mul(new Variable("n"),new Constant(h))).simplify();
+            sigma s=new sigma(this.substitude0(v, fx), new Variable("n"), 0, (int)n);
+            sum = s.eval() * h;
+        }
+		
 		return sum;
 	}
 	public double integrate(double a, double b)
@@ -441,15 +450,19 @@ public abstract class func
     {
 		StringBuffer s=new StringBuffer();
 		func p=this;
-		s.append(p.get(0));
+        //func arr=new add();
+		s.append(p.eval(0));
+        //arr=arr.add(p.eval(0));
 		for (int i=1;i < 5;i++)
         {
 			p = p.derivative();
-			s.append("+" + p.get(0).div(new fac(i)) + "*x");
+			s.append("+" + p.eval(0)+"*x");
+            //arr.add(new Constant(p.eval(0)).mul(Variable.x.pow(i)).div(new fac(i)));
 			if (i != 1)
             {
 				s.append("^" + i);
 			}
+            s.append("/").append(new fac(i));
 		}
 		return s.toString();
 	}

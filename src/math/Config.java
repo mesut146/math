@@ -12,5 +12,6 @@ public abstract class Config {
     }
     public abstract static class integral{
         public static int interval=1000000;
+        public static boolean converge=false;
     }
 }
