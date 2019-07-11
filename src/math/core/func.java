@@ -89,6 +89,7 @@ public abstract class func
 	}
 
 	public abstract double eval(Variable[] v, double[] d);
+    //public abstract Constant evalc(Variable[] v, double[] d);
 
 	public double eval(Variable v, double d){
 		return eval(new Variable[]{v},new double[]{d});

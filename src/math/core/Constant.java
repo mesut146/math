@@ -1,5 +1,6 @@
 package math.core;
 import math.cons.*;
+import java.math.*;
 
 public class Constant extends func
 {
@@ -14,6 +15,7 @@ public class Constant extends func
     public boolean functional=false;
     protected func ff;
     public double val=0;
+    public BigDecimal big=new BigDecimal(0);
     boolean nan=false,inf=false;
 	//public static final Constant PI2,PI3,PI4,PI5,PI6;
 

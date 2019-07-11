@@ -22,7 +22,7 @@ public class Main
 		func f=null,g=null;
 
 		//integral();
-        //col();
+        col();
         //taylor();
         /*for(int i=0;i<1000;i++)
             System.out.println(random(100));*/

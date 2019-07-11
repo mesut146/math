@@ -1,6 +1,7 @@
 package math;
 
 public abstract class Config {
+    public static boolean useBigDecimal=true;
     public abstract static class add{
         public static boolean simplify=true;
     }
