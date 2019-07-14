@@ -24,9 +24,7 @@ public class col
         //3n-2 3a-2
         //3n-1 3a
         //3n 3a-1
-        /*
         
-        */
     }
     static void modn(func f,String vars,int mod){
         String[] v=vars.split(",");
