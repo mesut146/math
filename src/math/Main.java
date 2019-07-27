@@ -24,7 +24,7 @@ public class Main
 		//integral();
         //col();
         f=func.parse("(y^(x+1)-y)/(y-1)");
-        System.out.println(f.get("x=5,y=7"));
+        System.out.println(f);
         System.out.println(f.derivative("y"));
         //taylor();
         /*for(int i=0;i<1000;i++)

@@ -180,6 +180,9 @@ public abstract class func
     {
 		return sign(this, s);
 	}
+    public func s(func o){
+        return o.s(sign);
+    }
     public func add(func f)
     {
         func x=new add(this, f);

@@ -37,7 +37,8 @@ public class Variable extends func
         for(int i=0;i<v.length;i++){
             if(eq2(v[i])){
                 //TODO: mutable or not?
-                return new Constant(c[i]).s(sign);
+                //return new Constant(c[i]).s(sign);
+                return s(c[i]);
             }
         }
 
