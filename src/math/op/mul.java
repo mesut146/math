@@ -177,6 +177,9 @@ public class mul extends func
 				l.addAll(p.f);
                 sign*=p.sign;
 			}
+            else if(p.is(-1)){
+                sign*=-1;
+            }
 			else if(!p.is(1)){
                 l.add(p);
             }
