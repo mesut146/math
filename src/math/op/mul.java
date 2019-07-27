@@ -52,7 +52,7 @@ public class mul extends func
         for(func f1:f){
             t=t.mul(f1.get(v, c));
         }
-		return t.s(sign);
+		return s(t);
     }
 
 	@Override
