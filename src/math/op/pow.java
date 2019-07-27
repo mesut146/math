@@ -55,10 +55,10 @@ public class pow extends func
             return mul(new ln(a).simplify());
         }*/
         if(a.isConstant()){//a^f=a^f*ln(a)*f'
-            return a.pow(b).mul(new ln(a).simplify()).mul(b.derivative());
+            return a.pow(b).mul(new ln(a).simplify()).mul(b.derivative(v));
         }
         if(b.isConstant()){//f^b=b*f^(b-1)*f'
-            return b.mul(a.pow(b.sub(1))).mul(a.derivative());
+            return b.mul(a.pow(b.sub(1))).mul(a.derivative(v));
         }
         //f^g
         //System.out.println("a="+a.isConsfunc()+" b="+b+" ,"+new ln(a).simplify());
