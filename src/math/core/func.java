@@ -66,6 +66,19 @@ public abstract class func
         //System.out.println("fget(v,d)="+v+","+d);
         return get(v, new Constant(d));
     }
+    public final func get(String s){
+        String[] sp=s.split(",");
+        Variable[] va=new Variable[sp.length];
+        Constant[] ca=new Constant[sp.length];
+        int i=0;
+        for(String eq:sp){
+            String[] lr=eq.split("=");
+            va[i]=new Variable(lr[0]);
+            ca[i]=new Constant(Double.parseDouble(lr[1]));
+            i++;
+        }
+        return get(va,ca);
+    }
 
 	public func get(Variable v, Constant c){
     	return get(new Variable[]{v},new Constant[]{c});

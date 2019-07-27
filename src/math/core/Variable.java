@@ -41,7 +41,7 @@ public class Variable extends func
             }
         }
 
-        return Constant.ZERO;
+        return this;
     }
 	
 	@Override
