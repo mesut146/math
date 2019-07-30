@@ -55,10 +55,10 @@ public class pow extends func
             return mul(new ln(a).simplify());
         }*/
         if(a.isConstant()){//a^f=a^f*ln(a)*f'
-            return a.pow(b).mul(new ln(a).simplify()).mul(b.derivative(v));
+            return s(a.pow(b).mul(new ln(a).simplify()).mul(b.derivative(v)));
         }
         if(b.isConstant()){//f^b=b*f^(b-1)*f'
-            return b.mul(a.pow(b.sub(1))).mul(a.derivative(v));
+            return s(b.mul(a.pow(b.sub(1))).mul(a.derivative(v)));
         }
         //f^g
         //System.out.println("a="+a.isConsfunc()+" b="+b+" ,"+new ln(a).simplify());
@@ -66,7 +66,7 @@ public class pow extends func
         func f=func.parse(String.format("%s*ln(%s)*%s^%s+%s*%s^(%s-1)*%s",b.derivative(),a,a,b,b,a,b,a.derivative()));
         System.out.println("f="+new ln(a).simplify());
         */
-        return b.derivative(v).mul(new ln(a).simplify()).mul(this).add(b.mul(a.derivative(v)).mul(a.pow(b.sub(1))));
+        return s(b.derivative(v).mul(new ln(a).simplify()).mul(this).add(b.mul(a.derivative(v)).mul(a.pow(b.sub(1)))));
     }
 
     @Override
@@ -111,6 +111,9 @@ public class pow extends func
 
     public func simplify(){
 		//System.out.println("simp of pow");
+        if(!Config.pow.simplify){
+            return this;
+        }
         if(a.is(0)){
             return Constant.ZERO;
         }
@@ -124,7 +127,7 @@ public class pow extends func
             return b.a;
         }
         if(a.isConstant()&&b.isConstant()&&!a.isConsfunc()&&!b.isConsfunc()){
-            return new Constant(this.get(0));
+            return new Constant(this.eval());
         }
         if (b.is(1)){
             return a.sign(sign);
