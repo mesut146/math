@@ -49,6 +49,11 @@ public abstract class func
 	/*protected String ss(){
      return sign==-1?"-":"";
      }*/
+     
+     public void set(List<func> l){
+         f.clear();
+         f.addAll(l);
+     }
 
 
     public final func get(Constant c)
@@ -174,7 +179,9 @@ public abstract class func
 	}
 	public func sign(int s)
     {
-		return sign(this, s);
+		//return sign(this, s);
+        sign=s;
+        return this;
 	}
 	public func s(int s)
     {
@@ -290,7 +297,7 @@ public abstract class func
 	}
 
     @Override
-    public final String toString()
+    public String toString()
     {
         String s=toString2();
         if (sign == -1)
@@ -308,6 +315,17 @@ public abstract class func
 		}
         return "(" + toString() + ")";
     }
+    
+    public int find(types t){
+        int i=0;
+        for(func p:f){
+            if(p.type==t){
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
 
     public boolean isNumber()
     {
@@ -320,6 +338,9 @@ public abstract class func
     public boolean isConsfunc()
     {
         return isConstant() && cons().functional;
+    }
+    public boolean isCons0(){
+        return isConstant()&&!cons().functional;
     }
 	public boolean isVariable()
     {
@@ -420,10 +441,32 @@ public abstract class func
 		}
 		if (f != null && type == f.type)
         {
-			return sign == sign && eq2(f);
+			return sign == f.sign && eq2(f);
 		}
 		return false;
 	}
+    public boolean eqws(func f){
+        if (name().equals("fx"))
+        {
+            if (f.name().equals("fx"))
+            {
+                return eq2(f);
+            }
+            /*b=f;
+             return true;*/
+        }
+        if (f.name().equals("fx"))
+        {
+            ((math.fx)f).b = this;
+            //System.out.println("a="+f);
+            return true;
+        }
+        if (f != null && type == f.type)
+        {
+            return eq2(f);
+        }
+		return false;
+    }
 	public abstract boolean eq2(func f);
 
 	public static boolean isEq(List<func> l1, List<func> l2)
