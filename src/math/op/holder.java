@@ -9,6 +9,7 @@ class holder {
     double d;
     List<func> l;
     boolean b;
+    int sign;
     public holder(func i, double o, List<func> li, boolean bo){
         f=i;d=o;l=li;b=bo;
     }
