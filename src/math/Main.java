@@ -23,9 +23,9 @@ public class Main
 
 		//integral();
         //col();
-        f=func.parse("(y^(x+1)-y)/(y-1)");
-        System.out.println(f);
-        System.out.println(f.derivative("y"));
+        //der();
+        f=func.parse("-5*(x^2)");
+        System.out.println(f.derivative());
         //taylor();
         /*for(int i=0;i<1000;i++)
             System.out.println(random(100));*/
@@ -46,6 +46,13 @@ public class Main
     
     static void col(){
         col.p1();
+    }
+    static void der(){
+        func f=func.parse("sin(x)^n");
+        System.out.println(f);
+        for(int i=1;i<10;i++){
+            System.out.println(f.der(i,Variable.x));
+        }
     }
     
     static void taylor(){
