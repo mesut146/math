@@ -4,6 +4,7 @@ import java.util.*;
 import math.core.*;
 import math.funcs.*;
 import math.op.*;
+import math.integral.*;
 
 public class Main
 {
@@ -24,8 +25,10 @@ public class Main
 		//integral();
         //col();
         //der();
-        f=func.parse("-5*(x^2)");
-        System.out.println(f.derivative());
+        //f=func.parse("x^n*e^x");
+        //new Iexp().integ(f);
+        new Iexp().solve();
+        //System.out.println(f.derivative());
         //taylor();
         /*for(int i=0;i<1000;i++)
             System.out.println(random(100));*/
