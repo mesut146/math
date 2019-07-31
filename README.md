@@ -9,7 +9,7 @@ a simple math library written in java
 - numeric intregration
 - outputs latex code
 - basic level simplification
-
+- solving sequences
 
 
 ## Example:
