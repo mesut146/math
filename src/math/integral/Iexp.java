@@ -14,20 +14,6 @@ public class Iexp
         }
     }
     
-    public  void solve(){
-        //a(n)=b(n)*a(n-1)+c(n)
-        func bn=func.parse("-n");
-        func cn=func.parse("x^n*e^x");
-       
-        //a(2)=b(2)*a(1)+c(2);
-        func ax=Constant.ONE;//a0=1
-        Variable vn=new Variable("n");
-        for(int n=2;n<10;n++){
-            ax=bn.get(vn,n).mul(ax).add(cn.get(vn,n));
-            System.out.println(ax);
-        }
-    }
-    
     void sort(func f){
         Collections.sort(f.f, new Comparator<func>(){
 
