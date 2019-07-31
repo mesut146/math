@@ -99,7 +99,7 @@ public class mul extends func
             func m=new mul(l);
             return k.mul(m.integrate(v));
         }
-        if (f.size() == 1)
+        if (f.size() == 1)//add invisible 1
         {
             f.add(Constant.ONE);
         }
@@ -255,7 +255,15 @@ public class mul extends func
          }
          if(b) return p.simplify().div(q.simplify());*/
 		sort();
-
+        if(f.size()==2&&f.get(0).isCons0()&&f.get(1).isAdd()){
+            //n*(a+b+c)=an+bn+cn
+            func c=f.get(0).s(f.get(1).sign);
+            add a=new add();
+            for(func t:f.get(1).f){
+                a.f.add(c.mul(t));
+            }
+            return a.simplify();
+        }
 		return this;
     }
 
