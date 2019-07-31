@@ -225,6 +225,11 @@ public abstract class func
         {
             return f.mul(this);
         }
+        if(f.is(1)){
+            return this;
+        }else if(f.is(0)){
+            return Constant.ZERO;
+        }
         func x=new mul(this, f);
         if (Config.mul.simplify)
         {

@@ -5,6 +5,7 @@ import math.core.*;
 import math.funcs.*;
 import math.op.*;
 import math.integral.*;
+import math.solver.*;
 
 public class Main
 {
@@ -27,7 +28,7 @@ public class Main
         //der();
         //f=func.parse("x^n*e^x");
         //new Iexp().integ(f);
-        new Iexp().solve();
+        Sequence.solve("1","1","x",1);
         //System.out.println(f.derivative());
         //taylor();
         /*for(int i=0;i<1000;i++)
