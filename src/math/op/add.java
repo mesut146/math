@@ -134,7 +134,11 @@ public class add extends func
 			if (p.isAdd())
             {
                 //2+-(x+5)
-				l.addAll(p.f);
+                for(func inner:p.f){
+                    
+                    l.add(inner.s(p.sign));
+                }
+				//l.addAll(p.f);
 			}
             else
             {
@@ -160,6 +164,16 @@ public class add extends func
         sort();
         return this;
     }
+    
+    void sort(){
+        int i=find(types.constant);
+        if(i!=-1&&i!=f.size()-1){
+            List<func> l=new LinkedList<func>(f);
+            func c=l.remove(i);
+            l.add(c);
+            set(l);
+        }
+    }
 
 	public void cons0()
     {
@@ -182,6 +196,7 @@ public class add extends func
 		set(l);
 	}
 
+    //2x+3x=5x
 	public void mu()
     {
 		List<func> l=getFree();
@@ -195,8 +210,8 @@ public class add extends func
 				double k=1;
 				for (int j=i + 1;j < f.size();j++)
                 {
-					holder q;
-					if ((q = e3(v, f.get(j))).b)
+					holder q=e3(v, f.get(j));
+					if (q.b)
                     {
 						b[j] = true;
 						k += q.d;
@@ -212,16 +227,6 @@ public class add extends func
 		}
 		set(l);
 	}
-    
-    void sort(){
-        int i=find(types.constant);
-        if(i!=-1&&i!=f.size()-1){
-            List<func> l=new LinkedList<func>(f);
-            func c=l.remove(i);
-            l.add(c);
-            set(l);
-        }
-    }
 
 	@Override
 	public boolean eq2(func f1)
