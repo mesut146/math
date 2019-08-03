@@ -28,6 +28,7 @@ public class Main
         //der();
         //f=func.parse("x^n*e^x");
         //new Iexp().integ(f);
+        
         Sequence.solve("1","1","x",1);
         //System.out.println(f.derivative());
         //taylor();

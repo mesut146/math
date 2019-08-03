@@ -77,16 +77,17 @@ public class Parser {
         if (i < len) {
             char c=s.charAt(i++);
             //System.out.println("c="+c);
-            if (c==' ') return next();
+            if (c==' '||c=='\t') return next();
             if (isDigit(c)){
                 int j=i-1;
                 while (i<len&&(isDigit((c=s.charAt(i)))||c=='.')) i++;
                 //if (i<len) i--;
                 return new Token(s.substring(j,i),TokenType.Constant);
-            }else if(isWord(c)){
+            }else if(isLetter(c)){
                 int j=i-1;
-                while (i<len&&isWord(s.charAt(i))) i++;
+                while (i<len&&isAlpha(s.charAt(i))) i++;
                 String name=s.substring(j,i);
+                //System.out.println("name="+name);
                 if (i<len&&s.charAt(i)=='('){//funcs
                     int p=0;
                     j=++i;
@@ -120,8 +121,11 @@ public class Parser {
     boolean isDigit(char c){
         return c>='0'&&c<='9';
     }
-    boolean isWord(char c){
+    boolean isLetter(char c){
         return (c>='a'&&c<='z')||((c>='A'&&c<='Z'));
+    }
+    boolean isAlpha(char c){
+        return isLetter(c)||isDigit(c);
     }
     boolean isOperator(char c){
         return "+-*/^".indexOf(c)!=-1;
