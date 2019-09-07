@@ -184,31 +184,7 @@ public abstract class func
 
 	public double integrate(double a, double b, var v)
     {
-        double sum=0;
-        if (Config.integral.converge)
-        {
-
-        }
-        else
-        {
-            double k=Config.integral.interval;
-            double dx=(b - a) / k;
-            //a+n*dx
-            //func fx=new add(new cons(a), new mul(new var("n"), new cons(dx))).simplify();
-            //System.out.println(fx);
-            
-            for(int i=0;i<=k;i++){
-                double p=a+i*dx;
-                sum=sum+eval(v,p)*dx;
-                //if((k/10)%i==0)System.out.println(sum);
-            }
-            //sum=sum*dx;
-            //sigma s=new sigma(this.substitude0(v, fx), new var("n"), 0, (int)n);
-            //System.out.println(s);
-            //sum = s.eval() * dx;
-        }
-
-		return sum;
+        return new Integral(this,v,new cons(a),new cons(b)).eval();
 	}
 	public double integrate(double a, double b)
     {
@@ -254,20 +230,17 @@ public abstract class func
         sign *= s;
         return this;
 	}
+    public func signget(func f){
+        sign*=f.sign;
+        return this;
+    }
     public func signto(func o)
     {
         o.sign *= sign;
         return o;
     }
-    public func signget(func f){
-        sign*=f.sign;
-        return this;
-    }
-    public static func sign(func f, int s)
-    {
-        f.sign *= s;
-        return f;
-    }
+    
+    
     public cons sc(func o)
     {
         return (cons)o.sign(sign);
@@ -283,8 +256,7 @@ public abstract class func
     }
 	public func add(double d)
     { 
-        return add(new cons(d));
-        //return new add(this,new Constant(d)).simplify(); 
+        return add(new cons(d)); 
     }
     public func sub(func f)
     {
@@ -294,12 +266,11 @@ public abstract class func
             x = x.simplify();
         }
         return x;
-		//return new add(this, f.negate()).simplify();
 	}
 	public func sub(double d)
     {
         return sub(new cons(d));
-		//return new add(this, new Constant(-d)).simplify();
+		
 	}
     public func mul(func f)
     {
@@ -326,7 +297,6 @@ public abstract class func
 	public func mul(double d)
     {
         return mul(new cons(d));
-        //return new mul(this, new Constant(d)).simplify();
     }
     public func div(func f)
     {
@@ -367,7 +337,6 @@ public abstract class func
 
     public func negate()
     {
-		//System.out.println("negate func");
         func c=copy();
         c.sign = -c.sign;
         return c;

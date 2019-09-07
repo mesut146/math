@@ -113,7 +113,7 @@ public class Parser {
                 //System.out.println("i="+i);
                 return new Token(")",TokenType.Close);
             }
-            System.out.println("unexpected char="+c);
+            System.out.println("unexpected char '"+c+"'");
         }
 
         return null;

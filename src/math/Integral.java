@@ -24,17 +24,18 @@ public class Integral extends func
     func a1,a2;
     //boolean bound=false;
 	
-	//f(fx),dx,lower,upper
-	public Integral(func f,func v,func i1,func i2){
+	//f(x),dx,lower,upper
+	public Integral(func f,var v,func i1,func i2){
 		a=f;
-		this.v=(var) v;
+		this.v=v;
 		a1=i1;
 		a2=i2;
 		lim=true;
 	}
-	public Integral(func f,func v){
+    //f(x),dx
+	public Integral(func f,var v){
 		a=f;
-		this.v=(var) v;
+		this.v= v;
 	}
 	
 	public Integral(func f){
@@ -58,23 +59,39 @@ public class Integral extends func
 	public double eval(var[] v, double[] d)
 	{
 		// TODO: Implement this method
-		return 0;
+        a=a.get(v,d);
+		return riemannSum();
 	}
 
     @Override
     public cons evalc(var[] v, double[] d)
     {
-        // TODO: Implement this method
-        return null;
+        return new cons(eval(v,d));
     }
 
-    
+    double riemannSum(){
+        assert a1.isConstant()&&a2.isConstant();
+        double sum=0;
+        double k=Config.integral.interval;
+        double low=a1.eval();
+        double dx=(a2.eval() - low) / k;
+        //a+n*dx
+        //func fx=new add(new cons(a), new mul(new var("n"), new cons(dx))).simplify();
+        //System.out.println(fx);
+
+        for(int i=0;i<=k;i++){
+            double p=low+i*dx;
+            sum=sum+eval(v,p)*dx;
+            //if((k/10)%i==0)System.out.println(sum);
+        }
+        return sum;
+    }
 
 	@Override
 	public func derivative(var v)
 	{
 		if(this.v.eq(v)){
-			return a.copy();
+			return a;
 		}
 		if(lim){
 			return new Integral(a.derivative(v),this.v,a1,a2);
@@ -115,13 +132,24 @@ public class Integral extends func
 	@Override
 	public boolean eq2(func f)
 	{
-		return a.eq(f.derivative(v));
+        Integral i=(Integral) f;
+        if(lim==i.lim){
+            if(lim){
+                return a.eq(i.a)&&v.eq(i.v)&&a1.eq(i.a1)&&a2.eq(i.a2);
+            }else{
+                return a.eq(i.a)&&v.eq(i.v);
+            }
+            
+        }
+		return false;
 	}
 
 	@Override
 	public func substitude0(var v,func p)
 	{
         a=a.substitude(v,p);
+        a1=a1.substitude(v,p);
+        a2=a2.substitude(v,p);
         return this;
 		//return new Integral(a.substitude0(v,p),this.v);
 	}

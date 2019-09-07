@@ -27,7 +27,8 @@ public class Main
 		//integral();
         //prime();
         //col();
-        der();
+        System.out.println(func.parse("e^(i*pi)"));
+        //der();
         //f=func.parse("x^n*e^x");
         //new Iexp().integ(f);
         //diff();

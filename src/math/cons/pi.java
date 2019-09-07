@@ -20,13 +20,14 @@ public class pi extends cons
 	@Override
 	public String toString2()
 	{
-		return "pi";
+		//return "pi";
+        return String.valueOf('\u03C0');
 	}
 
 	@Override
 	public boolean eq2(func f)
 	{
-		return f.getClass()==getClass();
+		return f.getClass()==pi.class;
 	}
 
     @Override
