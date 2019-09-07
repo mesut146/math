@@ -6,7 +6,7 @@ a simple math library written in java
 - parsing from postfix
 - taking derivatives in multivariables
 - numeric derivatives
-- numeric intregration
+- numeric integration
 - outputs latex code
 - basic level simplification
 - solving sequences
