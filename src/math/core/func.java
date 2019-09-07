@@ -1,23 +1,24 @@
 package math.core;
 
 import math.Config;
-import math.op.*;
+import math.operator.*;
 import java.util.*;
 
 import math.parser.Parser;
 import math.funcs.*;
 import math.sigma;
+import math.*;
+import java.util.regex.*;
+import javax.xml.validation.*;
+import java.security.spec.*;
 
 public abstract class func
 {
 
     public enum types
     {
-		func(0),constant(1),variable(2),add(3),sub(4),mul(5),div(6),pow(7),ln(8),sin(10),cos(11);
-		public int val;
-		types(int i){
-			val=i;
-		}
+		func,fx,constant,variable,add,sub,mul,div,pow,ln,sin,cos;
+
 	}
     public types type=types.func;
     public int sign=1;
@@ -45,114 +46,184 @@ public abstract class func
 		addRule(a, b);
 	}
 
+    public String d()
+    {
+        return getClass() + " " + toString();
+    }
+
 	//public abstract fx find(String name);
 	/*protected String ss(){
      return sign==-1?"-":"";
      }*/
-     
-     public void set(List<func> l){
-         f.clear();
-         f.addAll(l);
-     }
+
+    public void set(List<func> l)
+    {
+        f.clear();
+        f.addAll(l);
+    }
 
 
-    public final func get(Constant c)
+    public final func get(cons c)
     { 
 		//System.out.println("fget(c)="+c);
-		return get(Variable.x, c); 
+		return get(var.x, c); 
 	}
     public final func get(double d)
     {
 		//System.out.println("fget(d)="+d);
-        return get(Variable.x, new Constant(d));
+        return get(var.x, new cons(d));
     }
-    public final func get(Variable v, double d)
+    public final func get(var v, double d)
     {
         //System.out.println("fget(v,d)="+v+","+d);
-        return get(v, new Constant(d));
+        return get(v, new cons(d));
     }
-    public final func get(String s){
+    public final func get(var[] v, double[] d)
+    {
+        cons[] c=new cons[d.length];
+        for (int i=0;i < c.length;i++)
+        {
+            c[i] = new cons(d[i]);
+        }
+        return get(v, c);
+    }
+    public final func get(String s)
+    {
         String[] sp=s.split(",");
-        Variable[] va=new Variable[sp.length];
-        Constant[] ca=new Constant[sp.length];
+        var[] va=new var[sp.length];
+        cons[] ca=new cons[sp.length];
         int i=0;
-        for(String eq:sp){
+        for (String eq:sp)
+        {
             String[] lr=eq.split("=");
-            va[i]=new Variable(lr[0]);
-            ca[i]=new Constant(Double.parseDouble(lr[1]));
+            va[i] = new var(lr[0]);
+            ca[i] = new cons(Double.parseDouble(lr[1]));
             i++;
         }
-        return get(va,ca);
+        return get(va, ca);
     }
 
-	public func get(Variable v, Constant c){
-    	return get(new Variable[]{v},new Constant[]{c});
+	public func get(var v, cons c)
+    {
+    	return get(new var[]{v}, new cons[]{c});
 	}
-    public abstract func get(Variable[] v, Constant[] c);
+
 
 	public double eval()
 	{
 		//System.out.println("fget this="+this);
-		return eval(Variable.x, 0);
+		return eval(var.x, 0);
 	}
 
 	public final double eval(String s, double...d)
     {
-        Variable[] v=new Variable[d.length];
+        if (d.length == 0)
+        {
+            Pattern p=Pattern.compile("(\\w)+=(\\d+(\\.\\d+)?)");
+            Matcher m=p.matcher(s);
+            List<var> vl=new ArrayList<>();
+            List<Double> dl=new ArrayList<>();
+            while (m.find())
+            {
+                vl.add(new var(m.group(1)));
+                dl.add(Double.parseDouble(m.group(2)));
+                //System.out.println(m.group(1));
+                //System.out.println(m.group(2));
+
+            }
+            return eval(vl.toArray(new var[0]), cast(dl));
+        }
+        var[] v=new var[d.length];
         String[] sp=s.split(",");
-        for(int i=0;i<d.length;i++){
-            v[i]=new Variable(sp[i]);
+        for (int i=0;i < d.length;i++)
+        {
+            v[i] = new var(sp[i]);
         }
 		return eval(v, d);
 	}
 
-	public abstract double eval(Variable[] v, double[] d);
-    //public abstract Constant evalc(Variable[] v, double[] d);
+    double[] cast(List<Double> list)
+    {
+        double[] r=new double[list.size()];
 
-	public double eval(Variable v, double d){
-		return eval(new Variable[]{v},new double[]{d});
+        for (int i=0;i < r.length;i++)
+        {
+            r[i] = list.get(i);
+        }
+        return r;
+    }
+    public abstract func get(var[] v, cons[] c);
+	public abstract double eval(var[] v, double[] d);
+    public abstract cons evalc(var[] v, double[] d);
+
+    public cons evalc()
+    {
+        return evalc(new var[]{}, new double[]{});
+    }
+	public double eval(var v, double d)
+    {
+		return eval(new var[]{v}, new double[]{d});
 	}
 
 	public double eval(double d)
     {
-		return eval(Variable.x, d);
+		return eval(var.x, d);
 	}
 
     public abstract String toLatex();
 
     public final func derivative()
-    {return derivative(Variable.x);}
-    public abstract func derivative(Variable v);
+    {return derivative(var.x);}
+    public abstract func derivative(var v);
     public final func derivative(String s)
-    {return derivative(new Variable(s));}
+    {return derivative(new var(s));}
 
-    public final func integrate() {return integrate(Variable.x);}
-	public abstract func integrate(Variable v);
+    public final func integrate()
+    {return integrate(var.x);}
+	public abstract func integrate(var v);
 
-	public double integrate(double a, double b,Variable v){
+	public double integrate(double a, double b, var v)
+    {
         double sum=0;
-        if(Config.integral.converge){
-            
-        }else{
-            double n=Config.integral.interval;
-            double h=(b - a) / n;
-            func fx=new add(new Constant(a),new mul(new Variable("n"),new Constant(h))).simplify();
-            sigma s=new sigma(this.substitude0(v, fx), new Variable("n"), 0, (int)n);
-            sum = s.eval() * h;
+        if (Config.integral.converge)
+        {
+
         }
-		
+        else
+        {
+            double k=Config.integral.interval;
+            double dx=(b - a) / k;
+            //a+n*dx
+            //func fx=new add(new cons(a), new mul(new var("n"), new cons(dx))).simplify();
+            //System.out.println(fx);
+            
+            for(int i=0;i<=k;i++){
+                double p=a+i*dx;
+                sum=sum+eval(v,p)*dx;
+                //if((k/10)%i==0)System.out.println(sum);
+            }
+            //sum=sum*dx;
+            //sigma s=new sigma(this.substitude0(v, fx), new var("n"), 0, (int)n);
+            //System.out.println(s);
+            //sum = s.eval() * dx;
+        }
+
 		return sum;
 	}
 	public double integrate(double a, double b)
     {
-		return integrate(a,b,Variable.x);
+		return integrate(a, b, var.x);
 	}
 
-	public func der(int n)
+	public func derivative(int n)
     {
-		return der(n, Variable.x);
+		return derivative(n, var.x);
 	}
-    public func der(int n, Variable v)
+    public func derivative(int n, String v)
+    {
+        return derivative(n, var.from(v));
+    }
+    public func derivative(int n, var v)
     {
         if (n < 1)
         {
@@ -171,24 +242,35 @@ public abstract class func
 
 	//public func(){}
 
-	public static func sign(func f, int s)
-    {
-		func z=f.copy();
-		z.sign *= s;
-		return z;
-	}
+	/*public static func sign(func f, int s)
+     {
+     func z=f.copy();
+     z.sign *= s;
+     return z;
+     }*/
+
 	public func sign(int s)
     {
-		//return sign(this, s);
-        sign=s;
+        sign *= s;
         return this;
 	}
-	public func s(int s)
+    public func signto(func o)
     {
-		return sign(this, s);
-	}
-    public func s(func o){
-        return o.s(sign);
+        o.sign *= sign;
+        return o;
+    }
+    public func signget(func f){
+        sign*=f.sign;
+        return this;
+    }
+    public static func sign(func f, int s)
+    {
+        f.sign *= s;
+        return f;
+    }
+    public cons sc(func o)
+    {
+        return (cons)o.sign(sign);
     }
     public func add(func f)
     {
@@ -201,7 +283,7 @@ public abstract class func
     }
 	public func add(double d)
     { 
-        return add(new Constant(d));
+        return add(new cons(d));
         //return new add(this,new Constant(d)).simplify(); 
     }
     public func sub(func f)
@@ -216,7 +298,7 @@ public abstract class func
 	}
 	public func sub(double d)
     {
-        return sub(new Constant(d));
+        return sub(new cons(d));
 		//return new add(this, new Constant(-d)).simplify();
 	}
     public func mul(func f)
@@ -225,10 +307,13 @@ public abstract class func
         {
             return f.mul(this);
         }
-        if(f.is(1)){
+        if (f.is(1))
+        {
             return this;
-        }else if(f.is(0)){
-            return Constant.ZERO;
+        }
+        else if (f.is(0))
+        {
+            return cons.ZERO;
         }
         func x=new mul(this, f);
         if (Config.mul.simplify)
@@ -240,22 +325,23 @@ public abstract class func
     }
 	public func mul(double d)
     {
-        return mul(new Constant(d));
+        return mul(new cons(d));
         //return new mul(this, new Constant(d)).simplify();
     }
     public func div(func f)
     {
-        return new mul(this, f.pow(-1)).simplify();
+        //return new mul(this, f.pow(-1)).simplify();
+        return new div(this, f).simplify();
     }
 	public func div(double d)
     {
-		return new mul(this, new Constant(1.0 / d)).simplify();
+		return div(new cons(d));
 	}
     public func pow(func f)
     { return new pow(this, f).simplify(); }
 	public func pow(double d)
     {
-		return new pow(this, new Constant(d)).simplify();
+		return new pow(this, new cons(d)).simplify();
 	}
 
 	public func fac()
@@ -263,9 +349,9 @@ public abstract class func
 		return new fac(this);
 	}
 
-	public Constant cons()
+	public cons cons()
     {
-		return (Constant)this;
+		return (cons)this;
 	}
 
     public boolean is(double d)
@@ -320,11 +406,14 @@ public abstract class func
 		}
         return "(" + toString() + ")";
     }
-    
-    public int find(types t){
+
+    public int find(types t)
+    {
         int i=0;
-        for(func p:f){
-            if(p.type==t){
+        for (func p:f)
+        {
+            if (p.type == t)
+            {
                 return i;
             }
             i++;
@@ -344,8 +433,9 @@ public abstract class func
     {
         return isConstant() && cons().functional;
     }
-    public boolean isCons0(){
-        return isConstant()&&!cons().functional;
+    public boolean isCons0()
+    {
+        return isConstant() && !cons().functional;
     }
 	public boolean isVariable()
     {
@@ -373,7 +463,12 @@ public abstract class func
 	}
 	public boolean isOperator()
     {
-		return type.val >= types.add.val && type.val <= types.pow.val;
+        return type == types.add ||
+            type == types.sub ||
+            type == types.mul ||
+            type == types.div ||
+            type == types.pow;
+		//return type.val >= types.add.val && type.val <= types.pow.val;
 	}
     public boolean isPolinom()
     {
@@ -428,44 +523,16 @@ public abstract class func
 
 	public boolean eq(func f)
 	{
-		//System.out.println("this="+this+" f="+f);
-		if (name().equals("fx"))
-        {
-			if (f.name().equals("fx"))
-            {
-				return eq2(f);
-			}
-            /*b=f;
-             return true;*/
-		}
-		if (f.name().equals("fx"))
-        {
-			((math.fx)f).b = this;
-			//System.out.println("a="+f);
-			return true;
-		}
+
 		if (f != null && type == f.type)
         {
 			return sign == f.sign && eq2(f);
 		}
 		return false;
 	}
-    public boolean eqws(func f){
-        if (name().equals("fx"))
-        {
-            if (f.name().equals("fx"))
-            {
-                return eq2(f);
-            }
-            /*b=f;
-             return true;*/
-        }
-        if (f.name().equals("fx"))
-        {
-            ((math.fx)f).b = this;
-            //System.out.println("a="+f);
-            return true;
-        }
+    public boolean eqws(func f)
+    {
+
         if (f != null && type == f.type)
         {
             return eq2(f);
@@ -505,11 +572,11 @@ public abstract class func
 		return Parser.parse(s).simplify();
 	}
 
-	public func substitude(Variable v, func f)
+	public func substitude(var v, func f)
     {
-		return substitude0(v, f).s(sign);
+		return signto(substitude0(v, f));
 	}
-    public abstract func substitude0(Variable v, func p);
+    public abstract func substitude0(var v, func p);
 
 	public String taylor()
     {
@@ -521,7 +588,7 @@ public abstract class func
 		for (int i=1;i < 5;i++)
         {
 			p = p.derivative();
-			s.append("+" + p.eval(0)+"*x");
+			s.append("+" + p.eval(0) + "*x");
             //arr.add(new Constant(p.eval(0)).mul(Variable.x.pow(i)).div(new fac(i)));
 			if (i != 1)
             {

@@ -1,8 +1,8 @@
-package math.op;
+package math.operator;
 
 import math.Config;
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
 
 import java.util.*;
@@ -54,18 +54,18 @@ public class mul extends func
     }
 
     @Override
-    public func get(Variable[] v, Constant[] c)
+    public func get(var[] v, cons[] c)
     {
-        func t=Constant.ONE;
+        func t=cons.ONE;
         for (func f1:f)
         {
             t = t.mul(f1.get(v, c));
         }
-		return s(t);
+		return signto(t);
     }
 
 	@Override
-	public double eval(Variable[] v, double[] d)
+	public double eval(var[] v, double[] d)
 	{
 		double m=1;
         for (func f1:f)
@@ -74,21 +74,31 @@ public class mul extends func
         }
 		return sign * m;
 	}
-
+    
+    @Override
+    public cons evalc(var[] v, double[] d)
+    {
+        func m=cons.ONE;
+        for (func f1:f)
+        {
+            m = m.mul(f1.evalc(v, d));
+        }
+        return sc(m);
+	}
 
     @Override
-    public func derivative(Variable v)
+    public func derivative(var v)
     {
         //a*b ==> a'*b+a*b'
 		func p=f.get(0);
 		func q=f.size() == 2 ?f.get(1): new mul(f.subList(1, f.size()));
 		func o=p.derivative(v).mul(q).add(p.mul(q.derivative(v)));
         //System.out.println("o="+p);
-        return s(o);
+        return signto(o);
     }
 
     @Override
-    public func integrate(Variable v)
+    public func integrate(var v)
     {
         int i=find(types.constant);
         if (i != -1)
@@ -101,7 +111,7 @@ public class mul extends func
         }
         if (f.size() == 1)//add invisible 1
         {
-            f.add(Constant.ONE);
+            f.add(cons.ONE);
         }
         order();
         return byParts();
@@ -183,13 +193,16 @@ public class mul extends func
 
     public func simplify()
     {
+        if(!Config.mul.simplify){
+            return this;
+        }
 		List<func> l=getFree();
         //System.out.println("before f="+f);
 		for (func p:f)
         {
             if (p.is(0))
             {
-                return Constant.ZERO;
+                return cons.ZERO;
             }
 			if (p.isMul())
             {
@@ -206,24 +219,25 @@ public class mul extends func
             }
 		}
 		set(l);
+        //System.out.println("f2="+f);
         if (f.size() == 0)
         {
-            return s(Constant.ONE);
+            return signto(cons.ONE);
         }if (f.size() == 1)
         {
-            return s(f.get(0));
+            return signto(f.get(0));
         }
         //System.out.println("before mu="+f);
         mu();
         //System.out.println("after mu="+f+" size="+f.size());
         if (f.size() == 1)
         {
-            return s(f.get(0));
+            return signto(f.get(0));
 		}
         cons0();
         if (f.size() == 1)
         {
-            return s(f.get(0));
+            return signto(f.get(0));
 		}
 		//l.clear();
 		/*for(int i=0;i<f.size();i++){
@@ -257,7 +271,7 @@ public class mul extends func
 		sort();
         if(f.size()==2&&f.get(0).isCons0()&&f.get(1).isAdd()){
             //n*(a+b+c)=an+bn+cn
-            func c=f.get(0).s(f.get(1).sign);
+            func c=f.get(0).sign(f.get(1).sign);
             add a=new add();
             for(func t:f.get(1).f){
                 a.f.add(c.mul(t));
@@ -295,6 +309,7 @@ public class mul extends func
 	public void cons0()
     {
 		double c=1;
+        cons bc=cons.ONE;
 		List<func> l=getFree();
 		//System.out.println("f="+f);
         //System.out.println("cl="+pr(f));
@@ -304,6 +319,9 @@ public class mul extends func
 			//System.out.println("p="+p);
 			if (p.isConstant() && !p.cons().functional)
             {
+                if(Config.useBigDecimal){
+                    bc=(cons) bc.mul(p.evalc());
+                }
 				c *= p.eval();
 				//System.out.println("c="+c);
 			}
@@ -313,14 +331,25 @@ public class mul extends func
 			}
 		}
         //System.out.println("l="+l.eval(0).getClass());
-		if (c < 0)
+		
+        
+        if(Config.useBigDecimal){
+            if(bc.sign==-1){
+                sign=-sign;
+                bc=(cons) bc.negate();
+            }
+            if(!bc.is(1)){
+                l.add(bc);
+            }
+        }
+        if (c < 0)
         {
-		    sign = -sign;
+            sign = -sign;
             c = -c;
         }
         if (c != 1)
         {
-		    l.add(new Constant(c));
+		    l.add(new cons(c));
         }
         //System.out.println(f);
 		set(l);
@@ -334,24 +363,20 @@ public class mul extends func
 		boolean b[]=new boolean[f.size()];
 		for (int i=0;i < f.size();i++)
         {
-			func v=f.get(i).copy();
+			func v=f.get(i);
             //System.out.println("v="+v+" org="+f.get(i));
 			if (!b[i])
             {
-                func base;
-				func pow;
+                func base=v;
+				func power=cons.ONE;
 				int vsig=v.sign;
 
                 if (v.isPow())
                 {
-                    pow = v.b;
+                    power = v.b;
                     base = v.a;
                 }
-                else
-                {
-                    pow = Constant.ONE;
-                    base = v;
-                }
+                
                 //System.out.println("v="+base+" p="+pow);
 				for (int j=i + 1;j < f.size();j++)
                 {
@@ -363,16 +388,19 @@ public class mul extends func
                         {
                             //System.out.println("h="+f.get(j)+" s="+h.sign);
                             b[j] = true;
-                            pow = pow.add(h.f);
+                            power = power.add(h.f);
                             vsig *= h.sign;
 
                         }
                     }
 
 				}
-				//System.out.println("v2="+base+" p2="+pow+" all="+base.pow(pow));
+                /*if(base.is(2)){
+                    base.pow(power);
+                }*/
+				//System.out.println("v2="+base+" p2="+power+" all="+base.pow(power));
 
-				l.add(base.pow(pow).sign(vsig));
+				l.add(base.pow(power).sign(vsig));
                 //System.out.println("l="+l);
 			}
 		}
@@ -385,7 +413,7 @@ public class mul extends func
         //System.out.println("f1="+f1.getClass()+" f2="+f2.getClass()+" "+f1.eq(f2));
 		if (f1.eqws(f2))
         {
-            holder h=new holder(Constant.ONE, 0, null, true);
+            holder h=new holder(cons.ONE, 0, null, true);
             h.sign = f2.sign;
             return h;
         }
@@ -411,7 +439,7 @@ public class mul extends func
 	}
 
     @Override
-    public func substitude0(Variable v, func p)
+    public func substitude0(var v, func p)
     {
         List<func> l=getFree();
         for (func u:f)

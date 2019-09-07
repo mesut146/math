@@ -1,9 +1,9 @@
 package math.cons;
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
 
-public class e extends Constant
+public class e extends cons
 {
 	public e(){
 		functional=true;
@@ -17,7 +17,7 @@ public class e extends Constant
 	}
 
 	@Override
-	public double eval(Variable[] v, double[] d) {
+	public double eval(var[] v, double[] d) {
 		return val;
 	}
 

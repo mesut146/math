@@ -1,7 +1,7 @@
 package math;
 
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
 
 public class Integral extends func
@@ -19,7 +19,7 @@ public class Integral extends func
     }
     
 	boolean lim=false;
-	Variable v;
+	var v;
 	//Constant a1,a2;
     func a1,a2;
     //boolean bound=false;
@@ -27,23 +27,23 @@ public class Integral extends func
 	//f(fx),dx,lower,upper
 	public Integral(func f,func v,func i1,func i2){
 		a=f;
-		this.v=(Variable) v;
+		this.v=(var) v;
 		a1=i1;
 		a2=i2;
 		lim=true;
 	}
 	public Integral(func f,func v){
 		a=f;
-		this.v=(Variable) v;
+		this.v=(var) v;
 	}
 	
 	public Integral(func f){
 		a=f;
-		this.v=Variable.x;
+		this.v=var.x;
 	}
 
 	@Override
-	public func get(Variable[] v, Constant[] c)
+	public func get(var[] v, cons[] c)
 	{
         Integral i=(Integral)copy();
         if(lim){
@@ -55,14 +55,23 @@ public class Integral extends func
 	}
 
 	@Override
-	public double eval(Variable[] v, double[] d)
+	public double eval(var[] v, double[] d)
 	{
 		// TODO: Implement this method
 		return 0;
 	}
 
+    @Override
+    public cons evalc(var[] v, double[] d)
+    {
+        // TODO: Implement this method
+        return null;
+    }
+
+    
+
 	@Override
-	public func derivative(Variable v)
+	public func derivative(var v)
 	{
 		if(this.v.eq(v)){
 			return a.copy();
@@ -74,7 +83,7 @@ public class Integral extends func
 	}
 
 	@Override
-	public func integrate(Variable v)
+	public func integrate(var v)
 	{
 		if(!this.v.eq(v)){
 			if(lim){
@@ -110,9 +119,11 @@ public class Integral extends func
 	}
 
 	@Override
-	public func substitude0(Variable v,func p)
+	public func substitude0(var v,func p)
 	{
-		return new Integral(a.substitude0(v,p),this.v);
+        a=a.substitude(v,p);
+        return this;
+		//return new Integral(a.substitude0(v,p),this.v);
 	}
 
     @Override

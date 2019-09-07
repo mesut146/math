@@ -1,8 +1,8 @@
 package math.cons;
-import math.core.Constant;
+import math.core.cons;
 import math.core.func;
 
-public class pi extends Constant
+public class pi extends cons
 {
 
     @Override

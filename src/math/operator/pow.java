@@ -1,8 +1,8 @@
-package math.op;
+package math.operator;
 
 import math.*;
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
 import math.funcs.ln;
 
@@ -21,10 +21,11 @@ public class pow extends func
         a=f1;
         b=f2;
 		type=types.pow;
+        //System.out.println("pow created="+this);
     }
 
     @Override
-    public func get(Variable[] v, Constant[] c)
+    public func get(var[] v, cons[] c)
     {
 		func p=a.get(v,c);
 		func q=b.get(v,c);
@@ -33,19 +34,26 @@ public class pow extends func
 			//System.out.println("s="+sign);
             return new Constant(Math.pow(p.eval(),q.eval())).s(sign);
         }*/
-        return new pow(p,q).s(sign);
+        return signto(new pow(p,q));
         //return p.pow(q).s(sign);
     }
 
 	@Override
-	public double eval(Variable[] v, double[] d)
+	public double eval(var[] v, double[] d)
 	{
 		//System.out.println("eval");
 		return sign*Math.pow(a.eval(v,d),b.eval(v,d));
 	}
+    
+    @Override
+    public cons evalc(var[] v, double[] d)
+    {
+        //System.out.println("evalc="+s(a.evalc(v,d).pow(b.evalc(v,d))));
+        return sc(a.evalc(v,d).pow(b.evalc(v,d)));
+    }
 	
     @Override
-    public func derivative(Variable v)
+    public func derivative(var v)
     {
         /*if(a.isVariable()&&a.eq2(v)&&b.isConstant()){
             //x^n
@@ -55,10 +63,10 @@ public class pow extends func
             return mul(new ln(a).simplify());
         }*/
         if(a.isConstant()){//a^f=a^f*ln(a)*f'
-            return s(a.pow(b).mul(new ln(a).simplify()).mul(b.derivative(v)));
+            return signto(a.pow(b).mul(new ln(a).simplify()).mul(b.derivative(v)));
         }
         if(b.isConstant()){//f^b=b*f^(b-1)*f'
-            return s(b.mul(a.pow(b.sub(1))).mul(a.derivative(v)));
+            return signto(b.mul(a.pow(b.sub(1))).mul(a.derivative(v)));
         }
         //f^g
         //System.out.println("a="+a.isConsfunc()+" b="+b+" ,"+new ln(a).simplify());
@@ -66,11 +74,11 @@ public class pow extends func
         func f=func.parse(String.format("%s*ln(%s)*%s^%s+%s*%s^(%s-1)*%s",b.derivative(),a,a,b,b,a,b,a.derivative()));
         System.out.println("f="+new ln(a).simplify());
         */
-        return s(b.derivative(v).mul(new ln(a).simplify()).mul(this).add(b.mul(a.derivative(v)).mul(a.pow(b.sub(1)))));
+        return signto(b.derivative(v).mul(new ln(a).simplify()).mul(this).add(b.mul(a.derivative(v)).mul(a.pow(b.sub(1)))));
     }
 
     @Override
-    public func integrate(Variable v)
+    public func integrate(var v)
     {
         if(a.eq(v)&&b.isConstant()){
             //x^n
@@ -83,7 +91,7 @@ public class pow extends func
         //f^g
         if(b.isConstant()){
             func du=a.derivative(v);//dx
-            Variable u=new Variable("u");
+            var u=new var("u");
             //System.out.println("du="+du);
             return u.pow(b).div(du).integrate(u).substitude0(u,a);
         }
@@ -110,24 +118,32 @@ public class pow extends func
     }
 
     public func simplify(){
-		//System.out.println("simp of pow");
+		//System.out.println("simp of pow="+this);
         if(!Config.pow.simplify){
             return this;
         }
         if(a.is(0)){
-            return Constant.ZERO;
+            return cons.ZERO;
         }
 		//System.out.println("a="+a+" b="+b);
         if(b.is(0)||a.is(1)){
 			//System.out.println("y");
-            return Constant.ONE.s(sign);
+            return signto(cons.ONE);
         }
         //e^ln(x)
-        if(a.eq(Constant.E)&&b.type==types.ln){
+        if(a.eq(cons.E)&&b.type==types.ln){
             return b.a;
         }
-        if(a.isConstant()&&b.isConstant()&&!a.isConsfunc()&&!b.isConsfunc()){
-            return new Constant(this.eval());
+        //System.out.println("hh="+this);
+        if(Config.pow.simpCons&&a.isCons0()&&b.isCons0()){
+            if(Config.useBigDecimal){
+                //System.out.println("this="+this.evalc());
+                //System.out.println("a="+a.evalc()+" b="+b.evalc());
+                //System.out.println("x="+a.evalc().pow(b.evalc()));
+                return this.evalc();
+            }
+            //System.out.println("asd");
+            return new cons(this.eval());
         }
         if (b.is(1)){
             return a.sign(sign);
@@ -157,7 +173,7 @@ public class pow extends func
 	}
 
     @Override
-    public func substitude0(Variable v, func p)
+    public func substitude0(var v, func p)
     {
         return a.substitude(v,p).pow(b.substitude(v,p));
     }

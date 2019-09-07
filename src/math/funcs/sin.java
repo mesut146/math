@@ -1,7 +1,7 @@
 package math.funcs;
 import math.*;
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
 
 public class sin extends func
@@ -27,16 +27,22 @@ public class sin extends func
     }
 
     @Override
-    public func get(Variable[] v, Constant[] c)
+    public func get(var[] v, cons[] c)
     {
         return new sin(a.get(v, c),sign).simplify();
     }
 
 	@Override
-	public double eval(Variable[] v, double[] d)
+	public double eval(var[] v, double[] d)
 	{
 		return sign*Math.sin(a.eval(v,d));
 	}
+    
+    @Override
+    public cons evalc(var[] v, double[] d)
+    {
+        return new cons(sign*Math.sin(a.evalc(v,d).decimal().doubleValue()));
+    }
 
     @Override
     public boolean eq2(func f)
@@ -51,13 +57,13 @@ public class sin extends func
     }
 
     @Override
-    public func derivative(Variable v)
+    public func derivative(var v)
     {
         return new cos(a,sign).mul(a.derivative(v));
     }
     
     @Override
-    public func integrate(Variable v)
+    public func integrate(var v)
     {
         if(a.eq(v)){
             return new cos(a,sign).negate();
@@ -66,7 +72,7 @@ public class sin extends func
     }
 
     @Override
-    public func substitude0(Variable v, func p)
+    public func substitude0(var v, func p)
     {
         return new sin(a.substitude0(v,p),sign);
     }
@@ -81,9 +87,9 @@ public class sin extends func
 	{
 	    //System.out.println("sin simp "+a);
 		if(a.isConstant()){
-			Constant p=Constant.PI;
+			cons p=cons.PI;
 			if(a.is(0)){
-				return Constant.ZERO;
+				return cons.ZERO;
 			}
 		}
 		return this;//pi/2=1  pi/3=sqrt(3)/2
@@ -98,17 +104,17 @@ public class sin extends func
     }*/
 
 	a equ(func a){
-        Constant k;
+        cons k;
         a r=new a();
         if (a.isMul()&&a.f.size()==2){
-            if(a.f.get(0).eq(Constant.PI)&&a.f.get(1).isConstant()){
+            if(a.f.get(0).eq(cons.PI)&&a.f.get(1).isConstant()){
 
-            }else if(a.f.get(1).eq(Constant.PI)&&f.get(0).isConstant()){
+            }else if(a.f.get(1).eq(cons.PI)&&f.get(0).isConstant()){
 
             }
 
         }else {
-            k=Constant.ONE;
+            k=cons.ONE;
         }
         return r;
     }

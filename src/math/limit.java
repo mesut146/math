@@ -1,7 +1,7 @@
 package math;
 
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
 
 public class limit extends func
@@ -14,31 +14,31 @@ public class limit extends func
         return null;
     }
     
-    Variable v;
-    Constant c;
+    var v;
+    cons c;
 
-    public limit(func f, Variable v, Constant c){
+    public limit(func f, var v, cons c){
         this.a=f;
         this.v=v;
         this.c=c;
     }
-    public limit(func f, Variable v, double c){
+    public limit(func f, var v, double c){
         this.a=f;
         this.v=v;
-        this.c=new Constant(c);
+        this.c=new cons(c);
     }
-    public limit(func f, String v, Constant c){
+    public limit(func f, String v, cons c){
         this.a=f;
-        this.v=new Variable(v);
+        this.v=new var(v);
         this.c=c;
     }
     public limit(func f, String v, double c){
         this.a=f;
-        this.v=new Variable(v);
-        this.c=new Constant(c);
+        this.v=new var(v);
+        this.c=new cons(c);
     }
     @Override
-    public func get(Variable[] v, Constant[] c) {
+    public func get(var[] v, cons[] c) {
         if(!this.c.isInf()){
             return a.get(this.v, this.c.val).get(v, c);
         }
@@ -46,22 +46,30 @@ public class limit extends func
     }
 
 	@Override
-	public double eval(Variable[] v, double[] d)
+	public double eval(var[] v, double[] d)
 	{
 		// TODO: Implement this method
 		return 0;
 	}
 
+    @Override
+    public cons evalc(var[] v, double[] d)
+    {
+        // TODO: Implement this method
+        return null;
+    }
+
+
 	
 	
 
     @Override
-    public func derivative(Variable v) {
+    public func derivative(var v) {
         return null;
     }
 
     @Override
-    public func integrate(Variable v) {
+    public func integrate(var v) {
         return null;
     }
 
@@ -76,7 +84,7 @@ public class limit extends func
     }
 
     @Override
-    public func substitude0(Variable v, func p) {
+    public func substitude0(var v, func p) {
         return null;
     }
 

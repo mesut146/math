@@ -1,5 +1,5 @@
 package math;
-import math.op.*;
+import math.operator.*;
 
 public class Linear
 {

@@ -1,13 +1,13 @@
 package math.cons;
 
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
 import math.funcs.*;
 
-public class i extends Constant
+public class i extends cons
 {
-	public static Constant i;
+	public static cons i;
 	static{
 		i=new i();
 	}
@@ -43,18 +43,18 @@ public class i extends Constant
 	{
 		if(f.isConstant()){
 			if(f.is(0)){
-				return Constant.ONE;
+				return cons.ONE;
 			}else if(f.is(1)){
-				return i;
+				return this;
 			}
 		}
-		return cis(f.mul(Constant.PI.div(2)));
+		return cis(f.mul(cons.PI.div(2)));
 	}
 
 	@Override
 	public func pow(double d)
 	{
-		return pow(new Constant(d));
+		return pow(new cons(d));
 	}
 
 	static func cis(func f){
@@ -62,10 +62,17 @@ public class i extends Constant
 	}
 
 	@Override
-	public func get(Variable[] v, Constant[] c)
+	public func get(var[] v, cons[] c)
 	{
-		return null;
+		return this;
 	}
+
+    @Override
+    public double eval(var[] v, double[] d)
+    {
+        System.out.println("tried to eval i");
+        return 0;
+    }
 	
 	
 }

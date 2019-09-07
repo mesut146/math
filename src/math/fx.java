@@ -1,32 +1,26 @@
 package math;
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
 
 import java.util.*;
 
 public class fx extends func
 {
-
-    @Override
-    public String toLatex()
-    {
-        // TODO: Implement this method
-        return null;
-    }
-
 	String name;
-	static List<fx> ins=new ArrayList<>();
+	static List<fx> ins=new ArrayList<>();//previously created funcs
+    static Map<func,func> table=new HashMap<>();
     
 	public fx(){
 		this("f");
 	}
 	public fx(String s){
-		this(s, Variable.x);
+		this(s, var.x);
 	}
 	public fx(String s,func f){
 		name=s;
 		a=f;
+        type=types.fx;
 		ins.add(this);
 	}
     public static boolean has(String n){
@@ -46,28 +40,42 @@ public class fx extends func
         return null;
     }
 	@Override
-	public func get(Variable[] v, Constant[] c)
+	public func get(var[] v, cons[] c)
 	{
-		// TODO: Implement this method
-		return null;
+		a=a.get(v,c);
+        if(a.isConstant()){
+            return new cons(this);
+        }
+		return this;
 	}
 
 	@Override
-	public double eval(Variable[] v, double[] d)
+	public double eval(var[] v, double[] d)
 	{
-		// TODO: Implement this method
+		//illegal
 		return 0;
 	}
 
+    @Override
+    public cons evalc(var[] v, double[] d)
+    {
+        //illegal
+        return cons.ZERO;
+    }
+    
 	@Override
-	public func derivative(Variable v)
+	public func derivative(var v)
 	{
 		// TODO: Implement this method
-		return null;
+        if(a.eq(v)){
+            String nm=name+"'";
+            return new fx(nm,a);
+        }
+		return mul(a.derivative(v));
 	}
 
 	@Override
-	public func integrate(Variable v)
+	public func integrate(var v)
 	{
 		// TODO: Implement this method
 		return null;
@@ -86,8 +94,16 @@ public class fx extends func
 	public String toString2()
 	{
 		// TODO: Implement this method
-		return name+"("+a+")="+b;
+        return String.format("%s(%s)",name,a);
+		//return name+"("+a+")="+b;
 	}
+    
+    @Override
+    public String toLatex()
+    {
+        // TODO: Implement this method
+        return toString();
+    }
 
 	@Override
 	public boolean eq2(func f)
@@ -96,7 +112,7 @@ public class fx extends func
 	}
 
 	@Override
-	public func substitude0(Variable v, func p)
+	public func substitude0(var v, func p)
 	{
         a=a.substitude(v,p);
 		return this;

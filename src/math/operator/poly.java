@@ -1,5 +1,5 @@
-package math.op;
-import math.core.Variable;
+package math.operator;
+import math.core.var;
 import math.core.func;
 
 import java.util.*;
@@ -41,7 +41,7 @@ public class poly extends add
         }else if(p.isMul()){
             func pw=p.f.get(1);
 
-            if(pw.eq(Variable.x)){
+            if(pw.eq(var.x)){
                 return 1;
             }
             return (int)pw.b.eval();

@@ -2,8 +2,8 @@ package math.parser;
 import java.lang.reflect.*;
 import math.*;
 import math.cons.*;
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
 
 public class Token{
@@ -17,21 +17,21 @@ public class Token{
         type=t;
         switch (type){
             case Constant:{
-                f=new Constant(Double.parseDouble(name));
+                f=new cons(Double.parseDouble(name));
                 break;
             }case Variable:{
                 if(name.equals("e")){
-                    f=Constant.E;
+                    f=cons.E;
                     type=TokenType.Constant;
                 }else if(name.equals("pi")){
-                    f=Constant.PI;
+                    f=cons.PI;
                     type=TokenType.Constant;
                 }else if(name.equals("i")){
                     f=i.i;
                     type=TokenType.Constant;
                 }
 				else {
-                    f=new Variable(name);
+                    f=new var(name);
                 }
             }
         }
@@ -40,33 +40,26 @@ public class Token{
         this(s,t);
         this.param=func.parse(param);
         //this.param=param;
+        Class<func> c;
+        Constructor<func> co;
         try
         {
             //System.out.println("this="+this+" param="+param+" val="+val);
-			Class<func> c;
-			Constructor<func> co;
-			if(s.length()==1){
-                if(fx.has(s)){
-                    f=fx.get(s);
-                }else{
-                    c=(Class<func>)Class.forName("math.fx");
-                    co=c.getDeclaredConstructor(String.class,func.class);
-                    f=co.newInstance(s,this.param);
-                }
-		
-			}
-            else{
-				c=(Class<func>)Class.forName("math.funcs."+name);
-				co=c.getDeclaredConstructor(func.class);
-				f=co.newInstance(this.param);
-                //f=f.simplify();
-			}
-			
+            c=(Class<func>)Class.forName("math.funcs."+name);
+            co=c.getDeclaredConstructor(func.class);
+            f=co.newInstance(this.param);
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            //e.printStackTrace();
             //System.out.println(this);
+            if(fx.has(s)){
+                f=fx.get(s);
+            }else{
+                f=new fx(s,this.param);
+                
+            }
+        
         }
     }
 

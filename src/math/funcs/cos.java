@@ -1,7 +1,7 @@
 package math.funcs;
 import math.*;
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
 
 public class cos extends func
@@ -34,7 +34,7 @@ public class cos extends func
 			    /*if (Config.trigonomety.stay){
 
                 }*/
-				return new Constant(eval());
+				return new cons(eval());
 			}
             
         }
@@ -47,17 +47,21 @@ public class cos extends func
     }
 
     @Override
-    public func get(Variable[] v, Constant[] c)
+    public func get(var[] v, cons[] c)
     {
         return new cos(a.get(v, c),sign).simplify();
     }
 
 	@Override
-	public double eval(Variable[] v, double[] d)
+	public double eval(var[] v, double[] d)
 	{
 		return sign*Math.cos(a.eval(v,d));
 	}
-
+    @Override
+    public cons evalc(var[] v, double[] d)
+    {
+        return new cons(sign*Math.cos(a.evalc(v,d).decimal().doubleValue()));
+    }
 
     @Override
     public boolean eq2(func f)
@@ -72,13 +76,13 @@ public class cos extends func
     }
 
     @Override
-    public func derivative(Variable v)
+    public func derivative(var v)
     {
         return new sin(a,-sign).mul(a.derivative(v));
     }
 
     @Override
-    public func integrate(Variable v)
+    public func integrate(var v)
     {
         if(a.eq(v)){
             return new sin(a);
@@ -87,7 +91,7 @@ public class cos extends func
     }
 
     @Override
-    public func substitude0(Variable v, func p)
+    public func substitude0(var v, func p)
     {
         return new cos(a.substitude0(v,p)).simplify();
     }

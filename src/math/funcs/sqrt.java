@@ -1,6 +1,6 @@
 package math.funcs;
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
 
 public class sqrt extends func
@@ -15,31 +15,37 @@ public class sqrt extends func
 
 	public sqrt(func f){
 		a=f;
-		b=f.pow(Constant.ONE.div(2));
+		b=f.pow(cons.ONE.div(2));
 	}
 	public sqrt(double d){
-	    this(new Constant(d));
+	    this(new cons(d));
     }
 	@Override
-	public func get(Variable[] v, Constant[] c)
+	public func get(var[] v, cons[] c)
 	{
-		return b.get(v,c).s(sign);
+		return signto(b.get(v,c));
 	}
 
 	@Override
-	public double eval(Variable[] v, double[] d)
+	public double eval(var[] v, double[] d)
 	{
 		return sign*b.eval(v,d);
 	}
 
+    @Override
+    public cons evalc(var[] v, double[] d)
+    {
+        return sc(b.evalc(v,d));
+    }
+
 	@Override
-	public func derivative(Variable v)
+	public func derivative(var v)
 	{
 		return b.derivative(v);
 	}
 
 	@Override
-	public func integrate(Variable v)
+	public func integrate(var v)
 	{
 		return b.integrate(v);
 	}
@@ -63,14 +69,17 @@ public class sqrt extends func
 	}
 
 	@Override
-	public func substitude0(Variable v, func p)
+	public func substitude0(var v, func p)
 	{
 		return new sqrt(a.substitude0(v,p));
 	}
 
     @Override
     public func simplify() {
-
+        if(a.isPow()&&a.b.isConstant()&&a.b.eval()%2==0){
+            a=a.b.div(2);
+            return this;
+        }
         return this;
     }
 }

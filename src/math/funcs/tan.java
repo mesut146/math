@@ -1,6 +1,6 @@
 package math.funcs;
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
 
 public class tan extends func
@@ -10,9 +10,8 @@ public class tan extends func
     public String toLatex()
     {
         // TODO: Implement this method
-        return null;
+        return toString();
     }
-
 
     public tan(func f){
         this.a=f;
@@ -21,26 +20,28 @@ public class tan extends func
     }
 
     @Override
-    public func get(Variable[] v, Constant[] c) {
-        return alter.get(0).get(v, c).s(sign);
+    public func get(var[] v, cons[] c) {
+        return signto(alter.get(0).get(v, c));
     }
 
 	@Override
-	public double eval(Variable[] v, double[] d)
+	public double eval(var[] v, double[] d)
 	{
 		return sign*Math.tan(a.eval(v,d));
 	}
-
-	
-	
-
     @Override
-    public func derivative(Variable v) {
+    public cons evalc(var[] v, double[] d)
+    {
+        return new cons(sign*Math.tan(a.evalc(v,d).decimal().doubleValue()));
+    }
+	
+    @Override
+    public func derivative(var v) {
         return alter.get(0).derivative(v);
     }
 
     @Override
-    public func integrate(Variable v) {
+    public func integrate(var v) {
         return null;
     }
 
@@ -51,11 +52,11 @@ public class tan extends func
 
     @Override
     public boolean eq2(func f) {
-        return false;
+        return a.eq(f.a);
     }
 
     @Override
-    public func substitude0(Variable v, func p) {
+    public func substitude0(var v, func p) {
         return null;
     }
 

@@ -1,15 +1,15 @@
 package math.core;
 
-import math.core.Constant;
+import math.core.cons;
 
-public class Consfunc extends Constant
+public class Consfunc extends cons
 {
 
     @Override
     public String toLatex()
     {
         // TODO: Implement this method
-        return null;
+        return toString();
     }
 
     String str;

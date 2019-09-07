@@ -1,4 +1,4 @@
-package math.op;
+package math.operator;
 
 import math.core.func;
 

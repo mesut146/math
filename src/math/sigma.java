@@ -1,7 +1,7 @@
 package math;
 
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
 
 public class sigma extends func
@@ -16,20 +16,20 @@ public class sigma extends func
 
     int start,end;
     func fx;
-    Variable var;
+    var var;
 
-    public sigma(func f, Variable v, int s, int e){
+    public sigma(func f, var v, int s, int e){
         this.fx =f;
         this.var =v;
         this.start=s;
         this.end=e;
     }
     public sigma(func f, String v, int s, int e){
-        this(f,new Variable(v),s,e);
+        this(f,new var(v),s,e);
     }
 
     public func sum(){
-        func d= Constant.ZERO;
+        func d= cons.ZERO;
 		System.out.println("f="+ fx);
 		//System.out.println(fx.eval(var,1));
         for (int i=start;i<=end;i++){
@@ -50,7 +50,7 @@ public class sigma extends func
         return d;
     }
     @Override
-    public func get(Variable[] v, Constant[] c) {
+    public func get(var[] v, cons[] c) {
         /*if(this.var.eq2(v)){
 
         }*/
@@ -58,22 +58,30 @@ public class sigma extends func
     }
 
 	@Override
-	public double eval(Variable[] v, double[] d)
+	public double eval(var[] v, double[] d)
 	{
 		// TODO: Implement this method
 		return 0;
 	}
 
+    @Override
+    public cons evalc(var[] v, double[] d)
+    {
+        // TODO: Implement this method
+        return null;
+    }
+
+
 	
 	
 
     @Override
-    public func derivative(Variable v) {
+    public func derivative(var v) {
         return new sigma(fx.derivative(),this.var,start,end);
     }
 
     @Override
-    public func integrate(Variable v) {
+    public func integrate(var v) {
         return new sigma(fx.integrate(v),v,start,end);
     }
 
@@ -88,7 +96,7 @@ public class sigma extends func
     }
 
     @Override
-    public func substitude0(Variable v, func p) {
+    public func substitude0(var v, func p) {
         return null;
     }
 

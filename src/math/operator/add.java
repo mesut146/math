@@ -1,7 +1,7 @@
-package math.op;
+package math.operator;
 
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
 
 import java.util.*;
@@ -49,18 +49,18 @@ public class add extends func
     }
 
     @Override
-    public func get(Variable[] v, Constant[] c)
+    public func get(var[] v, cons[] c)
     {
-        func t=Constant.ZERO;
+        func t=cons.ZERO;
 		for (func f1:f)
         {
 			t = t.add(f1.get(v, c));
 		}
-		return t.s(sign);
+		return signto(t);
     }
 
 	@Override
-	public double eval(Variable[] v, double[] d)
+	public double eval(var[] v, double[] d)
 	{
 		double s=0;
 		for (func f1:f)
@@ -69,11 +69,22 @@ public class add extends func
 		}
 		return sign * s;
 	}
+    
+    @Override
+    public cons evalc(var[] v, double[] d)
+    {
+        cons sum=cons.ZERO;
+        for (func f1:f)
+        {
+            sum= (cons) sum.add(f1.evalc(v, d));
+        }
+        return sc(sum);
+	}
 
     @Override
-    public func derivative(Variable v)
+    public func derivative(var v)
     {
-        func r=Constant.ZERO;
+        func r=cons.ZERO;
 		for (func f1:f)
         {
 			r = r.add(f1.derivative(v));
@@ -82,9 +93,9 @@ public class add extends func
     }
 
     @Override
-    public func integrate(Variable v)
+    public func integrate(var v)
     {
-        func r=Constant.ZERO;
+        func r=cons.ZERO;
         for (func f1:f)
         {
             r = r.add(f1.integrate(v));
@@ -129,6 +140,7 @@ public class add extends func
     public func simplify()
     {
 		List<func> l=getFree();
+        //System.out.println(f);
 		for (func p:f)
         {
 			if (p.isAdd())
@@ -136,7 +148,7 @@ public class add extends func
                 //2+-(x+5)
                 for(func inner:p.f){
                     
-                    l.add(inner.s(p.sign));
+                    l.add(inner.sign(p.sign));
                 }
 				//l.addAll(p.f);
 			}
@@ -149,7 +161,7 @@ public class add extends func
 		cons0();
         if (f.size() == 0)
         {
-            return Constant.ZERO;
+            return cons.ZERO;
 		}
         else if (f.size() == 1)
         {
@@ -161,7 +173,9 @@ public class add extends func
         {
 			return f.get(0);
 		}
+        //System.out.println("f2="+f);
         sort();
+        //System.out.println("f3="+this);
         return this;
     }
     
@@ -192,7 +206,7 @@ public class add extends func
 				l.add(p);
 			}
 		}
-		if (c != 0) l.add(new Constant(c));
+		if (c != 0) l.add(new cons(c));
 		set(l);
 	}
 
@@ -240,11 +254,11 @@ public class add extends func
 
 		if (!f1.isMul())
         {
-			f1 = new mul(f1, Constant.ONE);
+			f1 = new mul(f1, cons.ONE);
 		}
 		if (!f2.isMul())
         {
-			f2 = new mul(f2, Constant.ONE);
+			f2 = new mul(f2, cons.ONE);
 		}
 		holder o1=rm(f1);
 		holder o2=rm(f2);
@@ -276,7 +290,7 @@ public class add extends func
 	}
 
     @Override
-    public func substitude0(Variable v, func p)
+    public func substitude0(var v, func p)
     {
         List<func> l=getFree();
         for (func u:f)

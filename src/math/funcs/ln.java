@@ -1,10 +1,11 @@
 package math.funcs;
 
 import math.*;
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
-import math.op.*;
+import math.operator.*;
+import java.math.*;
 
 public class ln extends func {
 
@@ -23,13 +24,19 @@ public class ln extends func {
     }
 
     @Override
-    public func get(Variable[] v, Constant[] c) {
-        return new ln(a.get(v, c)).s(sign);
+    public func get(var[] v, cons[] c) {
+        return signto(new ln(a.get(v, c)));
     }
 
     @Override
-    public double eval(Variable[] v, double[] d) {
+    public double eval(var[] v, double[] d) {
         return sign * Math.log(a.eval(v, d));
+    }
+
+    @Override
+    public cons evalc(var[] v, double[] d)
+    {
+        return new cons(sign*Math.log(a.evalc(v,d).decimal().doubleValue()));
     }
 
     @Override
@@ -38,17 +45,17 @@ public class ln extends func {
     }
 
     @Override
-    public func derivative(Variable v) {
-        return a.derivative(v).div(a).s(sign);
+    public func derivative(var v) {
+        return signto(a.derivative(v).div(a));
     }
 
     @Override
-    public func integrate(Variable v) {
+    public func integrate(var v) {
         if (a.eq(v)) {
             return mul(v).sub(v);
         }
 
-        return new mul(this, Constant.ONE).byParts();
+        return new mul(this, cons.ONE).byParts();
         //return new Anti(this);
     }
 
@@ -63,7 +70,7 @@ public class ln extends func {
     }
 
     @Override
-    public func substitude0(Variable v, func p) {
+    public func substitude0(var v, func p) {
         return new ln(a.substitude0(v, p));
     }
 
@@ -78,8 +85,8 @@ public class ln extends func {
         if (a.eq(parse("e^f(x)"))) {
             return a.b;
         }
-        if (a.eq(Constant.E)) {
-            return Constant.ONE;
+        if (a.eq(cons.E)) {
+            return cons.ONE;
         }
 		/*for(func r:rules.keySet()){
 			if(r.getClass()==getClass()){

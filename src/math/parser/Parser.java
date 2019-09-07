@@ -125,7 +125,7 @@ public class Parser {
         return (c>='a'&&c<='z')||((c>='A'&&c<='Z'));
     }
     boolean isAlpha(char c){
-        return isLetter(c)||isDigit(c);
+        return isLetter(c)||isDigit(c)||c=='\'';
     }
     boolean isOperator(char c){
         return "+-*/^".indexOf(c)!=-1;

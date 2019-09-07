@@ -1,7 +1,7 @@
 package math;
 
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
 
 public class Anti extends func
@@ -19,13 +19,21 @@ public class Anti extends func
     }
 
     @Override
-    public func get(Variable[] v, Constant[] c)
+    public func get(var[] v, cons[] c)
     {
         return this;
     }
 
+    @Override
+    public cons evalc(var[] v, double[] d)
+    {
+        // TODO: Implement this method
+        return null;
+    }
+
+
 	@Override
-	public double eval(Variable[] v, double[] d)
+	public double eval(var[] v, double[] d)
 	{
 		// TODO: Implement this method
 		return 0;
@@ -38,13 +46,13 @@ public class Anti extends func
     }
 
     @Override
-    public func derivative(Variable v)
+    public func derivative(var v)
     {
         return a;
     }
 
     @Override
-    public func integrate(Variable v)
+    public func integrate(var v)
     {
         return new Anti(this);
     }
@@ -66,7 +74,7 @@ public class Anti extends func
     }
 
     @Override
-    public func substitude0(Variable v, func p)
+    public func substitude0(var v, func p)
     {
         return new Anti(a.substitude0(v,p));
     }

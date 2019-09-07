@@ -1,7 +1,8 @@
 package math.funcs;
-import math.core.Constant;
-import math.core.Variable;
+import math.core.cons;
+import math.core.var;
 import math.core.func;
+import java.math.*;
 
 public class fac extends func
 {
@@ -17,19 +18,33 @@ public class fac extends func
 		a=f;
 	}
 	public fac(int i){
-		a=new Constant(i);
+		a=new cons(i);
 	}
 	@Override
-	public func get(Variable[] v, Constant[] c)
+	public func get(var[] v, cons[] c)
 	{
-		return new fac(a.get(v, c)).s(sign);
+        a=a.get(v,c);
+        return this;
+		//return new fac(a.get(v, c)).sign(sign);
 	}
 
 	@Override
-	public double eval(Variable[] v, double[] d)
+	public double eval(var[] v, double[] d)
 	{
 		return sign*f((int)a.eval(v,d));
 	}
+
+    @Override
+    public cons evalc(var[] v, double[] d)
+    {
+        BigDecimal bd=new BigDecimal(1);
+        for(int i=2;i<=a.evalc(v,d).decimal().intValue();i++){
+            bd=bd.multiply(new BigDecimal(i));
+        }
+        return sc(new cons(bd));
+    }
+
+    
 	
 	int f(int x){
 		int y=1;
@@ -40,17 +55,17 @@ public class fac extends func
 	}
 
 	@Override
-	public func derivative(Variable v)
+	public func derivative(var v)
 	{
 		// TODO: Implement this method
 		if (a.isConstant()){
-			return Constant.ZERO;
+			return cons.ZERO;
 		}
 		return null;
 	}
 
 	@Override
-	public func integrate(Variable v)
+	public func integrate(var v)
 	{
 		// TODO: Implement this method
 		return null;
@@ -75,9 +90,9 @@ public class fac extends func
 	}
 
 	@Override
-	public func substitude0(Variable v, func p)
+	public func substitude0(var v, func p)
 	{
-		return new fac(a.substitude0(v,p)).s(sign);
+		return new fac(a.substitude0(v,p)).sign(sign);
 	}
 
 	@Override
