@@ -27,7 +27,8 @@ public class Main
 		//integral();
         //prime();
         //col();
-        System.out.println(func.parse("e^(i*pi)"));
+        simp();
+        //set();
         //der();
         //f=func.parse("x^n*e^x");
         //new Iexp().integ(f);
@@ -56,6 +57,20 @@ public class Main
 
 		//a();
 	}
+    
+    static void set(){
+        Set s=new Set(1,2,3);
+        Set s2=new Set(5,8);
+        
+        System.out.println(s.mul(s2));
+    }
+    
+    static void simp(){
+        func f=func.parse("cos(x)^5");
+        
+        System.out.println(f.derivative(21));
+    }
+    
     static void prime(){
         func f;
         f=func.parse("1/(x-2)+1/(x-3)+1/(x-5)+1/(x-7)");

@@ -358,6 +358,7 @@ public class mul extends func
 	//x^a*x^b=x^(a+b)
 	public void mu()
     {
+        // 2^x*(-2)^x
 		List<func> l=getFree();
 		//System.out.println("mu="+this);
 		boolean b[]=new boolean[f.size()];
@@ -369,7 +370,7 @@ public class mul extends func
             {
                 func base=v;
 				func power=cons.ONE;
-				int vsig=v.sign;
+				//int vsig=v.sign;
 
                 if (v.isPow())
                 {
@@ -377,7 +378,7 @@ public class mul extends func
                     base = v.a;
                 }
                 
-                //System.out.println("v="+base+" p="+pow);
+                //System.out.println("v="+base+" p="+power);
 				for (int j=i + 1;j < f.size();j++)
                 {
                     if (!b[j])
@@ -389,18 +390,17 @@ public class mul extends func
                             //System.out.println("h="+f.get(j)+" s="+h.sign);
                             b[j] = true;
                             power = power.add(h.f);
-                            vsig *= h.sign;
+                            //vsig *= h.sign;
 
                         }
                     }
 
 				}
-                /*if(base.is(2)){
-                    base.pow(power);
-                }*/
+                
 				//System.out.println("v2="+base+" p2="+power+" all="+base.pow(power));
 
-				l.add(base.pow(power).sign(vsig));
+				//l.add(base.pow(power).sign(vsig));
+                l.add(base.pow(power));
                 //System.out.println("l="+l);
 			}
 		}

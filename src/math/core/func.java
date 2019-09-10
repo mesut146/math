@@ -1,16 +1,11 @@
 package math.core;
 
-import math.Config;
-import math.operator.*;
 import java.util.*;
-
-import math.parser.Parser;
-import math.funcs.*;
-import math.sigma;
-import math.*;
 import java.util.regex.*;
-import javax.xml.validation.*;
-import java.security.spec.*;
+import math.*;
+import math.funcs.*;
+import math.operator.*;
+import math.parser.*;
 
 public abstract class func
 {

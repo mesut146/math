@@ -69,14 +69,14 @@ public class add extends func
 		}
 		return sign * s;
 	}
-    
+
     @Override
     public cons evalc(var[] v, double[] d)
     {
         cons sum=cons.ZERO;
         for (func f1:f)
         {
-            sum= (cons) sum.add(f1.evalc(v, d));
+            sum = (cons) sum.add(f1.evalc(v, d));
         }
         return sc(sum);
 	}
@@ -109,7 +109,7 @@ public class add extends func
         return toString();
     }
 
-    
+
     @Override
     public String toString()
     {
@@ -118,17 +118,20 @@ public class add extends func
 		for (int i=0;i < f.size();i++)
         {
             func p=f.get(i);
-            if(i==0&&sign*p.sign==-1){
+            if (i == 0 && sign * p.sign == -1)
+            {
                 sb.append("-");
             }
 			sb.append(p.toString2());
 			if (i < f.size() - 1)
             {
-                int s=f.get(i + 1).sign*sign;
+                int s=f.get(i + 1).sign * sign;
 				if (s == 1)
                 {
 					sb.append("+");
-				}else if(s==-1){
+				}
+                else if (s == -1)
+                {
                     sb.append("-");
                 }
 
@@ -146,8 +149,9 @@ public class add extends func
 			if (p.isAdd())
             {
                 //2+-(x+5)
-                for(func inner:p.f){
-                    
+                for (func inner:p.f)
+                {
+
                     l.add(inner.sign(p.sign));
                 }
 				//l.addAll(p.f);
@@ -169,19 +173,22 @@ public class add extends func
 		}
 		//System.out.println("f="+f);
 		mu();
+        //System.out.println("fmu="+f);
 		if (f.size() == 1)
         {
-			return f.get(0);
+			return signto(f.get(0));
 		}
         //System.out.println("f2="+f);
         sort();
         //System.out.println("f3="+this);
         return this;
     }
-    
-    void sort(){
+
+    void sort()
+    {
         int i=find(types.constant);
-        if(i!=-1&&i!=f.size()-1){
+        if (i != -1 && i != f.size() - 1)
+        {
             List<func> l=new LinkedList<func>(f);
             func c=l.remove(i);
             l.add(c);
@@ -218,9 +225,10 @@ public class add extends func
 
 		for (int i=0;i < f.size();i++)
         {
-			func v=f.get(i);
+
 			if (!b[i])
             {
+                func v=f.get(i);
 				double k=1;
 				for (int j=i + 1;j < f.size();j++)
                 {
@@ -250,7 +258,9 @@ public class add extends func
 
 	public static holder e3(func f1, func f2)
     {
-		if (f1.eq(f2)) return new holder(f1, 1, null, true);
+		if (f1.eq(f2)){
+            return new holder(f1, 1, null, true);
+        }
 
 		if (!f1.isMul())
         {
@@ -260,8 +270,8 @@ public class add extends func
         {
 			f2 = new mul(f2, cons.ONE);
 		}
-		holder o1=rm(f1);
-		holder o2=rm(f2);
+		holder o1=rm((mul)f1);
+		holder o2=rm((mul)f2);
 
 		if (isEq(o1.l, o2.l))
         {
@@ -271,22 +281,23 @@ public class add extends func
 		return new holder(null, 0, null, false);
 	}
 
-	public static holder rm(func t)
+	public static holder rm(mul t)
     {
-		double d1=1;
-		List<func> l1=getFree();
+		double d=1;
+		List<func> l=getFree();
 		for (func p:t.f)
         {
-			if (p.isCons0())
+			if (p.isConstant())
             {
-				d1 *= p.eval();
+				d *= p.eval();
 			}
             else
             {
-				l1.add(p);
+				l.add(p);
 			}
 		}
-		return new holder(null, d1, l1, false);
+        d*=t.sign;
+		return new holder(null, d, l, false);
 	}
 
     @Override
