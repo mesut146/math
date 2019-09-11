@@ -27,8 +27,8 @@ public class Main
 		//integral();
         //prime();
         //col();
-        simp();
-        //set();
+        //simp();
+        set();
         //der();
         //f=func.parse("x^n*e^x");
         //new Iexp().integ(f);
@@ -61,12 +61,12 @@ public class Main
     static void set(){
         Set s=new Set(1,2,3);
         Set s2=new Set(5,8);
-        
-        System.out.println(s.mul(s2));
+        Set s3=new Set(func.parse("2*n+1"));
+        System.out.println(s3.print(0,22));
     }
     
     static void simp(){
-        func f=func.parse("cos(x)^5");
+        func f=func.parse("cos(x)");
         
         System.out.println(f.derivative(21));
     }

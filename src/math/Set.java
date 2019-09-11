@@ -11,37 +11,54 @@ public class Set extends func
     List<cons> list=new ArrayList<>();
     //List<func> list=new ArrayList<>();
     public static boolean print=true;
-    
-    public Set(func cn){
-        a=cn;
-        name="c";
+
+    public Set(func cn)
+    {
+        a = cn;
+        name = "c";
     }
-    public Set(int...l){
-        name="c";
-        start=1;
-        end=l.length;
-        for(int i:l){
+    public Set(func cn, var v)
+    {
+        a = cn;
+        this.v = v;
+        name = "c";
+    }
+    public Set(int...l)
+    {
+        name = "c";
+        start = 1;
+        end = l.length;
+        for (int i:l)
+        {
             list.add(new cons(i));
         }
     }
-    
+
     //is the Set has general term cn
-    public boolean isGeneral(){
-        return a!=null;
+    public boolean isGeneral()
+    {
+        return a != null;
     }
-    
-    public Set sort(){
-        Collections.sort(list, new Comparator<cons>(){
 
-                @Override
-                public int compare(cons p1, cons p2)
-                {
-                    
-                    return Double.compare(p1.val,p2.val);
-                }
+    public Set sort()
+    {
+        Comparator cmp;
+        cmp = new Comparator<cons>(){
+            @Override
+            public int compare(cons p1, cons p2)
+            {
+                return Double.compare(p1.val, p2.val);
+            }
+        };
+        cmp = new Comparator<func>(){
+            @Override
+            public int compare(func p1, func p2)
+            {
+                return 0;
+            }
 
-            
-        });
+        };
+        Collections.sort(list, cmp);
         return this;
     }
 
@@ -49,8 +66,9 @@ public class Set extends func
     public func add(double d)
     {
         Set s=new Set();
-        
-        for(cons c:list){
+
+        for (cons c:list)
+        {
             s.list.add((cons)c.add(d));
         }
         return s;
@@ -59,11 +77,14 @@ public class Set extends func
     @Override
     public func add(func f)
     {
-        if(f instanceof Set){
+        if (f instanceof Set)
+        {
             Set sf=(Set)f;
             Set ns=new Set();
-            for(cons c1:list){
-                for(cons c2:sf.list){
+            for (cons c1:list)
+            {
+                for (cons c2:sf.list)
+                {
                     ns.list.add((cons)c1.add(c2));
                 }
             }
@@ -72,27 +93,31 @@ public class Set extends func
         throw new RuntimeException("cannot add set");
         //return null;
     }
-    
-    
+
+
     @Override
     public func sub(double d)
     {
         Set s=new Set();
 
-        for(cons c:list){
+        for (cons c:list)
+        {
             s.list.add((cons)c.sub(d));
         }
         return s;
     }
-    
+
     @Override
     public func sub(func f)
     {
-        if(f instanceof Set){
+        if (f instanceof Set)
+        {
             Set sf=(Set)f;
             Set ns=new Set();
-            for(cons c1:list){
-                for(cons c2:sf.list){
+            for (cons c1:list)
+            {
+                for (cons c2:sf.list)
+                {
                     ns.list.add((cons)c1.sub(c2));
                 }
             }
@@ -101,14 +126,15 @@ public class Set extends func
         throw new RuntimeException("cannot sub set");
         //return null;
     }
-    
-    
+
+
     @Override
     public func mul(double d)
     {
         Set s=new Set();
 
-        for(cons c:list){
+        for (cons c:list)
+        {
             s.list.add((cons)c.mul(d));
         }
         return s;
@@ -116,11 +142,14 @@ public class Set extends func
     @Override
     public func mul(func f)
     {
-        if(f instanceof Set){
+        if (f instanceof Set)
+        {
             Set sf=(Set)f;
             Set ns=new Set();
-            for(cons c1:list){
-                for(cons c2:sf.list){
+            for (cons c1:list)
+            {
+                for (cons c2:sf.list)
+                {
                     ns.list.add((cons)c1.mul(c2));
                 }
             }
@@ -129,8 +158,8 @@ public class Set extends func
         throw new RuntimeException("cannot mul set");
         //return null;
     }
-    
-    
+
+
     @Override
     public func get(var[] v, cons[] c)
     {
@@ -156,14 +185,26 @@ public class Set extends func
     public String toLatex()
     {
         // TODO: Implement this method
-        return null;
+        return toString();
     }
 
     @Override
     public func derivative(var v)
     {
-        // TODO: Implement this method
-        return null;
+        if (isGeneral())
+        {
+            Set s=(Set) copy();
+            s.a = a.derivative(v);
+        }
+        else
+        {
+            Set s=(Set) copy();
+            for (func term:list)
+            {
+
+            }
+        }
+        return cons.ZERO;
     }
 
     @Override
@@ -177,8 +218,8 @@ public class Set extends func
     public func copy0()
     {
         Set s=new Set();
-        s.name=name;
-        s.a=a;
+        s.name = name;
+        s.a = a;
         s.list.addAll(list);
         return s;
     }
@@ -186,24 +227,61 @@ public class Set extends func
     @Override
     public String toString2()
     {
-        if(isGeneral()){
-            return String.format("%s{n}",name);
+        if (isGeneral())
+        {
+            return String.format("%s{n}", name);
         }
-        if(print){
+        if (print)
+        {
             return print();
         }
-        return String.format("%s{n}",name);
+        return String.format("%s{n}", name);
     }
-    public String print(){
+    public String print()
+    {
         StringBuilder s=new StringBuilder();
         s.append(name);
         s.append("{");
-        for(int i=0;i<list.size();i++){
+        for (int i=0;i < list.size();i++)
+        {
             s.append(list.get(i));
-            if(i<list.size()-1){
+            if (i < list.size() - 1)
+            {
                 s.append(",");
             }
         }
+        s.append("}");
+        return s.toString();
+    }
+
+    public String print(int s1, int s2)
+    {
+        StringBuilder s=new StringBuilder();
+        s.append(name);
+        s.append("{");
+        if (isGeneral())
+        {
+            for (int i=s1;i <= s2;i++)
+            {
+                s.append(a.get(v, i));
+                if (i < s2)
+                {
+                    s.append(",");
+                }
+            }
+        }
+        else
+        {
+            for (int i=0;i < list.size();i++)
+            {
+                s.append(list.get(i));
+                if (i < list.size() - 1)
+                {
+                    s.append(",");
+                }
+            }
+        }
+
         s.append("}");
         return s.toString();
     }
@@ -221,6 +299,6 @@ public class Set extends func
         // TODO: Implement this method
         return null;
     }
-    
-    
+
+
 }
