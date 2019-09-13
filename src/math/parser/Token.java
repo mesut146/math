@@ -29,6 +29,9 @@ public class Token{
                 }else if(name.equals("i")){
                     f=i.i;
                     type=TokenType.Constant;
+                }else if(name.equals("inf")){
+                    f=cons.INF;
+                    type=TokenType.Constant;
                 }
 				else {
                     f=new var(name);
