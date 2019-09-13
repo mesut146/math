@@ -21,6 +21,12 @@ public class e extends cons
 		return val;
 	}
 
+    @Override
+    public cons evalc()
+    {
+        return this;
+    }
+
 	@Override
     public func copy0()
     {
@@ -32,6 +38,11 @@ public class e extends cons
 	{
 		return "e";
 	}
-	
+
+    @Override
+    public boolean eq2(func f)
+    {
+        return f.getClass()==getClass();
+    }
 	
 }

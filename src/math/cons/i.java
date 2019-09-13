@@ -32,10 +32,7 @@ public class i extends cons
 	@Override
 	public boolean eq2(func f)
 	{
-		if(getClass()==f.getClass()){
-			return true;
-		}
-		return false;
+		return getClass()==f.getClass();
 	}
 
 	@Override
@@ -70,8 +67,14 @@ public class i extends cons
     @Override
     public double eval(var[] v, double[] d)
     {
-        System.out.println("tried to eval i");
+        System.out.println("error: tried to eval i");
         return 0;
+    }
+
+    @Override
+    public cons evalc(var[] v, double[] d)
+    {
+        return this;
     }
 	
 	
