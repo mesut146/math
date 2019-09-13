@@ -28,13 +28,14 @@ public class Main
         //prime();
         //col();
         //simp();
-        set();
+        //set();
         //der();
         //f=func.parse("x^n*e^x");
         //new Iexp().integ(f);
         //diff();
         //floor();
         //dif1();
+        System.out.println(func.parse("e^x").get("x=5").getClass());
         /*Config.useBigDecimal=true;
         f=func.parse("x^5-1");
         System.out.println(f);*/
@@ -81,7 +82,9 @@ public class Main
     
     static void dif1(){
         //Config.mul.simplify=false;
-        func f=func.parse("f'(x)+f(x)*p(x)-q(x)");
+        func f;
+        //f=func.parse("f'(x)+f(x)*p(x)-q(x)");
+        f=func.parse("1/(3*x^2-3)");
         System.out.println(f);
         System.out.println(f.derivative(2));
     }
