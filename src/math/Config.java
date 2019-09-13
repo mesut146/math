@@ -3,6 +3,8 @@ package math;
 public abstract class Config {
     public static boolean useBigDecimal=false;
     public static int precision=25;
+    public static int maxIteration=100000;//sigma
+    public static int digits=10;//sigma
     
     public abstract static class add{
         public static boolean simplify=true;
