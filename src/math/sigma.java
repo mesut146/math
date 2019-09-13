@@ -7,61 +7,71 @@ import math.core.func;
 public class sigma extends func
 {
 
-    @Override
-    public String toLatex()
-    {
-        // TODO: Implement this method
-        return null;
-    }
-
-    int start,end;
+    func start,end;//var or cons
     func fx;
     var var;
 
-    public sigma(func f, var v, int s, int e){
-        this.fx =f;
-        this.var =v;
-        this.start=s;
-        this.end=e;
+    public sigma(Object f,Object v,Object s,Object e){
+        fx=type(f);
+        var=(var)type(v);
+        start=type(s);
+        end=type(e);
     }
-    public sigma(func f, String v, int s, int e){
-        this(f,new var(v),s,e);
-    }
-
-    public func sum(){
-        func d= cons.ZERO;
-		System.out.println("f="+ fx);
-		//System.out.println(fx.eval(var,1));
-        for (int i=start;i<=end;i++){
-            //System.out.println(fx.eval(i));
-            d=d.add(fx.get(var,i));
-			//System.out.println(d);
+    
+    func type(Object o){
+        if(o instanceof var){
+            return (var)o;
+        }else if(o instanceof String){
+            return parse((String)o);
+        }else if(o instanceof Integer){
+            return new cons((Integer)o);
+        }else if(o instanceof func){
+            return (func)o;
         }
-        return d;
-    }
-
-    public double eval(){
-        double d=0;
-        //System.out.println("fx="+fx);
-        for (int i=start;i<=end;i++){
-            d+= fx.eval(var,i);
-			//System.out.println(d);
+        else{
+            throw new RuntimeException("unexpected type: "+o.getClass()+" ,"+o);
         }
-        return d;
     }
+    
     @Override
-    public func get(var[] v, cons[] c) {
+    public func get(var[] v, cons[] c)
+    {
         /*if(this.var.eq2(v)){
 
-        }*/
+         }*/
         return this;
     }
 
 	@Override
 	public double eval(var[] v, double[] d)
 	{
-		// TODO: Implement this method
-		return 0;
+		func s=start.get(v,d);
+        func e=end.get(v,d);
+        //sigma(x^n/n^2,n=1 to k) get(x=2,k=33)
+        
+        if(!isInt(s)){
+            throw new RuntimeException("starting index must be an integer");
+        }
+        if(!isInt(e)){
+            throw new RuntimeException("ending index must be an integer");
+        }
+        int si=(int) s.eval();
+        int ei=(int) e.eval();
+        
+        func fx2=fx.get(v,d);
+        double precision=Math.pow(10,-Config.digits);
+        double sum=fx2.eval(var,si),last=0;
+        
+        for(int i=si+1;i<=ei;i++){
+            sum+=fx2.eval(var,i);
+            //1.6449340668
+            //1.6449240668982262698057485033126918556475213298115603424898872337015429349374987
+            if(Math.abs(sum-last)<=precision||i==Config.maxIteration){
+                return sum;
+            }        
+            last=sum;
+        }
+		return sum;
 	}
 
     @Override
@@ -71,37 +81,57 @@ public class sigma extends func
         return null;
     }
 
-
-	
-	
-
     @Override
-    public func derivative(var v) {
-        return new sigma(fx.derivative(),this.var,start,end);
+    public func derivative(var v)
+    {
+        return new sigma(fx.derivative(), this.var, start, end);
     }
 
     @Override
-    public func integrate(var v) {
-        return new sigma(fx.integrate(v),v,start,end);
+    public func integrate(var v)
+    {
+        return new sigma(fx.integrate(v), v, start, end);
     }
-
-    @Override
-    public String toString2() {
-        return "sum("+ var +"="+start+" to "+end+",fx="+ fx +")";
-    }
-
-    @Override
-    public boolean eq2(func f) {
+    
+    boolean isInt(func f){
+        if(f.isConstant()){
+            if(f.eq(cons.INF)){
+                return true;
+            }
+            double d=f.eval();
+            return d==(long)d;
+        }
         return false;
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public String toString2()
+    {
+        return String.format("sum(%s,%s=%s to %s)",fx,var,start,end);
+    }
+    
+    @Override
+    public String toLatex()
+    {
+        // TODO: Implement this method
+        return toString();
+    }
+
+    @Override
+    public boolean eq2(func f)
+    {
+        return false;
+    }
+
+    @Override
+    public func substitude0(var v, func p)
+    {
         return null;
     }
 
     @Override
-    public func copy0() {
-        return new sigma(fx, var,start,end);
+    public func copy0()
+    {
+        return new sigma(fx, var, start, end);
     }
 }

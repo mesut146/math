@@ -14,7 +14,7 @@ public class cons extends func
     public static final cons E=new e();
     public static final cons PI=new pi();
     public boolean functional=false;
-    protected func ff;
+    public func ff;
     public double val=0;
     public BigDecimal big;
     boolean nan=false,inf=false;
@@ -108,7 +108,7 @@ public class cons extends func
 	@Override
 	public double eval(var[] v, double[] d)
 	{
-		if(functional){//shouldn't happen since ff has eval already
+		if(functional){
             //System.out.println("ff="+ff);
             return sign*ff.eval(v,d);
         }
@@ -118,7 +118,7 @@ public class cons extends func
     @Override
     public cons evalc(var[] v, double[] d)
     {
-        if(functional){//shouldn't happen since ff has eval already
+        if(functional){
             //System.out.println("ff="+ff);
             return (cons)signto(ff.evalc(v,d));
         }
@@ -229,9 +229,13 @@ public class cons extends func
 	@Override
 	public boolean eq2(func f)
 	{
-		/*if(getClass().getSuperclass()!=func.class){
-			
-		}*/
+        cons c=(cons)f;
+		if(inf&&c.inf){
+            return true;
+        }
+        if(nan&&c.nan){
+            return true;
+        }
         //System.out.println("this="+this+" that="+f);
         if(functional||((cons)f).functional){
             //return ff.eq(((Constant)f).ff);
