@@ -50,14 +50,14 @@ public class Set extends func
                 return Double.compare(p1.val, p2.val);
             }
         };
-        cmp = new Comparator<func>(){
+        /*cmp = new Comparator<func>(){
             @Override
             public int compare(func p1, func p2)
             {
                 return 0;
             }
 
-        };
+        };*/
         Collections.sort(list, cmp);
         return this;
     }
