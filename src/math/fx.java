@@ -5,7 +5,7 @@ import math.core.func;
 
 import java.util.*;
 
-public class fx extends func
+public class fx extends var
 {
 	String name;
 	static List<fx> ins=new ArrayList<>();//previously created funcs
@@ -18,6 +18,7 @@ public class fx extends func
 		this(s, var.x);
 	}
 	public fx(String s,func f){
+        super("var_fx_"+s);
 		name=s;
 		a=f;
         type=types.fx;
