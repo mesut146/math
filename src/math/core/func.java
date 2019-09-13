@@ -103,7 +103,6 @@ public abstract class func
     	return get(new var[]{v}, new cons[]{c});
 	}
 
-
 	public double eval()
 	{
 		//System.out.println("fget this="+this);
