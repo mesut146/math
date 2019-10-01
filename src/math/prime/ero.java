@@ -1,5 +1,7 @@
-package math;
+package math.prime;
 import java.util.*;
+import math.col.*;
+import math.core.*;
 
 public class ero
 {

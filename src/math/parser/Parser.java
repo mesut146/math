@@ -4,6 +4,7 @@ package math.parser;
 import math.core.func;
 
 import java.util.*;
+import math.funcs.*;
 
 public class Parser {
     String s;
@@ -46,7 +47,10 @@ public class Parser {
             if (t.type==TokenType.Operator) {
                 if(t.name.equals("#")){
                     stack.push(new Token(stack.pop().f.negate()));
-                }else{
+                }else if(t.name.equals("!")){
+                    stack.push(new Token(new fac(stack.pop().f)));
+                }
+                else{
                     func v=OPS.get(t.name).eval(stack.pop().f,stack.pop().f);
                     stack.push(new Token(v));
                 }
@@ -112,6 +116,8 @@ public class Parser {
             }else if(c==')'){
                 //System.out.println("i="+i);
                 return new Token(")",TokenType.Close);
+            }else if(c=='!'){
+                return new Token("!",TokenType.Operator);
             }
             System.out.println("unexpected char '"+c+"'");
         }

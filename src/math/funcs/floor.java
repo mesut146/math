@@ -3,6 +3,7 @@ import math.core.cons;
 import math.core.var;
 import math.core.func;
 import java.math.*;
+import java.util.*;
 
 public class floor extends func
 {
@@ -11,18 +12,23 @@ public class floor extends func
     public String toLatex()
     {
         // TODO: Implement this method
-        return null;
+        return toString();
     }
 
+    @Override
+    public void vars0(Set<var> vars)
+    {
+        a.vars0(vars);
+    }
 	
 	public floor(func f){
 		a=f;
 	}
 
 	@Override
-	public func get(var[] v, cons[] c)
+	public func get0(var[] v, cons[] c)
 	{
-		return new floor(a.get(v,c)).simplify();
+		return new floor(a.get0(v,c)).simplify();
 	}
 
 	@Override

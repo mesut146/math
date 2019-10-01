@@ -6,6 +6,7 @@ import math.core.var;
 import math.core.func;
 import math.operator.*;
 import java.math.*;
+import java.util.*;
 
 public class ln extends func {
 
@@ -22,10 +23,16 @@ public class ln extends func {
     public String toLatex() {
         return "ln(" + a.toLatex() + ")";
     }
+    
+    @Override
+    public void vars0(Set<var> vars)
+    {
+        a.vars0(vars);
+    }
 
     @Override
-    public func get(var[] v, cons[] c) {
-        return signto(new ln(a.get(v, c)));
+    public func get0(var[] v, cons[] c) {
+        return signto(new ln(a.get0(v, c)));
     }
 
     @Override

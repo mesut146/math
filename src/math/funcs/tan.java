@@ -2,6 +2,7 @@ package math.funcs;
 import math.core.cons;
 import math.core.var;
 import math.core.func;
+import java.util.*;
 
 public class tan extends func
 {
@@ -12,6 +13,12 @@ public class tan extends func
         // TODO: Implement this method
         return toString();
     }
+    
+    @Override
+    public void vars0(Set<var> vars)
+    {
+        a.vars0(vars);
+    }
 
     public tan(func f){
         this.a=f;
@@ -20,8 +27,8 @@ public class tan extends func
     }
 
     @Override
-    public func get(var[] v, cons[] c) {
-        return signto(alter.get(0).get(v, c));
+    public func get0(var[] v, cons[] c) {
+        return signto(alter.get(0).get0(v, c));
     }
 
 	@Override

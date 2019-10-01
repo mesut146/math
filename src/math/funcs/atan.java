@@ -3,6 +3,7 @@ import math.Config;
 import math.core.cons;
 import math.core.var;
 import math.core.func;
+import java.util.*;
 
 public class atan extends func
 {
@@ -13,14 +14,19 @@ public class atan extends func
         return "atan("+a.toLatex()+")";
     }
 
+    @Override
+    public void vars0(Set<var> vars)
+    {
+        a.vars0(vars);
+    }
 
 	public atan(func f){
 		a=f;
 	}
 	@Override
-	public func get(var[] v, cons[] c)
+	public func get0(var[] v, cons[] c)
 	{
-		a.get(v,c);
+		a.get0(v,c);
 		return this;
 	}
 

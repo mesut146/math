@@ -4,53 +4,31 @@ import math.core.cons;
 import math.core.var;
 import math.core.func;
 import math.core.*;
+import java.util.*;
 
-public class gamma extends func
+public class gamma extends Integral
 {
-	var v;// (v-1)!
-    var dt;
+	func v;// (v-1)!
+    
+    public gamma(Object o){
+        super(null,null,cons.ZERO,cons.INF);//e^-t*t^v
+        v=Util.cast(o);
 
-	public gamma(var v)
-    {
-        if (v.eq2(var.t))
-        {
-            dt=new var("u");
-            a = func.parse(String.format("u^(%s-1)*e^(-u)", v));
+        List<var> l=vars();
+        if(l.contains(var.t)){
+            dv=new var("t1");
+        }else{
+            dv=var.t;
         }
-        else
-        {
-            dt=var.t;
-            a = func.parse(String.format("t^(%s-1)*e^(-t)", v));
-        }
-		this.v = v;
-	}
-
+        a=new exp(dv.negate()).mul(dv.pow(v));
+    }
+    
     @Override
-    public func get(var[] v, cons[] c)
+    public func get0(var[] v, cons[] c)
     {
-	    a = a.get(v, c);
+	    a = a.get0(v, c);
         return this;
     }
-
-    @Override
-    public double eval(var[] v, double[] d)
-    {
-        return a.get(v, d).integrate(0, 1000, dt);
-    }
-
-    @Override
-    public cons evalc(var[] v, double[] d)
-    {
-        return new cons(eval(v, d));
-    }
-
-    //d for v
-	@Override
-	public double eval(double d)
-    {
-        //System.out.println(a.get(v,d));
-		return a.get(v, d).integrate(0, 1000, dt);
-	}
 
     @Override
     public String toLatex()
@@ -68,15 +46,8 @@ public class gamma extends func
     @Override
     public func integrate(var v)
     {
-
         a = a.integrate(v);
         return this;
-    }
-
-    @Override
-    public func copy0()
-    {
-        return null;
     }
 
     @Override
@@ -88,7 +59,8 @@ public class gamma extends func
     @Override
     public boolean eq2(func f)
     {
-        return false;
+        gamma g=(gamma) f;
+        return v.eq(g.v);
     }
 
     @Override

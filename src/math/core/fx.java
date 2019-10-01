@@ -1,4 +1,4 @@
-package math;
+package math.core;
 import math.core.cons;
 import math.core.var;
 import math.core.func;
@@ -8,8 +8,8 @@ import java.util.*;
 public class fx extends var
 {
 	String name;
-	static List<fx> ins=new ArrayList<>();//previously created funcs
-    static Map<func,func> table=new HashMap<>();
+	public static List<fx> ins=new ArrayList<>();//previously created funcs
+    public static Map<func,func> table=new HashMap<>();
     
 	public fx(){
 		this("f");
@@ -41,9 +41,9 @@ public class fx extends var
         return null;
     }
 	@Override
-	public func get(var[] v, cons[] c)
+	public func get0(var[] v, cons[] c)
 	{
-		a=a.get(v,c);
+		a=a.get0(v,c);
         if(a.isConstant()){
             return new cons(this);
         }

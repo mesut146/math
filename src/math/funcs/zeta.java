@@ -1,42 +1,48 @@
 package math.funcs;
+
 import math.core.*;
+import math.*;
 import java.util.*;
 
-public class li extends func
+public class zeta extends func
 {
-
-    var dx;
-    public li(func f){
-        dx=new var("t");
-        a=func.parse(String.format("1/ln(%s)",dx));
-        b=f;//upper limit
+    func s;
+    sigma sum;
+    Integral i;
+    gamma g;
+    
+    public zeta(Object o){
+        s= Util.cast(o);
+        sum=new sigma(cons.ONE.div(var.n.pow(s)),var.n,1,cons.INF);
+        i=new Integral(var.u.pow(s.sub(1)).div(cons.E.pow(var.u).sub(1)),var.u,cons.ZERO,cons.INF);
+        g=new gamma(s);
     }
     
     @Override
     public void vars0(Set<var> vars)
     {
-        a.vars0(vars);
+        s.vars0(vars);
     }
     
     @Override
     public func get0(var[] v, cons[] c)
     {
-        // TODO: Implement this method
-        return null;
+        s=s.get(v,c);
+        return this;
     }
 
     @Override
     public double eval(var[] v, double[] d)
     {
         // TODO: Implement this method
-        return a.integrate(2,b.eval(v,d),dx);
+        return sign*sum.eval(v,d);
     }
 
     @Override
     public cons evalc(var[] v, double[] d)
     {
         // TODO: Implement this method
-        return new cons(eval(v,d));
+        return null;
     }
 
     @Override
@@ -49,8 +55,7 @@ public class li extends func
     @Override
     public func derivative(var v)
     {
-        // TODO: Implement this method
-        a=a.derivative(v);
+        sum=(sigma) sum.derivative(v);
         return this;
     }
 
@@ -65,21 +70,21 @@ public class li extends func
     public func copy0()
     {
         // TODO: Implement this method
-        return null;
+        return new zeta(s);
     }
 
     @Override
     public String toString2()
     {
         // TODO: Implement this method
-        return "li("+a+")";
+        return "zeta("+s+")";
     }
 
     @Override
     public boolean eq2(func f)
     {
         // TODO: Implement this method
-        return a.eq(f.a);
+        return false;
     }
 
     @Override
@@ -88,5 +93,6 @@ public class li extends func
         // TODO: Implement this method
         return null;
     }
+    
     
 }

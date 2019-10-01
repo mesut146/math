@@ -1,14 +1,14 @@
-package math;
+package math.core;
 
-import math.core.cons;
-import math.core.var;
-import math.core.func;
+import math.*;
+import math.core.*;
+import java.util.*;
 
 public class sigma extends func
 {
 
     func start,end;//var or cons
-    func fx;
+    public func fx;
     var var;
 
     public sigma(Object f,Object v,Object s,Object e){
@@ -16,6 +16,14 @@ public class sigma extends func
         var=(var)type(v);
         start=type(s);
         end=type(e);
+    }
+    
+    @Override
+    public void vars0(Set<var> vars)
+    {
+        fx.vars0(vars);
+        start.vars0(vars);
+        end.vars0(vars);
     }
     
     func type(Object o){
@@ -34,7 +42,7 @@ public class sigma extends func
     }
     
     @Override
-    public func get(var[] v, cons[] c)
+    public func get0(var[] v, cons[] c)
     {
         /*if(this.var.eq2(v)){
 
@@ -64,11 +72,14 @@ public class sigma extends func
         
         for(int i=si+1;i<=ei;i++){
             sum+=fx2.eval(var,i);
+            //System.out.println(fx2.eval(var,i));
+            //System.out.println(sum);
             //1.6449340668
-            //1.6449240668982262698057485033126918556475213298115603424898872337015429349374987
-            if(Math.abs(sum-last)<=precision||i==Config.maxIteration){
+            //1.6449240668982262
+            /*if(Math.abs(sum-last)<=precision||i==Config.maxIteration){
+                System.out.println("asd");
                 return sum;
-            }        
+            }*/
             last=sum;
         }
 		return sum;
@@ -126,7 +137,8 @@ public class sigma extends func
     @Override
     public func substitude0(var v, func p)
     {
-        return null;
+        fx=fx.substitude(v,p);
+        return this;
     }
 
     @Override

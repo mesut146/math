@@ -1,9 +1,9 @@
-package math;
+package math.col;
 import math.operator.*;
 
 public class Linear
 {
-    int a,b;
+    public int a,b;
     
      public Linear(int m,int n){
         a=m;
@@ -14,7 +14,7 @@ public class Linear
 		 return a%2==0&&b%2==1;
 	 }
 	 
-	 String col(){
+	 public String col(){
 		 if(a%2==0){
 			 Linear l;
 			 if(b%2==0){

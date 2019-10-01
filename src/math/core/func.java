@@ -80,7 +80,13 @@ public abstract class func
         {
             c[i] = new cons(d[i]);
         }
-        return get(v, c);
+        return get0(v, c);
+    }
+
+    public final func get(var[] v, cons[] c)
+    {
+        func f=signto(get0(v, c));
+        return f.simplify();  
     }
     public final func get(String s)
     {
@@ -95,12 +101,12 @@ public abstract class func
             ca[i] = new cons(Double.parseDouble(lr[1]));
             i++;
         }
-        return get(va, ca);
+        return get0(va, ca);
     }
 
 	public func get(var v, cons c)
     {
-    	return get(new var[]{v}, new cons[]{c});
+    	return get0(new var[]{v}, new cons[]{c});
 	}
 
 	public double eval()
@@ -146,7 +152,7 @@ public abstract class func
         }
         return r;
     }
-    public abstract func get(var[] v, cons[] c);
+    public abstract func get0(var[] v, cons[] c);
 	public abstract double eval(var[] v, double[] d);
     public abstract cons evalc(var[] v, double[] d);
 
@@ -178,7 +184,7 @@ public abstract class func
 
 	public double integrate(double a, double b, var v)
     {
-        return new Integral(this,v,new cons(a),new cons(b)).eval();
+        return new Integral(this, v, new cons(a), new cons(b)).eval();
 	}
 	public double integrate(double a, double b)
     {
@@ -224,21 +230,30 @@ public abstract class func
         sign *= s;
         return this;
 	}
-    public func signget(func f){
-        sign*=f.sign;
+    public func signget(func f)
+    {
+        sign *= f.sign;
         return this;
     }
     public func signto(func o)
     {
         o.sign *= sign;
         return o;
-    }
-    
-    
+    } 
     public cons sc(func o)
     {
         return (cons)o.sign(sign);
     }
+
+    func makeCons(func x,func f)
+    {
+        if (isConstant() && f.isConstant())
+        {
+            return new cons(x);
+        }
+        return x;
+    }
+
     public func add(func f)
     {
         func x=new add(this, f);
@@ -246,7 +261,7 @@ public abstract class func
         {
             x = x.simplify();
         }
-        return x;
+        return makeCons(x,f);
     }
 	public func add(double d)
     { 
@@ -259,12 +274,12 @@ public abstract class func
         {
             x = x.simplify();
         }
-        return x;
+        return makeCons(x,f);
 	}
 	public func sub(double d)
     {
         return sub(new cons(d));
-		
+
 	}
     public func mul(func f)
     {
@@ -285,7 +300,7 @@ public abstract class func
         {
             x = x.simplify();
         }
-        return x;
+        return makeCons(x,f);
         //return new mul(this, f).simplify(); 
     }
 	public func mul(double d)
@@ -294,18 +309,28 @@ public abstract class func
     }
     public func div(func f)
     {
-        //return new mul(this, f.pow(-1)).simplify();
-        return new div(this, f).simplify();
+        func x=new div(this, f);
+        if(Config.div.simplify){
+            x=x.simplify();
+        }
+        return makeCons(x,f);
     }
 	public func div(double d)
     {
 		return div(new cons(d));
 	}
     public func pow(func f)
-    { return new pow(this, f).simplify(); }
+    { 
+        func x=new pow(this, f); 
+        if (Config.pow.simplify)
+        {
+            x = x.simplify();
+        }
+        return makeCons(x,f);
+    }
 	public func pow(double d)
     {
-		return new pow(this, new cons(d)).simplify();
+		return pow(new cons(d));
 	}
 
 	public func fac()
@@ -528,6 +553,14 @@ public abstract class func
 		}
 		return true;
 	}
+    
+    public List<var> vars(){
+        Set<var> s=new HashSet<>();
+        vars0(s);
+        return new ArrayList<var>(s);
+    }
+    
+    public abstract void vars0(Set<var> vars);
 
 	public static func parse(String s)
     {
@@ -541,25 +574,9 @@ public abstract class func
 	}
     public abstract func substitude0(var v, func p);
 
-	public String taylor()
+	public taylor taylor()
     {
-		StringBuffer s=new StringBuffer();
-		func p=this;
-        //func arr=new add();
-		s.append(p.eval(0));
-        //arr=arr.add(p.eval(0));
-		for (int i=1;i < 5;i++)
-        {
-			p = p.derivative();
-			s.append("+" + p.eval(0) + "*x");
-            //arr.add(new Constant(p.eval(0)).mul(Variable.x.pow(i)).div(new fac(i)));
-			if (i != 1)
-            {
-				s.append("^" + i);
-			}
-            s.append("/").append(new fac(i));
-		}
-		return s.toString();
+		return taylor.numeric(this,0,10);
 	}
 
 	static int fac(int p)

@@ -1,10 +1,7 @@
 package math.parser;
 import java.lang.reflect.*;
-import math.*;
 import math.cons.*;
-import math.core.cons;
-import math.core.var;
-import math.core.func;
+import math.core.*;
 
 public class Token{
     String name;

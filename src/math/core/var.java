@@ -1,5 +1,6 @@
 package math.core;
 import java.math.*;
+import java.util.*;
 
 public class var extends func
 {
@@ -25,6 +26,12 @@ public class var extends func
     {
 		return new var(s);
 	}
+    
+    @Override
+    public void vars0(Set<var> vars)
+    {
+        vars.add(this);
+    }
 
     @Override
     public String toLatex()
@@ -33,7 +40,7 @@ public class var extends func
     }
 
     @Override
-    public func get(var[] v, cons[] c)
+    public func get0(var[] v, cons[] c)
     {
         for (int i=0;i < v.length;i++)
         {

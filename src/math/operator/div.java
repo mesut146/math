@@ -6,12 +6,19 @@ import math.core.*;
 
 public class div extends func
 {
+    
+    @Override
+    public void vars0(Set<var> vars)
+    {
+        a.vars0(vars);
+        b.vars0(vars);
+    }
 
     @Override
-    public func get(var[] v, cons[] c)
+    public func get0(var[] v, cons[] c)
     {
         // TODO: Implement this method
-        return signto(a.get(v,c).div(b.get(v,c)));
+        return signto(a.get0(v,c).div(b.get0(v,c)));
     }
 
     @Override
@@ -65,7 +72,7 @@ public class div extends func
         }
         // 1/lnx  
         // 
-        return new Anti(this);
+        return new Integral(this,v);
     }
     
     @Override

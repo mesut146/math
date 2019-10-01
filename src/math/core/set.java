@@ -1,29 +1,29 @@
-package math;
+package math.core;
 import math.core.*;
 import java.util.*;
 
-public class Set extends func
+public class set extends func
 {
 
-    String name="c";
-    int start,end;
-    var v=var.n;
-    List<cons> list=new ArrayList<>();
+    public String name="c";
+    public int start,end;
+    public var v=var.n;
+    public List<cons> list=new ArrayList<>();
     //List<func> list=new ArrayList<>();
     public static boolean print=true;
 
-    public Set(func cn)
+    public set(func cn)
     {
         a = cn;
         name = "c";
     }
-    public Set(func cn, var v)
+    public set(func cn, var v)
     {
         a = cn;
         this.v = v;
         name = "c";
     }
-    public Set(int...l)
+    public set(int...l)
     {
         name = "c";
         start = 1;
@@ -33,6 +33,16 @@ public class Set extends func
             list.add(new cons(i));
         }
     }
+    
+    public int len(){
+        if(!isGeneral()){
+            return end-start+1;
+        }
+        return 0;
+    }
+    public void put(cons c){
+        list.add(c);
+    }
 
     //is the Set has general term cn
     public boolean isGeneral()
@@ -40,7 +50,7 @@ public class Set extends func
         return a != null;
     }
 
-    public Set sort()
+    public set sort()
     {
         Comparator cmp;
         cmp = new Comparator<cons>(){
@@ -63,9 +73,17 @@ public class Set extends func
     }
 
     @Override
+    public void vars0(Set<var> vars)
+    {
+        if(isGeneral()){
+            a.vars0(vars);
+        }
+    }
+    
+    @Override
     public func add(double d)
     {
-        Set s=new Set();
+        set s=new set();
 
         for (cons c:list)
         {
@@ -74,13 +92,43 @@ public class Set extends func
         return s;
     }
 
+    //linear add {1,2,3}+{4,5}={5,7,3}
     @Override
     public func add(func f)
     {
-        if (f instanceof Set)
+        if (f instanceof set)
         {
-            Set sf=(Set)f;
-            Set ns=new Set();
+            set sf=(set)f;
+            set ns=new set();
+            //1,2  6,7,8
+            //7,9,8
+            for (int i=0;i<Math.max(len(),sf.len());i++)
+            {
+                if(i<sf.len()){
+                    ns.put((cons)list.get(i).add(sf.list.get(i)));
+                }else{
+                    ns.put(list.get(i));
+                }
+                
+            }
+            if(sf.len()>len()){
+                for(int i=len();i<sf.len();i++){
+                    ns.put(sf.get(i));
+                }
+            }
+            return ns;
+        }
+        throw new RuntimeException("cannot add set");
+        //return null;
+    }
+    
+    //cross add {1,2,3}+{4,5}={5,6,6,7,7,8}
+    public func addx(func f)
+    {
+        if (f instanceof set)
+        {
+            set sf=(set)f;
+            set ns=new set();
             for (cons c1:list)
             {
                 for (cons c2:sf.list)
@@ -98,7 +146,7 @@ public class Set extends func
     @Override
     public func sub(double d)
     {
-        Set s=new Set();
+        set s=new set();
 
         for (cons c:list)
         {
@@ -110,10 +158,10 @@ public class Set extends func
     @Override
     public func sub(func f)
     {
-        if (f instanceof Set)
+        if (f instanceof set)
         {
-            Set sf=(Set)f;
-            Set ns=new Set();
+            set sf=(set)f;
+            set ns=new set();
             for (cons c1:list)
             {
                 for (cons c2:sf.list)
@@ -131,7 +179,7 @@ public class Set extends func
     @Override
     public func mul(double d)
     {
-        Set s=new Set();
+        set s=new set();
 
         for (cons c:list)
         {
@@ -139,13 +187,42 @@ public class Set extends func
         }
         return s;
     }
+    
+    //linear mul {1,2,3}*{4,5}={4,10,0}
     @Override
     public func mul(func f)
     {
-        if (f instanceof Set)
+        if (f instanceof set)
         {
-            Set sf=(Set)f;
-            Set ns=new Set();
+            set sf=(set)f;
+            set ns=new set();
+            
+            for (int i=0;i<Math.min(len(),sf.len());i++)
+            {
+                if(i<sf.len()){
+                    ns.put((cons)list.get(i).add(sf.list.get(i)));
+                }else{
+                    ns.put(list.get(i));
+                }
+
+            }
+            if(sf.len()>len()){
+                for(int i=len();i<sf.len();i++){
+                    ns.put(sf.get(i));
+                }
+            }
+            return ns;
+        }
+        throw new RuntimeException("cannot add set");
+        //return null;
+    }
+    
+    public func mulx(func f)
+    {
+        if (f instanceof set)
+        {
+            set sf=(set)f;
+            set ns=new set();
             for (cons c1:list)
             {
                 for (cons c2:sf.list)
@@ -158,10 +235,25 @@ public class Set extends func
         throw new RuntimeException("cannot mul set");
         //return null;
     }
+    
+    @Override
+    public func pow(double d)
+    {
+        set s=new set();
 
+        for (cons c:list)
+        {
+            s.list.add((cons)c.pow(d));
+        }
+        return s;
+    }
+
+    public cons get(int i){
+        return list.get(i);
+    }
 
     @Override
-    public func get(var[] v, cons[] c)
+    public func get0(var[] v, cons[] c)
     {
         // TODO: Implement this method
         return null;
@@ -193,12 +285,12 @@ public class Set extends func
     {
         if (isGeneral())
         {
-            Set s=(Set) copy();
+            set s=(set) copy();
             s.a = a.derivative(v);
         }
         else
         {
-            Set s=(Set) copy();
+            set s=(set) copy();
             for (func term:list)
             {
 
@@ -217,7 +309,7 @@ public class Set extends func
     @Override
     public func copy0()
     {
-        Set s=new Set();
+        set s=new set();
         s.name = name;
         s.a = a;
         s.list.addAll(list);

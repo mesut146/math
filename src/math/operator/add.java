@@ -32,6 +32,13 @@ public class add extends func
         return sb.toString();
     }
 
+    @Override
+    public void vars0(Set<var> vars)
+    {
+        for(func term:f){
+            term.vars0(vars);
+        }
+    }
 
     public add(func...f1)
     {
@@ -49,12 +56,12 @@ public class add extends func
     }
 
     @Override
-    public func get(var[] v, cons[] c)
+    public func get0(var[] v, cons[] c)
     {
         func t=cons.ZERO;
 		for (func f1:f)
         {
-			t = t.add(f1.get(v, c));
+			t = t.add(f1.get0(v, c));
 		}
 		return signto(t);
     }

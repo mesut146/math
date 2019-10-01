@@ -2,6 +2,7 @@ package math.funcs;
 import math.core.cons;
 import math.core.var;
 import math.core.func;
+import java.util.*;
 
 public class sqrt extends func
 {
@@ -12,6 +13,11 @@ public class sqrt extends func
         return "\\sqrt{"+a.toLatex()+"}";
     }
 
+    @Override
+    public void vars0(Set<var> vars)
+    {
+        a.vars0(vars);
+    }
 
 	public sqrt(func f){
 		a=f;
@@ -21,9 +27,9 @@ public class sqrt extends func
 	    this(new cons(d));
     }
 	@Override
-	public func get(var[] v, cons[] c)
+	public func get0(var[] v, cons[] c)
 	{
-		return signto(b.get(v,c));
+		return signto(b.get0(v,c));
 	}
 
 	@Override

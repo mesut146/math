@@ -1,12 +1,12 @@
 package math;
 
 import java.util.*;
+import math.col.*;
 import math.core.*;
-import math.funcs.*;
-import math.operator.*;
-import math.integral.*;
-import math.solver.*;
 import math.diff.*;
+import math.funcs.*;
+import math.prime.*;
+import java.io.*;
 
 public class Main
 {
@@ -23,9 +23,19 @@ public class Main
         cons pi=cons.PI;
 
 		func f=null,g=null;
+        
+        matrix();
 
 		//integral();
+        /*lineq l=new lineq(10,3,"c");
+        System.out.println(l);
+        System.out.println(l.solve());*/
+        
+        //System.out.println(new zeta("2").eval());
+        
+        //taylor();
         //prime();
+        //zeta();
         //col();
         //simp();
         //set();
@@ -35,7 +45,7 @@ public class Main
         //diff();
         //floor();
         //dif1();
-        System.out.println(func.parse("e^x").get("x=5").getClass());
+        
         /*Config.useBigDecimal=true;
         f=func.parse("x^5-1");
         System.out.println(f);*/
@@ -58,11 +68,17 @@ public class Main
 
 		//a();
 	}
+    static void matrix(){
+        matrix m1=new matrix("(1,2,3),(4,9,7)");
+        matrix m2=new matrix("(4,7,2),(9,8,0)");
+        
+        System.out.println(m1.add(m2));
+    }
     
     static void set(){
-        Set s=new Set(1,2,3);
-        Set s2=new Set(5,8);
-        Set s3=new Set(func.parse("2*n+1"));
+        set s=new set(1,2,3);
+        set s2=new set(5,8);
+        set s3=new set(func.parse("2*n+1"));
         System.out.println(s3.print(0,22));
     }
     
@@ -74,10 +90,25 @@ public class Main
     
     static void prime(){
         func f;
-        f=func.parse("1/(x-2)+1/(x-3)+1/(x-5)+1/(x-7)");
+        /*f=func.parse("1/(x-2)+1/(x-3)+1/(x-5)+1/(x-7)");
         System.out.println(f);
-        System.out.println(f.eval("x=53"));
+        System.out.println(f.eval("x=53"));*/
+        /*set s=new pn(100);
+        System.out.println(s);
+        s=(set)s.pow(3).mul(2).add(1);
+        System.out.println(s);
+        System.out.println(factor.factorize(s));*/
+        System.out.println(new prime(2).eval());
+    }
+    
+    static void zeta(){
+        prime pn=new prime("n");
         
+        sigma s=new sigma("ln(p)/(p^2-1)","n",1,100);
+        System.out.println(s);
+        s=(sigma)s.substitude(new var("p"),pn);
+        System.out.println(s);
+        System.out.println(s.eval());
     }
     
     static void dif1(){
@@ -119,7 +150,7 @@ public class Main
     
     static void taylor(){
         func f=func.parse("cos(x)");
-        System.out.println(f.taylor());
+        System.out.println(taylor.numeric(f,0,10));
     }
     
     static func random(int max){
@@ -167,12 +198,15 @@ public class Main
     
 	static void integral(){
         func f;
-		gamma gamma=new gamma(var.x);
+		//gamma gamma=new gamma(var.x);
         //System.out.println(gamma.eval(7));
-        li li=new li(func.parse("x"));
+        
+        //li li=new li(func.parse("x"));
         //System.out.println(li.eval("x=5"));
-		//f=func.parse("e^-t*t^0.5");
-		//System.out.println(f.integrate(0,1000,Variable.t));
+		
+        f=func.parse("ln(1-x)/x");
+        System.out.println(f.integrate(0,1,var.x));
+        
         //f=func.parse("ln(sin(x))");
         //System.out.println(f.integrate(0,Math.PI,var.x));
 	}

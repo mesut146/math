@@ -37,6 +37,13 @@ public class mul extends func
         return sb.toString();
     }
 
+    @Override
+    public void vars0(Set<var> vars)
+    {
+        for(func term:f){
+            term.vars0(vars);
+        }
+    }
 
     public mul(func...f1)
     {
@@ -54,12 +61,12 @@ public class mul extends func
     }
 
     @Override
-    public func get(var[] v, cons[] c)
+    public func get0(var[] v, cons[] c)
     {
         func t=cons.ONE;
         for (func f1:f)
         {
-            t = t.mul(f1.get(v, c));
+            t = t.mul(f1.get0(v, c));
         }
 		return signto(t);
     }

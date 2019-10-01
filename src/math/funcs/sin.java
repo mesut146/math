@@ -1,8 +1,6 @@
 package math.funcs;
-import math.*;
-import math.core.cons;
-import math.core.var;
-import math.core.func;
+import math.core.*;
+import java.util.*;
 
 public class sin extends func
 {
@@ -12,8 +10,13 @@ public class sin extends func
     {
         return "sin("+a.toLatex()+")";
     }
-
     
+    @Override
+    public void vars0(Set<var> vars)
+    {
+        a.vars0(vars);
+    }
+
     public sin(func f){
         this(f,1);
     }
@@ -27,9 +30,9 @@ public class sin extends func
     }
 
     @Override
-    public func get(var[] v, cons[] c)
+    public func get0(var[] v, cons[] c)
     {
-        return new sin(a.get(v, c),sign).simplify();
+        return new sin(a.get0(v, c),sign).simplify();
     }
 
 	@Override
@@ -68,7 +71,7 @@ public class sin extends func
         if(a.eq(v)){
             return new cos(a,sign).negate();
         }
-        return new Anti(this);
+        return new Integral(this,v);
     }
 
     @Override

@@ -59,7 +59,7 @@ public class i extends cons
 	}
 
 	@Override
-	public func get(var[] v, cons[] c)
+	public func get0(var[] v, cons[] c)
 	{
 		return this;
 	}

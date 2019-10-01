@@ -3,6 +3,7 @@ import math.core.cons;
 import math.core.var;
 import math.core.func;
 import java.math.*;
+import java.util.*;
 
 public class fac extends func
 {
@@ -13,6 +14,11 @@ public class fac extends func
         return toString();
     }
 
+    @Override
+    public void vars0(Set<var> vars)
+    {
+        a.vars0(vars);
+    }
 
 	public fac(func f){
 		a=f;
@@ -21,9 +27,9 @@ public class fac extends func
 		a=new cons(i);
 	}
 	@Override
-	public func get(var[] v, cons[] c)
+	public func get0(var[] v, cons[] c)
 	{
-        a=a.get(v,c);
+        a=a.get0(v,c);
         return this;
 		//return new fac(a.get(v, c)).sign(sign);
 	}

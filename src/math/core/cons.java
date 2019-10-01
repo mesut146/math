@@ -2,6 +2,7 @@ package math.core;
 import math.cons.*;
 import java.math.*;
 import math.*;
+import java.util.*;
 
 public class cons extends func
 {
@@ -93,7 +94,7 @@ public class cons extends func
     }
 
     @Override
-    public func get(var[] v, cons[] c)
+    public func get0(var[] v, cons[] c)
     {
         if(functional){
 			if(ff==null){
@@ -103,6 +104,12 @@ public class cons extends func
             //return ff.get(v, c).s(sign);
         }
         return this;
+    }
+    
+    @Override
+    public void vars0(Set<var> vars)
+    {
+        
     }
 
 	@Override
@@ -139,9 +146,14 @@ public class cons extends func
     public func mul(func f)
     {
         //(6+x)*4567
-        if(f.isCons0()&&Config.useBigDecimal){
-            BigDecimal bd=decimal().multiply(f.cons().decimal(),mc);
-            return new cons(bd);
+        if(f.isCons0()){
+            if(Config.useBigDecimal){
+                BigDecimal bd=decimal().multiply(f.cons().decimal(),mc);
+                return new cons(bd);
+            }else{
+                return new cons(eval()*f.eval());
+            }
+            
         }
         return super.mul(f);
     }

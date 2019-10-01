@@ -4,7 +4,7 @@ public abstract class Config {
     public static boolean useBigDecimal=false;
     public static int precision=25;
     public static int maxIteration=100000;//sigma
-    public static int digits=10;//sigma
+    public static int digits=5;//sigma
     
     public abstract static class add{
         public static boolean simplify=true;
@@ -24,7 +24,7 @@ public abstract class Config {
         
     }
     public abstract static class integral{
-        public static int interval=100000;
+        public static int interval=10000;
         public static boolean converge=false;
     }
     public abstract static class trigonomety{
