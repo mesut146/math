@@ -7,15 +7,30 @@ import java.util.*;
 public class sigma extends func
 {
 
+    @Override
+    public func getReal()
+    {
+        sigma s=new sigma(fx.getReal(),var,start,end);
+        return s;
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        sigma s=new sigma(fx.getImaginary(),var,start,end);
+        return s;
+    }
+
+
     func start,end;//var or cons
     public func fx;
     var var;
 
     public sigma(Object f,Object v,Object s,Object e){
-        fx=type(f);
-        var=(var)type(v);
-        start=type(s);
-        end=type(e);
+        fx=Util.cast(f);
+        var=(var)Util.cast(v);
+        start=Util.cast(s);
+        end=Util.cast(e);
     }
     
     @Override
@@ -24,21 +39,6 @@ public class sigma extends func
         fx.vars0(vars);
         start.vars0(vars);
         end.vars0(vars);
-    }
-    
-    func type(Object o){
-        if(o instanceof var){
-            return (var)o;
-        }else if(o instanceof String){
-            return parse((String)o);
-        }else if(o instanceof Integer){
-            return new cons((Integer)o);
-        }else if(o instanceof func){
-            return (func)o;
-        }
-        else{
-            throw new RuntimeException("unexpected type: "+o.getClass()+" ,"+o);
-        }
     }
     
     @Override
@@ -76,10 +76,10 @@ public class sigma extends func
             //System.out.println(sum);
             //1.6449340668
             //1.6449240668982262
-            /*if(Math.abs(sum-last)<=precision||i==Config.maxIteration){
-                System.out.println("asd");
+            if(i==Config.maxIteration){
+                
                 return sum;
-            }*/
+            }
             last=sum;
         }
 		return sum;
@@ -95,13 +95,13 @@ public class sigma extends func
     @Override
     public func derivative(var v)
     {
-        return new sigma(fx.derivative(), this.var, start, end);
+        return new sigma(fx.derivative(v), this.var, start, end);
     }
 
     @Override
     public func integrate(var v)
     {
-        return new sigma(fx.integrate(v), v, start, end);
+        return new sigma(fx.integrate(v), var, start, end);
     }
     
     boolean isInt(func f){

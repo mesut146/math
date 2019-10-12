@@ -4,7 +4,9 @@ import java.util.*;
 
 public class sin extends func
 {
-
+    static{
+        register("sin",sin.class);
+    }
     @Override
     public String toLatex()
     {
@@ -97,6 +99,25 @@ public class sin extends func
 		}
 		return this;//pi/2=1  pi/3=sqrt(3)/2
 	}
+
+    @Override
+    public func getReal()
+    {
+        //sin(a)/2*(e^b-e^-b);
+        func r=a.getReal();
+        func im=a.getImaginary();
+        return new sin(r).simplify().mul(new cosh(im));
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        //cos(a)/2*(e^b-e^-b);
+        func r=a.getReal();
+        func im=a.getImaginary();
+        return new cos(r).simplify().mul(new sinh(im));
+    }
+     
 
 	/*static HashMap<func,func> h=new HashMap<func,func>();
     static {

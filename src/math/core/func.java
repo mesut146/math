@@ -6,6 +6,7 @@ import math.*;
 import math.funcs.*;
 import math.operator.*;
 import math.parser.*;
+import math.cons.*;
 
 public abstract class func
 {
@@ -21,6 +22,7 @@ public abstract class func
     public func a=null,b=null,last=this;
 	public List<func> f=new LinkedList<>();
 	public List<func> alter=new LinkedList<>();
+    
 	public static HashMap<func,func> rules=new HashMap<>();
 	//public HashMap<func,func> rules=new HashMap<>();
     //static boolean simplifyAdd=false,simplifyMul=false;
@@ -40,6 +42,14 @@ public abstract class func
 		}
 		addRule(a, b);
 	}
+    
+    public static void register(String fname,Class<?> cls){
+        Token.map.put(fname,cls);
+    }
+    
+    public func sqrt(){
+        return new sqrt(this);
+    }
 
     public String d()
     {
@@ -169,7 +179,32 @@ public abstract class func
     {
 		return eval(var.x, d);
 	}
-
+    
+    //a
+    public abstract func getReal();
+    //b
+    public abstract func getImaginary();
+    //a+b*i
+    public func getComplex(){
+        return getReal().add(cons.i.mul(getImaginary()));
+    }
+    //r*e^(i*a)
+    public func getPolar(){
+        func r=getReal();
+        func im=getImaginary();
+        func abs=r.pow(2).add(im.pow(2)).sqrt();
+        func arg=new atan(im.div(r));
+        return abs.mul(new exp(cons.i.mul(arg)));
+    }// |r|
+    public func getAbs(){
+        func r=getReal();
+        func im=getImaginary();
+        return r.pow(2).add(im.pow(2)).sqrt();
+    }//a
+    public func getArg(){
+        return new atan(getImaginary().div(getReal()));
+    }
+        
     public abstract String toLatex();
 
     public final func derivative()
@@ -245,11 +280,12 @@ public abstract class func
         return (cons)o.sign(sign);
     }
 
+    //if both are cons the result should be boxed
     func makeCons(func x,func f)
     {
         if (isConstant() && f.isConstant())
         {
-            return new cons(x);
+            //return new cons(x);
         }
         return x;
     }

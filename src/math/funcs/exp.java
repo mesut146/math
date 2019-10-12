@@ -4,9 +4,13 @@ import math.operator.*;
 
 public class exp extends pow
 {
+    static{
+        register("exp",exp.class);
+    }
+    
     public exp(func f){
         super(cons.E,f);
-        a=f;
+        
     }
 
     @Override
@@ -23,16 +27,16 @@ public class exp extends pow
     @Override
     public func integrate(var v)
     {
-        if (a.eq(v)){
+        if (b.eq(v)){
             return this;
         }
-        return new Integral(this);
+        return new Integral(this,v);
     }
 
     @Override
     public boolean eq2(func f)
     {
-        return a.eq(f.a);
+        return b.eq(f.b);
     }
     
     

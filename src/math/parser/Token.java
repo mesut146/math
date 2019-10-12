@@ -2,12 +2,14 @@ package math.parser;
 import java.lang.reflect.*;
 import math.cons.*;
 import math.core.*;
+import java.util.*;
 
 public class Token{
     String name;
     TokenType type;
     public func f;
     func param;
+    public static Map<String,Class<?>> map=new HashMap<>();
 	
     public Token(String s,TokenType t){
         name=s;
@@ -42,25 +44,27 @@ public class Token{
         //this.param=param;
         Class<func> c;
         Constructor<func> co;
-        try
-        {
-            //System.out.println("this="+this+" param="+param+" val="+val);
-            c=(Class<func>)Class.forName("math.funcs."+name);
-            co=c.getDeclaredConstructor(func.class);
-            f=co.newInstance(this.param);
-        }
-        catch (Exception e)
-        {
-            //e.printStackTrace();
-            //System.out.println(this);
+        if(map.containsKey(name)){
+            try
+            {
+                c=(Class<func>)map.get(name);
+                co=c.getDeclaredConstructor(func.class);
+                f=co.newInstance(this.param);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                //System.out.println(this);
+            }    
+        }else{
             if(fx.has(s)){
                 f=fx.get(s);
             }else{
                 f=new fx(s,this.param);
-                
+
             }
-        
         }
+        
     }
 
     public Token(func f){

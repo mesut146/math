@@ -8,6 +8,10 @@ import java.util.*;
 
 public class gamma extends Integral
 {
+    
+    static{
+        register("gamma",gamma.class);
+    }
 	func v;// (v-1)!
     
     public gamma(Object o){
@@ -21,6 +25,7 @@ public class gamma extends Integral
             dv=var.t;
         }
         a=new exp(dv.negate()).mul(dv.pow(v));
+        register("gamma",gamma.class);
     }
     
     @Override

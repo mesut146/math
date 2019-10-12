@@ -29,6 +29,18 @@ public class i extends cons
 		return new i();
 	}
 
+    @Override
+    public func getReal()
+    {
+        return ZERO;
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        return ONE;
+    }
+   
 	@Override
 	public boolean eq2(func f)
 	{
@@ -67,8 +79,9 @@ public class i extends cons
     @Override
     public double eval(var[] v, double[] d)
     {
-        System.out.println("error: tried to eval i");
-        return 0;
+        //System.out.println("error: tried to eval i");
+        throw new RuntimeException("error: tried to eval i");
+        //return 0;
     }
 
     @Override

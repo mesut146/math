@@ -6,14 +6,31 @@ import java.util.*;
 
 public class zeta extends func
 {
+    static{
+        register("zeta",zeta.class);
+    }
+    @Override
+    public func getReal()
+    {
+        // TODO: Implement this method
+        return null;
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        // TODO: Implement this method
+        return null;
+    }
+
     func s;
-    sigma sum;
-    Integral i;
-    gamma g;
+    public sigma sum;
+    public Integral i;
+    public gamma g;
     
     public zeta(Object o){
         s= Util.cast(o);
-        sum=new sigma(cons.ONE.div(var.n.pow(s)),var.n,1,cons.INF);
+        sum=new sigma(var.n.pow(s.negate()),var.n,1,cons.INF);
         i=new Integral(var.u.pow(s.sub(1)).div(cons.E.pow(var.u).sub(1)),var.u,cons.ZERO,cons.INF);
         g=new gamma(s);
     }

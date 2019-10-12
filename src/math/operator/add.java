@@ -33,11 +33,36 @@ public class add extends func
     }
 
     @Override
+    public func getReal()
+    {
+        add r=new add();
+        r.sign=sign;
+        for(func t:f){
+            r.f.add(t.getReal());
+        }
+        return r.simplify();
+    }
+    @Override
+    public func getImaginary()
+    {
+        add r=new add();
+        r.sign=sign;
+        for(func t:f){
+            r.f.add(t.getImaginary());
+        }
+        return r.simplify();
+    }
+    
+
+    @Override
     public void vars0(Set<var> vars)
     {
         for(func term:f){
             term.vars0(vars);
         }
+    }
+    public add(){
+        type=types.add;
     }
 
     public add(func...f1)
@@ -225,6 +250,7 @@ public class add extends func
 	}
 
     //2x+3x=5x
+    //2i+3i=5i
 	public void mu()
     {
 		List<func> l=getFree();
@@ -294,7 +320,7 @@ public class add extends func
 		List<func> l=getFree();
 		for (func p:t.f)
         {
-			if (p.isConstant())
+			if (p.isCons0())
             {
 				d *= p.eval();
 			}

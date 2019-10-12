@@ -6,6 +6,25 @@ import math.core.*;
 
 public class div extends func
 {
+
+    @Override
+    public func getReal()
+    {
+        func cd=b.getReal().pow(2).sub(b.getImaginary().pow(2));
+        func l=a.getReal().mul(b.getReal());
+        func r=a.getImaginary().mul(b.getImaginary());
+        return l.sub(r).div(cd);
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        func cd=b.getReal().pow(2).sub(b.getImaginary().pow(2));
+        func l=a.getReal().mul(b.getImaginary());
+        func r=a.getImaginary().mul(b.getReal());
+        return l.sub(r).negate().div(cd);
+    }
+
     
     @Override
     public void vars0(Set<var> vars)
@@ -97,15 +116,18 @@ public class div extends func
         if(a.is(0)){
             return cons.ZERO;
         }
-        if(a.isConstant()&&b.isConstant()){
+        if(a.isCons0()&&b.isCons0()){
             return evalc();
         }
         if(a.isDiv()){// (a/b)/c=a/(b*c)
             return signto(a.a.div(a.b.mul(b)));
         }
 		if(b.is(1)){
-			return a;
+			return signto(a);
 		}
+        if(b.is(0)){
+            return signto(cons.INF);
+        }
 		if(a.eq(b)){
 			return cons.ONE;
 		}

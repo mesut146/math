@@ -24,7 +24,7 @@ public class Main
 
 		func f=null,g=null;
         
-        matrix();
+        //matrix();
 
 		//integral();
         /*lineq l=new lineq(10,3,"c");
@@ -35,7 +35,18 @@ public class Main
         
         //taylor();
         //prime();
+        
+        //System.out.println(func.parse("x^i").getComplex());
         //zeta();
+        //pset.init();
+       
+        f=new pi(x.add(2));
+        g=new pi(x);
+        
+        for(int i=3;i<1000000;i+=2){
+            System.out.println(f.eval("x",i)-g.eval("x",i));
+        }
+        //System.out.println(func.parse("inv(x+e^x)").taylor());
         //col();
         //simp();
         //set();
@@ -93,22 +104,27 @@ public class Main
         /*f=func.parse("1/(x-2)+1/(x-3)+1/(x-5)+1/(x-7)");
         System.out.println(f);
         System.out.println(f.eval("x=53"));*/
-        /*set s=new pn(100);
+        set s=new pset(100);
         System.out.println(s);
         s=(set)s.pow(3).mul(2).add(1);
         System.out.println(s);
-        System.out.println(factor.factorize(s));*/
+        System.out.println(factor.factorize(s));
         System.out.println(new prime(2).eval());
     }
     
     static void zeta(){
-        prime pn=new prime("n");
+        /*prime pn=new prime("n");
         
         sigma s=new sigma("ln(p)/(p^2-1)","n",1,100);
         System.out.println(s);
         s=(sigma)s.substitude(new var("p"),pn);
         System.out.println(s);
-        System.out.println(s.eval());
+        System.out.println(s.eval());*/
+        //System.out.println(func.parse("2*0.5"));
+        zeta z=new zeta(func.parse("0.5+i*14.13472514173"));
+        System.out.println(z.sum.getImaginary().eval());
+        
+        //System.out.println(func.parse("atan(1+i)").getComplex());
     }
     
     static void dif1(){

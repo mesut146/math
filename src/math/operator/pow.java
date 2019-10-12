@@ -9,6 +9,33 @@ public class pow extends func
 {
 
     @Override
+    public func getReal()
+    {
+        func ln=new ln(a).simplify();
+        func br=b.getReal();
+        func bi=b.getImaginary();
+        func cr=ln.getReal();//
+        func ci=ln.getImaginary();
+        func l=new exp(br.mul(cr).sub(bi.mul(ci)));
+        func r=new cos(br.mul(ci).add(bi.mul(cr)));
+        return l.mul(r);
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        func ln=new ln(a).simplify();
+        func br=b.getReal();
+        func bi=b.getImaginary();
+        func cr=ln.getReal();
+        func ci=ln.getImaginary();
+        func l=new exp(br.mul(cr).sub(bi.mul(ci)));
+        func r=new sin(br.mul(ci).add(bi.mul(cr)));
+        return l.mul(r);
+    }
+
+
+    @Override
     public String toLatex()
     {
         // TODO: Implement this method
@@ -151,11 +178,20 @@ public class pow extends func
 			//System.out.println("y");
             return signto(cons.ONE);
         }
-        //e^ln(x)
-        if (a.eq(cons.E) && b.type == types.ln)
+        //e^ln(x)=x
+        if (a.eq(cons.E))
         {
-            return b.a;
+            if(b.type==types.ln){
+                return b.a;
+            }
+            if(b.isMul()&&b.find(types.ln)!=-1){//e^(f*g*ln(x))=f
+                mul b2=((mul)b).wout(types.ln);
+                ln l=(ln) ((mul)b).get(types.ln);
+                b2.sign*=l.sign;
+                return l.a.pow(b2);
+            }
         }
+        
         //System.out.println("hh="+this);
         if (Config.pow.simpCons && a.isCons0() && b.isCons0())
         {
@@ -173,11 +209,14 @@ public class pow extends func
         }
         if (b.is(1))
         {
-            return a.sign(sign);
+            return signto(a);
         }
 		if (a.isPow())
         {
-			return a.a.pow(a.b.mul(b));
+            /*func p=a.b.mul(b);
+            func o=a.a.pow(p);
+            func u=b.mul(a.b);*/
+			return signto(a.a.pow(a.b.mul(b)));
 		}
 		if (a.sign == -1 && b.isConstant())
         {

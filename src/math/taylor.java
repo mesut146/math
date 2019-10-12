@@ -8,10 +8,11 @@ public class taylor
 {
     List<term> list=new ArrayList<>();
     
-    //maclerien
+    //maclerien x=0
     public static taylor numeric(func f,int n){
         return numeric(f,0,n);
     }
+    //n terms at x=x
     public static taylor numeric(func f,int x,int n){
         taylor t=new taylor();
         double c;
@@ -24,6 +25,10 @@ public class taylor
             t.list.add(new term(f.eval(x)/new fac(i).eval(),i));
         }
         return t;
+    }
+    
+    public void put(double coeff,int po){
+        list.add(new term(coeff,po));
     }
 
     @Override

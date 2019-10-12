@@ -4,12 +4,35 @@ import java.util.*;
 
 public class cos extends func
 {
-
+    static{
+        register("cos",cos.class);
+    }
     @Override
     public String toLatex()
     {
         // TODO: Implement this method
         return "cos("+a.toLatex()+")";
+    }
+
+    @Override
+    public func getReal()
+    {
+        //cos(b)/2*(e^a+e^-a)
+        func r=a.getReal();
+        func im=a.getImaginary();
+        func ls=new cos(r).simplify();
+        //func rs=new exp(im).simplify().add(new exp(im.negate())).div(2);
+        
+        return ls.mul(new cosh(im));
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        //sin(b)/2*(e^a+e^-a)
+        func r=a.getReal();
+        func im=a.getImaginary();
+        return new sin(r).simplify().mul(new sinh(im).negate());
     }
     
     @Override

@@ -8,7 +8,29 @@ import math.operator.*;
 import java.math.*;
 import java.util.*;
 
-public class ln extends func {
+public class ln extends func
+{
+    static{
+        register("ln",ln.class);
+    }
+    
+    @Override
+    public func getReal()
+    {
+        func r=a.getReal().pow(2).add(a.getImaginary().pow(2));
+        //System.out.println(r.sqrt().simplify());
+        return new ln(r.sqrt().simplify()).simplify();
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        func ar=a.getReal().simplify();
+        
+        func ba=a.getImaginary().simplify().div(ar).simplify();
+        return new atan(ba).simplify();
+    }
+
 
     public ln(func f) {
         type = types.ln;
@@ -94,6 +116,9 @@ public class ln extends func {
         }
         if (a.eq(cons.E)) {
             return cons.ONE;
+        }
+        if(a.is(1)){
+            return  cons.ZERO;
         }
 		/*for(func r:rules.keySet()){
 			if(r.getClass()==getClass()){

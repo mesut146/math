@@ -4,6 +4,23 @@ import java.util.*;
 
 public class li extends func
 {
+    static{
+        register("li",li.class);
+    }
+    @Override
+    public func getReal()
+    {
+        // TODO: Implement this method
+        return null;
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        // TODO: Implement this method
+        return null;
+    }
+
 
     var dx;
     public li(func f){

@@ -14,6 +14,7 @@ public class cons extends func
     public static final cons INF;
     public static final cons E=new e();
     public static final cons PI=new pi();
+    public static final cons i=new i();
     public boolean functional=false;
     public func ff;
     public double val=0;
@@ -42,7 +43,14 @@ public class cons extends func
             d=-d;
         }
         val=d;
-        big=new BigDecimal(val);
+        if(Double.isInfinite(d)){
+            inf=true;
+        }else if(Double.isNaN(d)){
+            nan=true;
+        }else{
+            big=new BigDecimal(val);
+        }
+        
         type=types.constant;
     }
     public cons(func f){
@@ -70,6 +78,18 @@ public class cons extends func
             return ff.copy0();
         }*/
         return new cons(val);
+    }
+
+    @Override
+    public func getReal()
+    {
+        return this;
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        return ZERO;
     }
 
     @Override
@@ -132,7 +152,7 @@ public class cons extends func
         return this;
     }
 
-    @Override
+    /*@Override
     public func add(func f)
     {
         if(f.isCons0()&&Config.useBigDecimal){
@@ -140,13 +160,13 @@ public class cons extends func
             return new cons(bd);
         }
         return super.add(f);
-    }
+    }*/
 
     @Override
     public func mul(func f)
     {
         //(6+x)*4567
-        if(f.isCons0()){
+        if(isCons0()&&f.isCons0()){
             if(Config.useBigDecimal){
                 BigDecimal bd=decimal().multiply(f.cons().decimal(),mc);
                 return new cons(bd);

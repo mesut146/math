@@ -10,7 +10,7 @@ public class Parser {
     String s;
     int i,len;
 	Token last=null;
-
+    
     private Parser(String s){
         this.s=s;
         i=0;

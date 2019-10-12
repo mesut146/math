@@ -7,6 +7,23 @@ import java.util.*;
 
 public class floor extends func
 {
+    static{
+        register("floor",floor.class);
+    }
+    @Override
+    public func getReal()
+    {
+        // TODO: Implement this method
+        return null;
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        // TODO: Implement this method
+        return null;
+    }
+
 
     @Override
     public String toLatex()

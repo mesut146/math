@@ -6,6 +6,22 @@ import java.util.*;
 
 public class tan extends func
 {
+    static{
+        register("tan",tan.class);
+    }
+    
+    @Override
+    public func getReal()
+    {
+        return alter.get(0).getReal();
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        return alter.get(0).getImaginary();
+    }
+
 
     @Override
     public String toLatex()

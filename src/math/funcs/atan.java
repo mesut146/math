@@ -7,6 +7,35 @@ import java.util.*;
 
 public class atan extends func
 {
+    static{
+        register("atan",atan.class);
+    }
+    @Override
+    public func getReal()
+    {
+        func r=a.getReal();
+        func im=a.getImaginary();
+        //i/2*ln(1+((2i)/(r+i*(im-1))))
+        func f=cons.i.div(2)
+        .mul(new ln(
+        cons.ONE.add(
+        cons.TWO.mul(cons.i)).div(r.add(cons.i.mul(im.sub(1))))));
+        return f.getReal();
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        func r=a.getReal();
+        func im=a.getImaginary();
+        //i/2*ln(1+((2i)/(r+i*(im-1))))
+        func f=cons.i.div(2)
+            .mul(new ln(
+                     cons.ONE.add(
+                         cons.TWO.mul(cons.i)).div(r.add(cons.i.mul(im.sub(1))))));
+        return f.getImaginary();
+    }
+
 
     @Override
     public String toLatex()
@@ -60,7 +89,7 @@ public class atan extends func
 	@Override
 	public func copy0()
 	{
-		return new atan(a).sign(sign);
+		return new atan(a);
 	}
 
 	@Override
@@ -81,5 +110,26 @@ public class atan extends func
 		a.substitude(v,p);
 		return this;
 	}
+
+    @Override
+    public func simplify()
+    {
+        if(a.is(0)){
+            return cons.ZERO;
+        }else if(a.is(1)){
+            return cons.PI.div(4);
+        }else if(a.is(-1)){
+            return cons.PI.div(4).negate();
+        }
+        else if(a.eq(cons.INF)){
+            return cons.PI.div(2);
+        }else if(a.eq(cons.INF.negate())){
+            return cons.PI.div(2);
+        }
+        
+        return this;
+    }
+    
+    
 	
 }

@@ -4,7 +4,21 @@ import java.util.*;
 
 public class var extends func
 {
-    public static final var x=new var("x"),
+
+    @Override
+    public func getReal()
+    {
+        return this;
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        return cons.ZERO;
+    }
+
+    public static final var
+    x=new var("x"),
     y=new var("y"),
     z=new var("z"),
 	t=new var("t"),
@@ -26,6 +40,8 @@ public class var extends func
     {
 		return new var(s);
 	}
+    
+    
     
     @Override
     public void vars0(Set<var> vars)

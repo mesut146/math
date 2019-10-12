@@ -8,6 +8,21 @@ public class Integral extends func
 {
 
     @Override
+    public func getReal()
+    {
+        // TODO: Implement this method
+        return null;
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        // TODO: Implement this method
+        return null;
+    }
+
+
+    @Override
     public String toLatex()
     {
         StringBuilder s=new StringBuilder("\\int");

@@ -11,6 +11,23 @@ public class mul extends func
 {
 
     @Override
+    public func getReal()
+    {
+        func p=f.get(0);
+		func q=f.size() == 2?f.get(1): new mul(f.subList(1, f.size()));
+        return p.getReal().mul(q.getReal()).sub(p.getImaginary().mul(q.getImaginary()));
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        func p=f.get(0);
+        func q=f.size() == 2?f.get(1): new mul(f.subList(1, f.size()));
+        return p.getReal().mul(q.getImaginary()).sub(p.getImaginary().mul(q.getReal()));
+    }
+    
+
+    @Override
     public String toLatex()
     {
         StringBuilder sb=new StringBuilder();
@@ -287,6 +304,25 @@ public class mul extends func
         }
 		return this;
     }
+    
+    public mul wout(types t){
+        mul m=new mul();
+        m.sign=sign;
+        for(func p:f){
+            if(p.type!=t){
+                m.f.add(p);
+            }
+        }
+        return m;
+    }
+    public func get(types t){
+        for(func p:f){
+            if(p.type==t){
+                return p;
+            }
+        }
+        return null;
+    }
 
     void sort()
     {
@@ -453,8 +489,7 @@ public class mul extends func
         {
             l.add(u.substitude0(v, p));
         }
-        func m=new mul(l);
-        return Config.mul.simplify ?m.simplify(): m;
+        return new mul(l);
     }
 
     @Override

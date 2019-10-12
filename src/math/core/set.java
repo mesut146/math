@@ -5,6 +5,21 @@ import java.util.*;
 public class set extends func
 {
 
+    @Override
+    public func getReal()
+    {
+        // TODO: Implement this method
+        return null;
+    }
+
+    @Override
+    public func getImaginary()
+    {
+        // TODO: Implement this method
+        return null;
+    }
+
+
     public String name="c";
     public int start,end;
     public var v=var.n;
@@ -52,7 +67,7 @@ public class set extends func
 
     public set sort()
     {
-        Comparator cmp;
+        Comparator<cons> cmp;
         cmp = new Comparator<cons>(){
             @Override
             public int compare(cons p1, cons p2)
@@ -255,8 +270,7 @@ public class set extends func
     @Override
     public func get0(var[] v, cons[] c)
     {
-        // TODO: Implement this method
-        return null;
+        return this;
     }
 
     @Override
@@ -381,15 +395,16 @@ public class set extends func
     @Override
     public boolean eq2(func f)
     {
-        // TODO: Implement this method
         return false;
     }
 
     @Override
     public func substitude0(var v, func p)
     {
-        // TODO: Implement this method
-        return null;
+        if(isGeneral()){
+            a=a.substitude(v,p);
+        }
+        return this;
     }
 
 

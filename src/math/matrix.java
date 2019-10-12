@@ -10,6 +10,12 @@ public class matrix
     public matrix(){
         
     }
+    public matrix(int r,int c){
+        for(int i=0;i<r;i++){
+            double[] d=new double[c];
+            arr.add(d);
+        }
+    }
     
     //(1,2,3),(5,7,5)
     public matrix(String str){
@@ -23,6 +29,9 @@ public class matrix
                 continue;
             }
         }
+    }
+    public void set(int r,int c,double val){
+        arr.get(r)[c]=val;
     }
     
     public void addRow(double[] r){
@@ -156,14 +165,27 @@ public class matrix
         assert col()==m.row();
         matrix nm=new matrix();
         int ri=0;
-        for(double[] r:arr){
+        /*for(double[] r:arr){
             double[] nr=new double[m.col()];
             for(int i=0;i<r.length;i++){
-                nr[i]+=m.get(ri,i);
+                for(int k=0;k<col();k++){
+                    nr[i]+=get(,)*m.get(,);
+                }
             }
             ri++;
             nm.addRow(nr);
-        }  
+        }*/
+        double sum=0;
+        for (int c = 0; c < row(); c++) {
+            for (int d = 0; d < m.col(); d++) {
+                for (int k = 0; k < m.row(); k++) {
+                    sum = sum + get(c,k)*m.get(k,d);
+                }
+
+                m.set(c,d,sum);
+                sum = 0;
+            }
+        }
         return nm;
     }
 }
