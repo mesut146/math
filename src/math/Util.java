@@ -18,4 +18,17 @@ public class Util
             throw new RuntimeException("unexpected type: "+o.getClass()+" ,"+o);
         }
     }
+    
+    public static var var(Object o){
+        if(o instanceof var){
+            return (var)o;
+        }else if(o instanceof String){
+            return new var((String)o);
+        }else if(o instanceof func){
+            return (var)o;
+        }
+        else{
+            throw new RuntimeException("unexpected type: "+o.getClass()+" ,"+o);
+        }
+    }
 }

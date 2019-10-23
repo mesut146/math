@@ -71,6 +71,8 @@ class ShuntingYard
                     out.add(stack.pop());
                 }
                 stack.pop();
+            }else if(token.type==TokenType.Comma){
+                stack.push(token);
             }
             else
             {

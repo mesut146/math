@@ -14,6 +14,7 @@ public class cons extends func
     public static final cons INF;
     public static final cons E=new e();
     public static final cons PI=new pi();
+    public static final func PID2=PI.div(2),PID3=PI.div(3);
     public static final cons i=new i();
     public boolean functional=false;
     public func ff;
@@ -162,7 +163,7 @@ public class cons extends func
         return super.add(f);
     }*/
 
-    @Override
+    /*@Override
     public func mul(func f)
     {
         //(6+x)*4567
@@ -176,9 +177,9 @@ public class cons extends func
             
         }
         return super.mul(f);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public func pow(func f)
     {
         if(f.isCons0()&&Config.useBigDecimal){
@@ -189,7 +190,7 @@ public class cons extends func
             return new cons(bd);
         }
         return super.pow(f);
-    }
+    }*/
     
     
     

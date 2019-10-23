@@ -13,20 +13,33 @@ public class mul extends func
     @Override
     public func getReal()
     {
-        func p=f.get(0);
-		func q=f.size() == 2?f.get(1): new mul(f.subList(1, f.size()));
-        return p.getReal().mul(q.getReal()).sub(p.getImaginary().mul(q.getImaginary()));
+        func p=left();
+		func q=right();
+        func ac=p.getReal().mul(q.getReal());
+        func bd=p.getImaginary().mul(q.getImaginary());
+        return signto(ac.sub(bd));
     }
 
     @Override
     public func getImaginary()
     {
-        func p=f.get(0);
-        func q=f.size() == 2?f.get(1): new mul(f.subList(1, f.size()));
-        return p.getReal().mul(q.getImaginary()).sub(p.getImaginary().mul(q.getReal()));
+        func p=left();
+        func q=right();
+        func ad=p.getReal().mul(q.getImaginary());
+        func bc=p.getImaginary().mul(q.getReal());//
+        
+        System.out.println("pi="+p.getImaginary());
+        System.out.println("qr="+q.getReal());
+        return signto(ad.add(bc));
     }
     
-
+    func left(){
+        return f.get(0);
+    }
+    func right(){
+        return f.size() == 2?f.get(1): new mul(f.subList(1, f.size()));
+    }
+    
     @Override
     public String toLatex()
     {
@@ -114,8 +127,8 @@ public class mul extends func
     public func derivative(var v)
     {
         //a*b ==> a'*b+a*b'
-		func p=f.get(0);
-		func q=f.size() == 2 ?f.get(1): new mul(f.subList(1, f.size()));
+		func p=left();
+		func q=right();
 		func o=p.derivative(v).mul(q).add(p.mul(q.derivative(v)));
         //System.out.println("o="+p);
         return signto(o);
@@ -221,7 +234,7 @@ public class mul extends func
             return this;
         }
 		List<func> l=getFree();
-        //System.out.println("before f="+f);
+        //System.out.println("before f="+f+" s="+sign);
 		for (func p:f)
         {
             if (p.is(0))
@@ -232,33 +245,37 @@ public class mul extends func
             {
 				l.addAll(p.f);
                 sign *= p.sign;
+                p.sign=1;
 			}
-            else if (p.is(-1))
+            else if (p.is(1)||p.is(-1))
             {
-                sign *= -1;
+                sign *= p.eval();
+                continue;
             }
-			else if (!p.is(1))
+			else
             {
                 l.add(p);
             }
 		}
 		set(l);
-        //System.out.println("f2="+f);
+        //System.out.println("after f="+f+" s="+sign);
         if (f.size() == 0)
         {
             return signto(cons.ONE);
-        }if (f.size() == 1)
+        }
+        if (f.size() == 1)
         {
             return signto(f.get(0));
         }
         //System.out.println("before mu="+f);
         mu();
-        //System.out.println("after mu="+f+" size="+f.size());
+        //System.out.println("mu f="+f+" s="+sign);
         if (f.size() == 1)
         {
             return signto(f.get(0));
 		}
         cons0();
+        //System.out.println("cons f="+f+" s="+sign);
         if (f.size() == 1)
         {
             return signto(f.get(0));
@@ -292,8 +309,8 @@ public class mul extends func
          }
          }
          if(b) return p.simplify().div(q.simplify());*/
-		sort();
-        if(f.size()==2&&f.get(0).isCons0()&&f.get(1).isAdd()){
+		//sort();
+        /*if(f.size()==2&&f.get(0).isCons0()&&f.get(1).isAdd()){
             //n*(a+b+c)=an+bn+cn
             func c=f.get(0).sign(f.get(1).sign);
             add a=new add();
@@ -301,7 +318,7 @@ public class mul extends func
                 a.f.add(c.mul(t));
             }
             return a.simplify();
-        }
+        }*/
 		return this;
     }
     
@@ -360,7 +377,7 @@ public class mul extends func
         {		
 			func p=f.get(i);
 			//System.out.println("p="+p);
-			if (p.isConstant() && !p.cons().functional)
+			if (p.isCons0())
             {
                 if(Config.useBigDecimal){
                     bc=(cons) bc.mul(p.evalc());
@@ -373,9 +390,7 @@ public class mul extends func
 				l.add(p);
 			}
 		}
-        //System.out.println("l="+l.eval(0).getClass());
 		
-        
         if(Config.useBigDecimal){
             if(bc.sign==-1){
                 sign=-sign;
@@ -394,61 +409,63 @@ public class mul extends func
         {
 		    l.add(new cons(c));
         }
-        //System.out.println(f);
 		set(l);
 	}
 
-	//x^a*x^b=x^(a+b)
+	//  x^a*x^b=x^(a+b)
+    //  a^x*b^x=(a*b)^x
 	public void mu()
     {
-        // 2^x*(-2)^x
 		List<func> l=getFree();
-		//System.out.println("mu="+this);
 		boolean b[]=new boolean[f.size()];
+        boolean flag=false;
 		for (int i=0;i < f.size();i++)
         {
+            if(b[i]){
+                continue;
+            }
+            
 			func v=f.get(i);
             //System.out.println("v="+v+" org="+f.get(i));
-			if (!b[i])
+            
+			func base=v;
+            func power=cons.ONE;
+            //int vsig=v.sign;
+
+            if (v.isPow())
             {
-                func base=v;
-				func power=cons.ONE;
-				//int vsig=v.sign;
+                power = v.b;
+                base = v.a;
+            }
 
-                if (v.isPow())
-                {
-                    power = v.b;
-                    base = v.a;
+            //System.out.println("v="+base+" p="+power);
+            for (int j=i + 1;j < f.size();j++)
+            {
+                if(b[j]){
+                    continue;
                 }
-                
-                //System.out.println("v="+base+" p="+power);
-				for (int j=i + 1;j < f.size();j++)
+                holder h=e3(base, f.get(j));
+                //System.out.println("h="+h.f);
+                flag=h.b;
+                if (h.b)
                 {
-                    if (!b[j])
-                    {
-                        holder h=e3(base, f.get(j));
-                        //System.out.println("h="+h.f);
-                        if (h.b)
-                        {
-                            //System.out.println("h="+f.get(j)+" s="+h.sign);
-                            b[j] = true;
-                            power = power.add(h.f);
-                            //vsig *= h.sign;
+                    //System.out.println("h="+f.get(j)+" s="+h.sign);
+                    b[j] = true;
+                    power = power.add(h.f);
+                    //vsig *= h.sign;
+                }
+            }
+            func r=base.pow(power);
+            //System.out.println("base="+base+" pow="+power+" all="+r);
 
-                        }
-                    }
-
-				}
-                
-				//System.out.println("v2="+base+" p2="+power+" all="+base.pow(power));
-
-				//l.add(base.pow(power).sign(vsig));
+            //l.add(base.pow(power).sign(vsig));
+            if(flag){
                 l.add(base.pow(power));
-                //System.out.println("l="+l);
-			}
+            }else{
+                l.add(v);
+            }
 		}
 		set(l);
-		//System.out.println("f2="+f);
 	}
 
 	public static holder e3(func f1, func f2)
@@ -487,7 +504,7 @@ public class mul extends func
         List<func> l=getFree();
         for (func u:f)
         {
-            l.add(u.substitude0(v, p));
+            l.add(u.substitude(v, p));
         }
         return new mul(l);
     }

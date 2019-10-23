@@ -1,9 +1,7 @@
 package math.cons;
 
-import math.core.cons;
-import math.core.var;
-import math.core.func;
-import math.funcs.*;
+import math.core.*;
+import math.trigonometry.*;
 
 public class i extends cons
 {
@@ -38,7 +36,7 @@ public class i extends cons
     @Override
     public func getImaginary()
     {
-        return ONE;
+        return signto(ONE);
     }
    
 	@Override
@@ -47,27 +45,27 @@ public class i extends cons
 		return getClass()==f.getClass();
 	}
 
-	@Override
+	/*@Override
 	public func pow(func f)
 	{
 		if(f.isConstant()){
 			if(f.is(0)){
-				return cons.ONE;
+				return signto(cons.ONE);
 			}else if(f.is(1)){
 				return this;
 			}
 		}
-		return cis(f.mul(cons.PI.div(2)));
+		return signto(cis(f.mul(cons.PID2)));
 	}
 
 	@Override
 	public func pow(double d)
 	{
 		return pow(new cons(d));
-	}
+	}*/
 
 	static func cis(func f){
-		return new cos(f).add(i.mul(new sin(f).simplify()));
+		return new cos(f).simplify().add(i.mul(new sin(f).simplify()));
 	}
 
 	@Override

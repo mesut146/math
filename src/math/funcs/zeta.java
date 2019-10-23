@@ -1,8 +1,9 @@
 package math.funcs;
 
-import math.core.*;
-import math.*;
 import java.util.*;
+import math.*;
+import math.core.*;
+import math.integral.*;
 
 public class zeta extends func
 {

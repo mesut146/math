@@ -11,7 +11,7 @@ public class Parser {
     int i,len;
 	Token last=null;
     
-    private Parser(String s){
+    public Parser(String s){
         this.s=s;
         i=0;
         len=s.length();
@@ -112,12 +112,14 @@ public class Parser {
             }else if(isOperator(c)){
                 return new Token(String.valueOf(c),TokenType.Operator);
             }else if(c=='('){
-                return new Token("(",TokenType.Open);
+                return Token.OPEN;
             }else if(c==')'){
                 //System.out.println("i="+i);
-                return new Token(")",TokenType.Close);
+                return Token.CLOSE;
             }else if(c=='!'){
                 return new Token("!",TokenType.Operator);
+            }else if(c==','){
+                return Token.COMMA;
             }
             System.out.println("unexpected char '"+c+"'");
         }

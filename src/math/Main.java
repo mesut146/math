@@ -7,6 +7,7 @@ import math.diff.*;
 import math.funcs.*;
 import math.prime.*;
 import java.io.*;
+import math.parser.*;
 
 public class Main
 {
@@ -24,6 +25,9 @@ public class Main
 
 		func f=null,g=null;
         
+        f=func.parse("-i*2");
+        System.out.println(f);
+        System.out.println(f.getImaginary());
         //matrix();
 
 		//integral();
@@ -40,12 +44,8 @@ public class Main
         //zeta();
         //pset.init();
        
-        f=new pi(x.add(2));
-        g=new pi(x);
+        //System.out.println(func.parse("sin(x)").getClass());
         
-        for(int i=3;i<1000000;i+=2){
-            System.out.println(f.eval("x",i)-g.eval("x",i));
-        }
         //System.out.println(func.parse("inv(x+e^x)").taylor());
         //col();
         //simp();

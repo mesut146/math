@@ -1,9 +1,10 @@
 package math.operator;
 
+import java.util.*;
 import math.*;
 import math.core.*;
 import math.funcs.*;
-import java.util.*;
+import math.trigonometry.*;
 
 public class pow extends func
 {
@@ -16,9 +17,9 @@ public class pow extends func
         func bi=b.getImaginary();
         func cr=ln.getReal();//
         func ci=ln.getImaginary();
-        func l=new exp(br.mul(cr).sub(bi.mul(ci)));
-        func r=new cos(br.mul(ci).add(bi.mul(cr)));
-        return l.mul(r);
+        func l=new exp(br.mul(cr).sub(bi.mul(ci))).simplify();
+        func r=new cos(br.mul(ci).add(bi.mul(cr))).simplify();
+        return signto(l.mul(r));
     }
 
     @Override
@@ -26,12 +27,12 @@ public class pow extends func
     {
         func ln=new ln(a).simplify();
         func br=b.getReal();
-        func bi=b.getImaginary();
+        func bi=b.getImaginary();//
         func cr=ln.getReal();
         func ci=ln.getImaginary();
-        func l=new exp(br.mul(cr).sub(bi.mul(ci)));
-        func r=new sin(br.mul(ci).add(bi.mul(cr)));
-        return l.mul(r);
+        func l=new exp(br.mul(cr).sub(bi.mul(ci))).simplify();
+        func r=new sin(br.mul(ci).add(bi.mul(cr))).simplify();
+        return signto(l.mul(r));
     }
 
 
@@ -203,10 +204,10 @@ public class pow extends func
             return new cons(this.eval());
             
         }
-        if (a.isConstant() && b.isConstant())
+        /*if (a.isConstant() && b.isConstant())
         {
             return new cons(this);
-        }
+        }*/
         if (b.is(1))
         {
             return signto(a);

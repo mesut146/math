@@ -7,10 +7,6 @@ import java.util.*;
 
 public class pi extends func
 {
-    
-    static{
-        register("pi",pi.class);
-    }
 
     public pi(func p){
         //p>=1

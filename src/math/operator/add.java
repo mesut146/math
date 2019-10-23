@@ -67,11 +67,11 @@ public class add extends func
 
     public add(func...f1)
     {
+        this();
 		for (func f2:f1)
         {
 			f.add(f2);
 		}
-		type = types.add;
     }
 
 	public add(List<func> f1)

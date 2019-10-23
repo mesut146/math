@@ -3,14 +3,27 @@ import java.lang.reflect.*;
 import math.cons.*;
 import math.core.*;
 import java.util.*;
+import math.*;
+import math.funcs.*;
 
 public class Token{
     String name;
     TokenType type;
     public func f;
     func param;
+    List<func> params=new ArrayList<>();
     public static Map<String,Class<?>> map=new HashMap<>();
+    public static Token
+        COMMA=new Token(TokenType.Comma),
+        OPEN=new Token(TokenType.Open),
+        CLOSE=new Token(TokenType.Close);
+        
 	
+    public Token(TokenType t){
+        type=t;
+        
+    }
+    
     public Token(String s,TokenType t){
         name=s;
         type=t;
@@ -40,7 +53,11 @@ public class Token{
     }
     public Token(String s,TokenType t,String param){
         this(s,t);
-        this.param=func.parse(param);
+        String[] sp=param.split(",");
+        for(String p:sp){
+            params.add(func.parse(p));
+        }
+        //this.param=func.parse(param);
         //this.param=param;
         Class<func> c;
         Constructor<func> co;
@@ -48,7 +65,10 @@ public class Token{
             try
             {
                 c=(Class<func>)map.get(name);
-                co=c.getDeclaredConstructor(func.class);
+                if(params.size()==1){
+                    co=c.getDeclaredConstructor(func.class);
+                }
+                co=c.getDeclaredConstructor();
                 f=co.newInstance(this.param);
             }
             catch (Exception e)

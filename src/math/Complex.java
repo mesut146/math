@@ -1,9 +1,8 @@
 package math;
 
-import math.core.cons;
-import math.core.func;
-import math.funcs.*;
 import math.cons.*;
+import math.core.*;
+import math.trigonometry.*;
 
 public class Complex
 {

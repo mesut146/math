@@ -1,12 +1,9 @@
 package math.funcs;
 
-import math.*;
-import math.core.cons;
-import math.core.var;
-import math.core.func;
-import math.operator.*;
-import java.math.*;
 import java.util.*;
+import math.core.*;
+import math.operator.*;
+import math.trigonometry.*;
 
 public class ln extends func
 {

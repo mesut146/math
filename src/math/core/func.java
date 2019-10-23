@@ -6,7 +6,7 @@ import math.*;
 import math.funcs.*;
 import math.operator.*;
 import math.parser.*;
-import math.cons.*;
+import math.trigonometry.*;
 
 public abstract class func
 {
@@ -27,6 +27,13 @@ public abstract class func
 	//public HashMap<func,func> rules=new HashMap<>();
     //static boolean simplifyAdd=false,simplifyMul=false;
 
+    static{
+        if(Token.map.size()==0){
+            Config.init();
+        }
+        
+    }
+    
 	public static void addRule(func a, func b)
     {
 		rules.put(a, b);
@@ -43,8 +50,11 @@ public abstract class func
 		addRule(a, b);
 	}
     
+    //register func name and its class ex. (sin,math.trigo.sin)
     public static void register(String fname,Class<?> cls){
+        //System.out.println(fname);
         Token.map.put(fname,cls);
+        
     }
     
     public func sqrt(){
@@ -65,8 +75,8 @@ public abstract class func
     {
         f.clear();
         f.addAll(l);
+        l.clear();
     }
-
 
     public final func get(cons c)
     { 
@@ -179,6 +189,10 @@ public abstract class func
     {
 		return eval(var.x, d);
 	}
+    
+    public func inv(){
+        return cons.ONE.div(this);
+    }
     
     //a
     public abstract func getReal();
@@ -545,6 +559,15 @@ public abstract class func
 		return s.substring(s.lastIndexOf(".") + 1);
 	}
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if(o!=null&&(o instanceof func)){
+            return eq((func)o);
+        }
+        return false;
+    }
+
 	public boolean eq(func f)
 	{
 
@@ -600,7 +623,6 @@ public abstract class func
 
 	public static func parse(String s)
     {
-		//System.out.println("s="+s);
 		return Parser.parse(s).simplify();
 	}
 

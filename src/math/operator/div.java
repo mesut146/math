@@ -10,19 +10,19 @@ public class div extends func
     @Override
     public func getReal()
     {
-        func cd=b.getReal().pow(2).sub(b.getImaginary().pow(2));
-        func l=a.getReal().mul(b.getReal());
-        func r=a.getImaginary().mul(b.getImaginary());
-        return l.sub(r).div(cd);
+        func cd=b.getReal().pow(2).add(b.getImaginary().pow(2));
+        func ac=a.getReal().mul(b.getReal());
+        func bd=a.getImaginary().mul(b.getImaginary());
+        return ac.add(bd).div(cd);
     }
 
     @Override
     public func getImaginary()
     {
-        func cd=b.getReal().pow(2).sub(b.getImaginary().pow(2));
-        func l=a.getReal().mul(b.getImaginary());
-        func r=a.getImaginary().mul(b.getReal());
-        return l.sub(r).negate().div(cd);
+        func cd=b.getReal().pow(2).add(b.getImaginary().pow(2));
+        func ad=a.getReal().mul(b.getImaginary());
+        func bc=a.getImaginary().mul(b.getReal());
+        return bc.sub(ad).div(cd);
     }
 
     
