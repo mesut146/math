@@ -279,10 +279,9 @@ public abstract class func
         sign *= s;
         return this;
 	}
-    public func signget(func f)
-    {
-        sign *= f.sign;
-        return this;
+    public func sign(func f){
+        f.sign*=sign;
+        return f;
     }
     public func signto(func o)
     {

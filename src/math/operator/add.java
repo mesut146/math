@@ -67,7 +67,7 @@ public class add extends func
 
     public add(func...f1)
     {
-        this();
+        type=types.add;
 		for (func f2:f1)
         {
 			f.add(f2);
@@ -121,7 +121,7 @@ public class add extends func
         {
 			r = r.add(f1.derivative(v));
 		}
-		return r;
+		return sign(r);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class add extends func
         {
             r = r.add(f1.integrate(v));
         }
-		return r;
+		return sign(r);
     }
 
     @Override
@@ -180,13 +180,11 @@ public class add extends func
         {
 			if (p.isAdd())
             {
-                //2+-(x+5)
+                //merge two adds
                 for (func inner:p.f)
                 {
-
-                    l.add(inner.sign(p.sign));
+                    l.add(inner.copy().sign(p.sign));
                 }
-				//l.addAll(p.f);
 			}
             else
             {
