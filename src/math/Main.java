@@ -25,9 +25,11 @@ public class Main
 
 		func f=null,g=null;
         
-        f=func.parse("-i*2");
+        g=func.parse("x-f(x)");
+        System.out.println(g);
+        /*f=func.parse("-i*2");
         System.out.println(f);
-        System.out.println(f.getImaginary());
+        System.out.println(f.getImaginary());*/
         //matrix();
 
 		//integral();

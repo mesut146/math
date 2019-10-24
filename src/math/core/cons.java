@@ -7,15 +7,16 @@ import java.util.*;
 public class cons extends func
 {
 
-    public static final cons ZERO=new cons(0);
-    public static final cons ONE=new cons(1);
-	public static final cons TWO=new cons(2);
-	public static final cons NaN;
-    public static final cons INF;
-    public static final cons E=new e();
-    public static final cons PI=new pi();
+    public static final cons ZERO=new cons(0),
+                             ONE=new cons(1),
+	                         TWO=new cons(2);
+	public static final cons NaN,INF;
+    public static final cons E=new e(),
+                             PI=new pi(),
+                             i=new i(),
+                             PHI=new phi();
     public static final func PID2=PI.div(2),PID3=PI.div(3);
-    public static final cons i=new i();
+    
     public boolean functional=false;
     public func ff;
     public double val=0;

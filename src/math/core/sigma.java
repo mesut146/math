@@ -11,14 +11,14 @@ public class sigma extends func
     public func getReal()
     {
         sigma s=new sigma(fx.getReal(),var,start,end);
-        return s;
+        return signto(s);
     }
 
     @Override
     public func getImaginary()
     {
         sigma s=new sigma(fx.getImaginary(),var,start,end);
-        return s;
+        return signto(s);
     }
 
 
@@ -28,7 +28,7 @@ public class sigma extends func
 
     public sigma(Object f,Object v,Object s,Object e){
         fx=Util.cast(f);
-        var=(var)Util.cast(v);
+        var=Util.var(v);
         start=Util.cast(s);
         end=Util.cast(e);
     }
@@ -89,7 +89,7 @@ public class sigma extends func
     public cons evalc(var[] v, double[] d)
     {
         // TODO: Implement this method
-        return null;
+        return new cons(eval(v,d));
     }
 
     @Override

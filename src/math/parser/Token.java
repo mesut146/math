@@ -39,9 +39,13 @@ public class Token{
                     f=cons.PI;
                     type=TokenType.Constant;
                 }else if(name.equals("i")){
-                    f=i.i;
+                    f=cons.i;
                     type=TokenType.Constant;
-                }else if(name.equals("inf")){
+                }else if(name.equals("phi")){
+                    f=cons.PHI;
+                    type=TokenType.Constant;
+                }
+                else if(name.equals("inf")){
                     f=cons.INF;
                     type=TokenType.Constant;
                 }
@@ -67,9 +71,12 @@ public class Token{
                 c=(Class<func>)map.get(name);
                 if(params.size()==1){
                     co=c.getDeclaredConstructor(func.class);
+                    f=co.newInstance(this.param);
+                }else{
+                    co=c.getDeclaredConstructor(new Class<?>[params.size()]);
+                    f=co.newInstance(this.params.toArray(new func[0]));
                 }
-                co=c.getDeclaredConstructor();
-                f=co.newInstance(this.param);
+                
             }
             catch (Exception e)
             {

@@ -23,7 +23,14 @@ public class fx extends var
 		a=f;
         type=types.fx;
 		ins.add(this);
+	}public fx(String s,func... f){
+        super("var_fx_"+s);
+        name=s;
+        Collections.addAll(this.f,f);
+        type=types.fx;
+        ins.add(this);
 	}
+    
     public static boolean has(String n){
         for(fx f:ins){
             if(f.name.equals(n)){
