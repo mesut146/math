@@ -36,7 +36,7 @@ public class i extends cons
     @Override
     public func getImaginary()
     {
-        return signto(ONE);
+        return signf(ONE);
     }
    
 	@Override

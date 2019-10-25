@@ -42,7 +42,7 @@ public class cot extends func
 
     @Override
     public func get0(var[] v, cons[] c) {
-        return signto(alter.get(0).get0(v, c));
+        return signf(alter.get(0).get0(v, c));
     }
 
 	@Override
@@ -58,7 +58,7 @@ public class cot extends func
 	
     @Override
     public func derivative(var v) {
-        return alter.get(0).derivative(v);
+        return signf(alter.get(0)).derivative(v);
     }
 
     @Override

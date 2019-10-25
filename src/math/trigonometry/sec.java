@@ -41,7 +41,7 @@ public class sec extends func
 
     @Override
     public func get0(var[] v, cons[] c) {
-        return signto(alter.get(0).get0(v, c));
+        return signf(alter.get(0).get0(v, c));
     }
 
 	@Override

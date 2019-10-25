@@ -51,7 +51,7 @@ public class ln extends func
 
     @Override
     public func get0(var[] v, cons[] c) {
-        return signto(new ln(a.get0(v, c)));
+        return sign(new ln(a.get(v, c)));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ln extends func
 
     @Override
     public func derivative(var v) {
-        return signto(a.derivative(v).div(a));
+        return signf(a.derivative(v).div(a));
     }
 
     @Override

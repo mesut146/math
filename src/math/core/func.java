@@ -19,19 +19,17 @@ public abstract class func
     public types type=types.func;
     public int sign=1;
 	public boolean fx=false;
-    public func a=null,b=null,last=this;
-	public List<func> f=new LinkedList<>();
-	public List<func> alter=new LinkedList<>();
+    public func a=null,b=null;
+	public List<func> f=new ArrayList<>();
+	public List<func> alter=new ArrayList<>();
     
 	public static HashMap<func,func> rules=new HashMap<>();
 	//public HashMap<func,func> rules=new HashMap<>();
-    //static boolean simplifyAdd=false,simplifyMul=false;
 
     static{
         if(Token.map.size()==0){
             Config.init();
         }
-        
     }
     
 	public static void addRule(func a, func b)
@@ -105,7 +103,7 @@ public abstract class func
 
     public final func get(var[] v, cons[] c)
     {
-        func f=signto(get0(v, c));
+        func f=sign(get0(v, c));
         return f.simplify();  
     }
     public final func get(String s)
@@ -283,11 +281,11 @@ public abstract class func
         f.sign*=sign;
         return f;
     }
-    public func signto(func o)
-    {
-        o.sign *= sign;
-        return o;
-    } 
+    public func signf(func f){
+        func c=f.copy();
+        c.sign*=sign;
+        return c;
+    }
     public cons sc(func o)
     {
         return (cons)o.sign(sign);
@@ -421,7 +419,7 @@ public abstract class func
 
 	public static List<func> getFree()
     {
-		return new LinkedList<func>();
+		return new ArrayList<func>();
 	}
 
     @Override
@@ -627,7 +625,7 @@ public abstract class func
 
 	public func substitude(var v, func f)
     {
-		return signto(substitude0(v, f));
+		return signf(substitude0(v, f));
 	}
     public abstract func substitude0(var v, func p);
 

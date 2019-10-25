@@ -84,11 +84,11 @@ public class add extends func
     public func get0(var[] v, cons[] c)
     {
         func t=cons.ZERO;
-		for (func f1:f)
+		for (func term:f)
         {
-			t = t.add(f1.get0(v, c));
+			t = t.add(term.get(v, c));
 		}
-		return signto(t);
+		return sign(t);
     }
 
 	@Override
@@ -106,9 +106,9 @@ public class add extends func
     public cons evalc(var[] v, double[] d)
     {
         cons sum=cons.ZERO;
-        for (func f1:f)
+        for (func term:f)
         {
-            sum = (cons) sum.add(f1.evalc(v, d));
+            sum = (cons) sum.add(term.evalc(v, d));
         }
         return sc(sum);
 	}
@@ -199,14 +199,14 @@ public class add extends func
 		}
         else if (f.size() == 1)
         {
-            return f.get(0);
+            return signf(f.get(0));
 		}
 		//System.out.println("f="+f);
 		mu();
         //System.out.println("fmu="+f);
 		if (f.size() == 1)
         {
-			return signto(f.get(0));
+			return signf(f.get(0));
 		}
         //System.out.println("f2="+f);
         sort();

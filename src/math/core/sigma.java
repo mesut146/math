@@ -11,14 +11,14 @@ public class sigma extends func
     public func getReal()
     {
         sigma s=new sigma(fx.getReal(),var,start,end);
-        return signto(s);
+        return sign(s);
     }
 
     @Override
     public func getImaginary()
     {
         sigma s=new sigma(fx.getImaginary(),var,start,end);
-        return signto(s);
+        return sign(s);
     }
 
 

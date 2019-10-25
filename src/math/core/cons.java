@@ -149,7 +149,7 @@ public class cons extends func
     {
         if(functional){
             //System.out.println("ff="+ff);
-            return (cons)signto(ff.evalc(v,d));
+            return (cons)signf(ff.evalc(v,d));
         }
         return this;
     }
@@ -255,10 +255,6 @@ public class cons extends func
         return new cons(d);
     }
 	
-	public void a(){
-		System.out.println(getClass());
-		System.out.println(getClass().getSuperclass());
-	}
 
 	@Override
 	public boolean eq2(func f)

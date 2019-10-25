@@ -71,7 +71,7 @@ public class Token{
                 c=(Class<func>)map.get(name);
                 if(params.size()==1){
                     co=c.getDeclaredConstructor(func.class);
-                    f=co.newInstance(this.param);
+                    f=co.newInstance(this.params.get(0));
                 }else{
                     co=c.getDeclaredConstructor(new Class<?>[params.size()]);
                     f=co.newInstance(this.params.toArray(new func[0]));

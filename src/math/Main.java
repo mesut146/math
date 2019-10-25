@@ -25,11 +25,10 @@ public class Main
 
 		func f=null,g=null;
         
-        g=func.parse("x-f(x)");
-        System.out.println(g);
-        /*f=func.parse("-i*2");
+        
+        f=func.parse("ln(1-e^(i*x))");
         System.out.println(f);
-        System.out.println(f.getImaginary());*/
+        System.out.println(f.getComplex());
         //matrix();
 
 		//integral();

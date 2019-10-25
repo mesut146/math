@@ -175,7 +175,7 @@ public class Integral extends func
 	public func derivative(var v)
 	{
 		if(dv.eq(v)&&!lim){//not always
-			return signto(a);
+			return signf(a);
 		}
 		if(lim){
             List<var> l1=a1.vars();

@@ -36,8 +36,7 @@ public class div extends func
     @Override
     public func get0(var[] v, cons[] c)
     {
-        // TODO: Implement this method
-        return signto(a.get0(v,c).div(b.get0(v,c)));
+        return signf(a.get(v,c).div(b.get(v,c)));
     }
 
     @Override
@@ -120,16 +119,16 @@ public class div extends func
             return evalc();
         }
         if(a.isDiv()){// (a/b)/c=a/(b*c)
-            return signto(a.a.div(a.b.mul(b)));
+            return sign(a.a.div(a.b.mul(b)));
         }
 		if(b.is(1)){
-			return signto(a);
+			return signf(a);
 		}
         if(b.is(0)){
-            return signto(cons.INF);
+            return signf(cons.INF);
         }
 		if(a.eq(b)){
-			return cons.ONE;
+			return signf(cons.ONE);
 		}
         return this;
         /*List<func> p=getFree();

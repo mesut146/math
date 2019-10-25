@@ -17,20 +17,18 @@ public class mul extends func
 		func q=right();
         func ac=p.getReal().mul(q.getReal());
         func bd=p.getImaginary().mul(q.getImaginary());
-        return signto(ac.sub(bd));
+        return sign(ac.sub(bd));
     }
 
     @Override
     public func getImaginary()
     {
-        func p=left();
-        func q=right();
+        func p=left();//a+bi
+        func q=right();//c+di
         func ad=p.getReal().mul(q.getImaginary());
         func bc=p.getImaginary().mul(q.getReal());//
         
-        System.out.println("pi="+p.getImaginary());
-        System.out.println("qr="+q.getReal());
-        return signto(ad.add(bc));
+        return sign(ad.add(bc));
     }
     
     func left(){
@@ -77,28 +75,25 @@ public class mul extends func
 
     public mul(func...f1)
     {
-		for (func f2:f1)
-        {
-			f.add(f2);
-		}
+        Collections.addAll(f,f1);
 		type = types.mul;
     }
 
 	public mul(List<func> f1)
     {
-		f = f1;
+		f.addAll(f1);
 		type = types.mul;
     }
 
     @Override
     public func get0(var[] v, cons[] c)
     {
-        func t=cons.ONE;
-        for (func f1:f)
+        mul m=new mul();
+        for (func term:f)
         {
-            t = t.mul(f1.get0(v, c));
+            m.f.add(term.get(v,c));
         }
-		return signto(t);
+		return sign(m);
     }
 
 	@Override
@@ -131,7 +126,7 @@ public class mul extends func
 		func q=right();
 		func o=p.derivative(v).mul(q).add(p.mul(q.derivative(v)));
         //System.out.println("o="+p);
-        return signto(o);
+        return sign(o);
     }
 
     @Override
@@ -261,24 +256,24 @@ public class mul extends func
         //System.out.println("after f="+f+" s="+sign);
         if (f.size() == 0)
         {
-            return signto(cons.ONE);
+            return signf(cons.ONE);
         }
         if (f.size() == 1)
         {
-            return signto(f.get(0));
+            return signf(f.get(0));
         }
         //System.out.println("before mu="+f);
         mu();
         //System.out.println("mu f="+f+" s="+sign);
         if (f.size() == 1)
         {
-            return signto(f.get(0));
+            return signf(f.get(0));
 		}
         cons0();
         //System.out.println("cons f="+f+" s="+sign);
         if (f.size() == 1)
         {
-            return signto(f.get(0));
+            return signf(f.get(0));
 		}
 		//l.clear();
 		/*for(int i=0;i<f.size();i++){

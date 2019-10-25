@@ -18,7 +18,7 @@ public class e extends cons
 
 	@Override
 	public double eval(var[] v, double[] d) {
-		return val;
+		return sign*val;
 	}
 
     @Override

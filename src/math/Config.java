@@ -16,8 +16,8 @@ public abstract class Config {
         public static boolean simplify=true;
     }
     public abstract static class mul{
-        public static boolean simplify=false;
-        public static boolean distributeCons=true;
+        public static boolean simplify=true;
+        public static boolean distributeCons=false;
     }
     public abstract static class div{
         public static boolean simplify=true;
