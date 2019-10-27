@@ -4,9 +4,7 @@ import java.util.*;
 
 public class cos extends func
 {
-    static{
-        register("cos",cos.class);
-    }
+    
     @Override
     public String toLatex()
     {

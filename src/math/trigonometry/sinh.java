@@ -6,9 +6,6 @@ import math.funcs.*;
 
 public class sinh extends div
 {
-    static{
-        register("sinh",sinh.class);
-    }
     
     func p;
     public sinh(func f){

@@ -7,9 +7,6 @@ import math.trigonometry.*;
 
 public class ln extends func
 {
-    static{
-        register("ln",ln.class);
-    }
     
     @Override
     public func getReal()
@@ -108,14 +105,14 @@ public class ln extends func
 			}
 			return new Constant(this);
 		}*/
-        if (a.eq(parse("e^f(x)"))) {
-            return a.b;
+        if (a.isPow()&&a.a.eq(cons.E)) {
+            return signf(a.b);
         }
         if (a.eq(cons.E)) {
-            return cons.ONE;
+            return signf(cons.ONE);
         }
         if(a.is(1)){
-            return  cons.ZERO;
+            return cons.ZERO;
         }
 		/*for(func r:rules.keySet()){
 			if(r.getClass()==getClass()){

@@ -10,7 +10,7 @@ public class cons extends func
     public static final cons ZERO=new cons(0),
                              ONE=new cons(1),
 	                         TWO=new cons(2);
-	public static final cons NaN,INF;
+	public static final cons NaN,INF,MINF;
     public static final cons E=new e(),
                              PI=new pi(),
                              i=new i(),
@@ -31,6 +31,10 @@ public class cons extends func
         INF=new cons();
         INF.inf=true;
         INF.val=Double.MAX_VALUE;
+        MINF=new cons();
+        MINF.inf=true;
+        MINF.val=Double.MAX_VALUE;
+        MINF.sign=-1;
 		/*PI2=(Constant)PI.div(2);
 		PI3=(Constant)PI.div(3);
 		PI4=(Constant)PI.div(4);

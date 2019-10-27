@@ -3,21 +3,17 @@ import math.core.*;
 import math.funcs.*;
 import math.operator.*;
 
-public class cosh extends div
+public class acoth extends mul
 {
-    
     func p;
-    public cosh(func f){
-        //(e^f+e^-f)/2
-        super(new exp(f).add(new exp(f.negate())),cons.TWO);
+    public acoth(func f){
+        super(cons.ONE.div(2),new ln(f.add(cons.ONE).div(f.sub(cons.ONE))));
         p=f;
     }
 
     @Override
     public String toString2()
     {
-        return "cosh("+p+")";
+        return "acoth("+p+")";
     }
-    
-    
 }

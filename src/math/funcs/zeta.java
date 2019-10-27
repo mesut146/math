@@ -7,9 +7,6 @@ import math.integral.*;
 
 public class zeta extends func
 {
-    static{
-        register("zeta",zeta.class);
-    }
     @Override
     public func getReal()
     {

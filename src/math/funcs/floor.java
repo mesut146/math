@@ -7,9 +7,6 @@ import java.util.*;
 
 public class floor extends func
 {
-    static{
-        register("floor",floor.class);
-    }
     @Override
     public func getReal()
     {
@@ -45,7 +42,7 @@ public class floor extends func
 	@Override
 	public func get0(var[] v, cons[] c)
 	{
-		return new floor(a.get0(v,c)).simplify();
+		return new floor(a.get(v,c)).simplify();
 	}
 
 	@Override
@@ -57,7 +54,6 @@ public class floor extends func
     @Override
     public cons evalc(var[] v, double[] d)
     {
-        // TODO: Implement this method
         return new cons(sign*Math.floor(a.evalc(v,d).decimal().doubleValue()));
     }
 

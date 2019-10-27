@@ -7,7 +7,6 @@ import java.util.*;
 public class cot extends func
 {
     
-    
     @Override
     public func getReal()
     {

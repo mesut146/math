@@ -7,7 +7,6 @@ import java.util.*;
 public class csc extends func
 {
     
-    
     @Override
     public func getReal()
     {

@@ -12,7 +12,7 @@ import math.parser.*;
 public class Main
 {
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws Exception
 	{
 		cons c1=new cons(1);
 		cons c2=new cons(2);
@@ -26,9 +26,10 @@ public class Main
 		func f=null,g=null;
         
         
-        f=func.parse("ln(1-e^(i*x))");
+        f=func.parse("e^x");
         System.out.println(f);
-        System.out.println(f.getComplex());
+        new graph(f,-5,5).calc();
+        
         //matrix();
 
 		//integral();

@@ -5,9 +5,7 @@ import math.funcs.*;
 
 public class atan extends func
 {
-    static{
-        register("atan",atan.class);
-    }
+    
     @Override
     public func getReal()
     {

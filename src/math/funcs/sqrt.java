@@ -7,9 +7,6 @@ import math.operator.*;
 
 public class sqrt extends pow
 {
-    static{
-        register("sqrt",sqrt.class);
-    }
     
     @Override
     public String toLatex()

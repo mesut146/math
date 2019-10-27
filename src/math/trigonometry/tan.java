@@ -6,9 +6,6 @@ import java.util.*;
 
 public class tan extends func
 {
-    static{
-        register("tan",tan.class);
-    }
     
     @Override
     public func getReal()

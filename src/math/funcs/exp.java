@@ -4,9 +4,6 @@ import math.operator.*;
 
 public class exp extends pow
 {
-    static{
-        register("exp",exp.class);
-    }
     
     public exp(func f){
         super(cons.E,f);

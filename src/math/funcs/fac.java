@@ -7,9 +7,6 @@ import java.util.*;
 
 public class fac extends func
 {
-    static{
-        register("fac",fac.class);
-    }
     @Override
     public func getReal()
     {
