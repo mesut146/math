@@ -1,14 +1,32 @@
+#trigonometric multiply
 sin(x)*cos(y)=(sin(x+y)+sin(x-y))/2
 sin(x)*sin(y)=(cos(x-y)-cos(x+y))/2
 cos(x)*cos(y)=(cos(x+y)+cos(x-y))/2
 
+#trigonometric add
 sin(x+y)=sin(x)*cos(y)+cos(x)*sin(y)
 sin(x-y)=sin(x)*cos(y)-cos(x)*sin(y)
 cos(x+y)=cos(x)*cos(y)-sin(x)*sin(y)
 cos(x-y)=cos(x)*cos(y)+sin(x)*sin(y)
 
+#euler's formula
 e^(i*x)=cos(x)+i*sin(x)
 e^(-i*x)=cos(x)-i*sin(x)
 
+#inverse euler
 sin(x)=(i*e^(-i*x)-i*e^(i*x)/2)
 cos(x)=(e^(i*x)+e^(-i*x)/2)
+
+#ln to atan
+ln(a+b*i)=ln(a^2+b^2)/2+i*atan(b/a)
+
+#fourier
+f(x)=p(x)+q(x)
+
+p(x)=sum a(n)*cos(xn) n=0 to inf
+a(n)=(1/pi)*(integral f(x)*cos(xn) x=-pi/2 to pi/2)
+
+q(x)=sum b(n)*sin(xn) n=0 to inf
+b(b)=(1/pi)*(integral f(x)*sin(xn) x=-pi/2 to pi/2)
+
+
