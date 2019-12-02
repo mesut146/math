@@ -1,4 +1,4 @@
-7#trigonometric multiply
+#trigonometric multiply
 sin(x)*cos(y)=(sin(x+y)+sin(x-y))/2
 sin(x)*sin(y)=(cos(x-y)-cos(x+y))/2
 cos(x)*cos(y)=(cos(x+y)+cos(x-y))/2
@@ -47,8 +47,8 @@ c(n)=1/(i*pi)*(integral f(e^(i*x))*sin(xn) x=-pi to pi)
 
 c(n)=1/(2*i*pi)*(integral f(z)/z^(n+1) z=unit circle)
 
-1/n!=1/(2*pi)*(integral e^(e^(i*x))*e^(-i*x*n) x=-pi to pi)
-1/n!=1/(2*i*pi)*(integral e^z*z^(-n-1) z=U)
+1/n!=1/gamma(n+1)=1/(2*pi)*(integral e^(e^(i*x))*e^(-i*x*n) x=-pi to pi)
+1/n!=1/gamma(n+1)=1/(2*i*pi)*(integral e^z*z^(-n-1) z=U)
 
 f(x)=1/(2*i*pi)*(integral f(z)/(z-x) z=unit circle)
 
@@ -56,3 +56,12 @@ f(x)=1/(2*i*pi)*(integral f(z)/(z-x) z=unit circle)
 #integral
 e^x*cos(x)=e^x*(cos(x)+sin(x))/2
 e^x*sin(x)=e^x*(sin(x)-cos(x))/2
+
+#riemann zeta
+
+R(s)=sum(1/n^s)=1/gamma(s)*integral(t^(s-1)/(e^t-1) t=0 to inf)
+
+R(s)=PI((1-p^-s)^-1 p=primes)
+1/R(s)=PI(1-p^-s)
+-ln(R(s))=sum(ln(1-p^-s))
+-R'(s)/R(s)=sum(ln(p)/(p^s-1))
