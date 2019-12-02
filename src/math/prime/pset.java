@@ -1,6 +1,8 @@
 package math.prime;
 
 import java.io.*;
+
+import math.Config;
 import math.core.*;
 import java.nio.*;
 
@@ -8,7 +10,6 @@ public class pset extends set
 {
 
     //public List<Integer> list=new ArrayList<>();
-    static String path="/storage/emulated/0/AppProjects/math/primes.txt";
     int n;
     static int lim=10000000;//primes up to lim
     static int[] p;//prime cache
@@ -91,7 +92,7 @@ public class pset extends set
     public static void init(){
         try
         {
-            File f=new File(path);
+            File f=new File(Config.primePath);
             if(!f.exists()||f.length()==0){
                 FileOutputStream os=new FileOutputStream(f);
                 ByteArrayOutputStream baos=new ByteArrayOutputStream();

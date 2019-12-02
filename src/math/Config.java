@@ -11,6 +11,7 @@ public abstract class Config {
     public static int precision=25;
     public static int maxIteration=100000;//sigma
     public static int digits=5;//sigma
+    public static String primePath="/storage/emulated/0/AppProjects/math/primes.txt";
     
     public abstract static class add{
         public static boolean simplify=true;
