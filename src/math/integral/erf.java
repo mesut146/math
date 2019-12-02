@@ -6,7 +6,6 @@ import math.funcs.*;
 public class erf extends Integral
 {
     public erf(func f){
-        lim=true;
         a1=cons.ZERO;
         a2=f;
         setDummy(f,var.t);

@@ -1,6 +1,7 @@
 package math.cons;
 import math.core.*;
 
+//golden ratio
 public class phi extends cons
 {
     public phi(){

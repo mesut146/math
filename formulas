@@ -1,4 +1,4 @@
-#trigonometric multiply
+7#trigonometric multiply
 sin(x)*cos(y)=(sin(x+y)+sin(x-y))/2
 sin(x)*sin(y)=(cos(x-y)-cos(x+y))/2
 cos(x)*cos(y)=(cos(x+y)+cos(x-y))/2
@@ -17,6 +17,10 @@ e^(-i*x)=cos(x)-i*sin(x)
 sin(x)=(i*e^(-i*x)-i*e^(i*x)/2)
 cos(x)=(e^(i*x)+e^(-i*x)/2)
 
+#hyper
+sinh(x)=(e^x-e^-x)/2
+cosh(x)=(e^x+e^-x)/2
+
 #ln to atan
 ln(a+b*i)=ln(a^2+b^2)/2+i*atan(b/a)
 
@@ -24,9 +28,31 @@ ln(a+b*i)=ln(a^2+b^2)/2+i*atan(b/a)
 f(x)=p(x)+q(x)
 
 p(x)=sum a(n)*cos(xn) n=0 to inf
-a(n)=(1/pi)*(integral f(x)*cos(xn) x=-pi/2 to pi/2)
+a(n)=(1/pi)*(integral f(x)*cos(xn) x=-pi to pi)
 
-q(x)=sum b(n)*sin(xn) n=0 to inf
-b(b)=(1/pi)*(integral f(x)*sin(xn) x=-pi/2 to pi/2)
+q(x)=sum b(n)*sin(xn) n=1 to inf
+b(n)=(1/pi)*(integral f(x)*sin(xn) x=-pi to pi)
+
+a(n)+i*b(n)=(1/pi)*(integral f(x)*e^(ixn) x=-pi to pi)
+a(n)-i*b(n)=(1/pi)*(integral f(x)*e^(-ixn) x=-pi to pi)
+
+#fourier taylor
+f(x)=sum(c(n)*x^n n=0 to inf)
+0=(integral f(e^(i*x))*e^(ixn) x=-pi to pi) n>=0
+0=(integral f(z)*z^(n-1) z=U)
+
+c(n)=1/(2*pi)*(integral f(e^(i*x))*e^(-ixn) x=-pi to pi)
+c(n)=1/pi*(integral f(e^(i*x))*cos(xn) x=-pi to pi)
+c(n)=1/(i*pi)*(integral f(e^(i*x))*sin(xn) x=-pi to pi)
+
+c(n)=1/(2*i*pi)*(integral f(z)/z^(n+1) z=unit circle)
+
+1/n!=1/(2*pi)*(integral e^(e^(i*x))*e^(-i*x*n) x=-pi to pi)
+1/n!=1/(2*i*pi)*(integral e^z*z^(-n-1) z=U)
+
+f(x)=1/(2*i*pi)*(integral f(z)/(z-x) z=unit circle)
 
 
+#integral
+e^x*cos(x)=e^x*(cos(x)+sin(x))/2
+e^x*sin(x)=e^x*(sin(x)-cos(x))/2

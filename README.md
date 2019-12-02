@@ -10,7 +10,8 @@ a simple math library written in java
 - outputs latex code
 - basic level simplification
 - solving sequences
-
+- get real and imaginary part of a function
+- taylor series(numeric and symbolic)
 
 ## Examples:
 
@@ -24,4 +25,4 @@ func f=func.parse("e^-x*x^5");
 
 System.out.println(f.integrate("x",0,cons.INF));
 
-Output: 5!=120
+Output: 120

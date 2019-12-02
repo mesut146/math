@@ -16,7 +16,6 @@ public class laplace extends Integral
         s=Util.var(os);
         a=p.mul(new exp(dv.mul(s).negate()));
         
-        lim=true;
         a1=cons.ZERO;
         a2=cons.INF;
     }

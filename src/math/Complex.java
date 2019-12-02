@@ -10,11 +10,11 @@ public class Complex
     func f;
 
     public Complex(){
-        f=a.add(i.i.mul(b));
+        f=a.add(cons.i.mul(b));
     }
     func exp(){
         //e^fx+iy
-        return cons.E.pow(a).mul(new cos(b).add(i.i.mul(new sin(b))));
+        return cons.E.pow(a).mul(new cos(b).add(cons.i.mul(new sin(b))));
     }
 
     @Override

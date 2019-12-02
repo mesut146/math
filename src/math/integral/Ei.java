@@ -7,7 +7,6 @@ public class Ei extends Integral
 {
 
     public Ei(func f){
-        lim=true;
         a1=f;
         a2=cons.INF;
         setDummy(f,var.t);

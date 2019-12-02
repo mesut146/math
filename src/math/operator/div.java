@@ -13,7 +13,7 @@ public class div extends func
         func cd=b.getReal().pow(2).add(b.getImaginary().pow(2));
         func ac=a.getReal().mul(b.getReal());
         func bd=a.getImaginary().mul(b.getImaginary());
-        return ac.add(bd).div(cd);
+        return sign(ac.add(bd).div(cd));
     }
 
     @Override
@@ -22,7 +22,7 @@ public class div extends func
         func cd=b.getReal().pow(2).add(b.getImaginary().pow(2));
         func ad=a.getReal().mul(b.getImaginary());
         func bc=a.getImaginary().mul(b.getReal());
-        return bc.sub(ad).div(cd);
+        return sign(bc.sub(ad).div(cd));
     }
 
     
@@ -78,8 +78,9 @@ public class div extends func
     @Override
     public func derivative(var v)
     {
-
-		return a.derivative(v).mul(b).sub(a.mul(b.derivative(v))).div(b.pow(2));
+        func l=a.derivative(v).mul(b);
+        func r=a.mul(b.derivative(v));
+		return sign(a.derivative(v).mul(b).sub(a.mul(b.derivative(v))).div(b.pow(2)));
     }
 
     @Override
@@ -115,11 +116,24 @@ public class div extends func
         if(a.is(0)){
             return cons.ZERO;
         }
-        if(a.isCons0()&&b.isCons0()){
+        /*if(a.isCons0()&&b.isCons0()){
             return evalc();
-        }
+        }*/
         if(a.isDiv()){// (a/b)/c=a/(b*c)
             return sign(a.a.div(a.b.mul(b)));
+        }
+        if(b.isDiv()){// a/(b/c)=a*c/b
+            return sign(a.mul(b.b).div(b.a));
+        }
+        if(a.sign==-1){
+            sign*=-1;
+            a=a.copy();
+            a.sign=1;
+        }
+        if(b.sign==-1){
+            sign*=-1;
+            b=b.copy();
+            b.sign=1;
         }
 		if(b.is(1)){
 			return signf(a);

@@ -10,6 +10,9 @@ import java.util.*;
 public class mul extends func
 {
 
+    static int idc=0;
+    int id;
+    
     @Override
     public func getReal()
     {
@@ -77,12 +80,14 @@ public class mul extends func
     {
         Collections.addAll(f,f1);
 		type = types.mul;
+        id=idc++;
     }
 
 	public mul(List<func> f1)
     {
 		f.addAll(f1);
 		type = types.mul;
+        id=idc++;
     }
 
     @Override
@@ -208,7 +213,7 @@ public class mul extends func
 			}
             else if (p.isPow())
             {
-                sb.append(p.toString());
+                sb.append(p.top());
             }
             else
             {
@@ -222,14 +227,22 @@ public class mul extends func
 		return sb.toString();
     }
 
-
+    void log(String s){
+        if(s!=null&&s.length()>0){
+            System.out.printf("id=%d f=%s %s\n",id,f,s);
+        }else{
+            System.out.printf("id=%d f=%s\n",id,f);
+        }
+        
+    }
+    
     public func simplify()
     {
         if(!Config.mul.simplify){
             return this;
         }
 		List<func> l=getFree();
-        //System.out.println("before f="+f+" s="+sign);
+        //log("before");
 		for (func p:f)
         {
             if (p.is(0))
@@ -262,15 +275,15 @@ public class mul extends func
         {
             return signf(f.get(0));
         }
-        //System.out.println("before mu="+f);
+        //log("before mu");
         mu();
-        //System.out.println("mu f="+f+" s="+sign);
+        //log("after mu");
         if (f.size() == 1)
         {
             return signf(f.get(0));
 		}
         cons0();
-        //System.out.println("cons f="+f+" s="+sign);
+        //log("after cons");
         if (f.size() == 1)
         {
             return signf(f.get(0));
@@ -414,25 +427,22 @@ public class mul extends func
 		List<func> l=getFree();
 		boolean b[]=new boolean[f.size()];
         boolean flag=false;
-		for (int i=0;i < f.size();i++)
+        //System.out.println("id="+id+" in mu");
+		for (int i=0;i < f.size()-1;i++)
         {
             if(b[i]){
                 continue;
             }
-            
 			func v=f.get(i);
             //System.out.println("v="+v+" org="+f.get(i));
-            
 			func base=v;
             func power=cons.ONE;
             //int vsig=v.sign;
-
             if (v.isPow())
             {
                 power = v.b;
                 base = v.a;
             }
-
             //System.out.println("v="+base+" p="+power);
             for (int j=i + 1;j < f.size();j++)
             {
@@ -441,17 +451,20 @@ public class mul extends func
                 }
                 holder h=e3(base, f.get(j));
                 //System.out.println("h="+h.f);
-                flag=h.b;
+                
                 if (h.b)
                 {
+                    if(!flag){
+                        flag=true;
+                    }
                     //System.out.println("h="+f.get(j)+" s="+h.sign);
                     b[j] = true;
                     power = power.add(h.f);
                     //vsig *= h.sign;
                 }
             }
-            func r=base.pow(power);
-            //System.out.println("base="+base+" pow="+power+" all="+r);
+            //func r=base.pow(power);
+            //System.out.println("id="+id+" base="+base+" pow="+power+" all="+r);
 
             //l.add(base.pow(power).sign(vsig));
             if(flag){
@@ -460,6 +473,10 @@ public class mul extends func
                 l.add(v);
             }
 		}
+        if(!b[f.size()-1]){
+            l.add(f.get(f.size()-1));
+        }
+        //System.out.println("id="+id+" out mu");
 		set(l);
 	}
 

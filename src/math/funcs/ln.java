@@ -12,17 +12,15 @@ public class ln extends func
     public func getReal()
     {
         func r=a.getReal().pow(2).add(a.getImaginary().pow(2));
-        //System.out.println(r.sqrt().simplify());
-        return new ln(r.sqrt().simplify()).simplify();
+        return sign(new ln(r.sqrt().simplify())).simplify();
     }
 
     @Override
     public func getImaginary()
     {
         func ar=a.getReal().simplify();
-        
         func ba=a.getImaginary().simplify().div(ar).simplify();
-        return new atan(ba).simplify();
+        return sign(new atan(ba)).simplify();
     }
 
 

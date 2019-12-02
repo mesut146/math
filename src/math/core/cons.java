@@ -49,14 +49,13 @@ public class cons extends func
             d=-d;
         }
         val=d;
-        if(Double.isInfinite(d)){
+        if(Double.isInfinite(val)){
             inf=true;
-        }else if(Double.isNaN(d)){
+        }else if(Double.isNaN(val)){
             nan=true;
         }else{
             big=new BigDecimal(val);
         }
-        
         type=types.constant;
     }
     public cons(func f){
@@ -71,7 +70,7 @@ public class cons extends func
             sign=-1;
         }
         big=b;
-        //val=big.doubleValue();
+        val=big.doubleValue();
     }
 
     public cons(){
@@ -80,9 +79,6 @@ public class cons extends func
 
     @Override
     public func copy0() {
-        /*if (functional){
-            return ff.copy0();
-        }*/
         return new cons(val);
     }
 
@@ -259,7 +255,6 @@ public class cons extends func
         return new cons(d);
     }
 	
-
 	@Override
 	public boolean eq2(func f)
 	{

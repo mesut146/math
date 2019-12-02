@@ -5,10 +5,14 @@ import math.*;
 
 public class inv extends func
 {
-
+    taylorsym sym;
+    taylor num;
+    
     //inverse of p
-    public inv(func p){
-        a=p;
+    public inv(func f){
+        a=f;
+        sym=new taylorsym();
+        num=new taylor();
     }
     @Override
     public func get0(var[] v, cons[] c)
@@ -99,11 +103,19 @@ public class inv extends func
     }
 
     @Override
-    public taylor taylor()
+    public taylor taylor(double at,int n)
     {
-        taylor t=new taylor();
-        
-        return t;
+        func df=a.derivative();
+        func d=var.x;
+        //centered f(at)
+        num.at=a.eval(at);
+        num.put(at,0);
+        for(int i=1;i<=n;i++){
+            d=d.derivative().div(df);
+            System.out.println(d);
+            num.put(d.eval(at)/new fac(i).eval(),i);
+        }
+        return num;
     }
     
     

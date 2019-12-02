@@ -7,7 +7,6 @@ public class li extends Integral
 {
     
     public li(func f){
-        lim=true;
         a1=cons.TWO;
         a2=f;
         setDummy(f,var.t);

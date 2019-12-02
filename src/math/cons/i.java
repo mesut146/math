@@ -5,10 +5,6 @@ import math.trigonometry.*;
 
 public class i extends cons
 {
-	public static cons i;
-	static{
-		i=new i();
-	}
 	
 	public i(){
 		functional=true;
@@ -64,9 +60,9 @@ public class i extends cons
 		return pow(new cons(d));
 	}*/
 
-	static func cis(func f){
+	/*static func cis(func f){
 		return new cos(f).simplify().add(i.mul(new sin(f).simplify()));
-	}
+	}*/
 
 	@Override
 	public func get0(var[] v, cons[] c)

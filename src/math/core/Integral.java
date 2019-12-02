@@ -6,62 +6,64 @@ import java.util.*;
 
 public class Integral extends func
 {
-
-    public boolean lim=false;
     public var dv;
-    //Constant a1,a2;
     public func a1,a2;
-    //boolean bound=false;
 
-    //f(x),dx,lower,upper
-    public Integral(func f,var v,func i1,func i2){
-        this.a=f;
-        this.dv=v;
-        this.a1=i1;
-        this.a2=i2;
-        this.lim=true;
-    }
-    //f(x),dx
-    public Integral(func f,var v){
-        this.a=f;
-        this.dv= v;
+    //f(x),dv
+    public Integral(Object f,Object v){
+        this.a=Util.cast(f);
+        this.dv=Util.var(v);
     }
 
-    public Integral(func f){
-        this.a=f;
+    //f(x) dx
+    public Integral(Object f){
+        this.a=Util.cast(f);
         this.dv=var.x;
     }
+    //f(x),dv,lower,upper
     public Integral(Object f,Object v,Object i1,Object i2){
         this.a=Util.cast(f);
         this.dv=Util.var(v);
         this.a1=Util.cast(i1);
         this.a2=Util.cast(i2);
-        lim=true;
+        //lim=true;
     }
     public Integral(){
 
     }
     
+    public boolean lim(){
+        return a1!=null&&a2!=null;
+    }
     @Override
     public func getReal()
     {
-        // TODO: Implement this method
-        return null;
+        if(lim()){
+            if(a1.isReal()&&a2.isReal()){
+                return sign(new Integral(a.getReal(),dv,a1,a2));
+            }
+            
+        }
+        return sign(new Integral(a.getReal(),dv));
     }
 
     @Override
     public func getImaginary()
     {
-        // TODO: Implement this method
-        return null;
-    }
+        if(lim()){
+            if(a1.isReal()&&a2.isReal()){
+                return sign(new Integral(a.getImaginary(),dv,a1,a2));
+            }
 
+        }
+        return sign(new Integral(a.getImaginary(),dv));
+    }
 
     @Override
     public String toLatex()
     {
         StringBuilder s=new StringBuilder("\\int");
-        if(lim){
+        if(lim()){
             s.append(String.format("_{%s}^{%s}",a1,a2,a,dv));
         }
         s.append(String.format("%s d%s",a1,a2,a,dv));
@@ -74,19 +76,18 @@ public class Integral extends func
         if(a!=null){
             a.vars0(vars);
         }
-        if(lim){//if improper then remove dummy var
+        if(lim()){//if improper then remove dummy var
             vars.remove(dv);
             a1.vars0(vars);
             a2.vars0(vars);
         }
     }
     
-	
-    
     public boolean isLimCons(){
-        return lim&&a1.isConstant()&&a2.isConstant();
+        return lim()&&a1.isConstant()&&a2.isConstant();
     }
     
+    //f=f(x) v=preferred var
     public void setDummy(func f,var v){
         List<var> l=f.vars();
         if(l.contains(v)){
@@ -97,7 +98,7 @@ public class Integral extends func
     }
     
     public var makeDummy(List<var> l){
-        List<String> pref=Arrays.asList("x","t","u","v","y","w");
+        List<String> pref=Arrays.asList("x","t","u","y","u","w");
         List<String> str=new ArrayList<>();
         for(var v:l){
             str.add(v.name);
@@ -130,7 +131,7 @@ public class Integral extends func
 	public func get0(var[] v, cons[] c)
 	{
         Integral i=(Integral)copy();
-        if(lim){
+        if(lim()){
             i.a1=i.a1.get0(v,c);
             i.a2=i.a2.get0(v,c);
         }
@@ -174,10 +175,10 @@ public class Integral extends func
 	@Override
 	public func derivative(var v)
 	{
-		if(dv.eq(v)&&!lim){//not always
+		if(dv.eq(v)&&!lim()){//not always
 			return signf(a);
 		}
-		if(lim){
+		if(lim()){
             List<var> l1=a1.vars();
             List<var> l2=a2.vars();
             List<var> l3=a.vars();
@@ -207,7 +208,7 @@ public class Integral extends func
 	public func integrate(var v)
 	{
 		if(!this.dv.eq(v)){
-			if(lim){
+			if(lim()){
 				return new Integral(a.integrate(v),this.dv,a1,a2);
 			}
 			return new Integral(a.integrate(v),this.dv);
@@ -218,7 +219,7 @@ public class Integral extends func
 	@Override
 	public func copy0()
 	{
-		if(lim){
+		if(lim()){
 			return new Integral(a,dv,a1,a2);
 		}
 		return new Integral(a,dv);
@@ -227,7 +228,7 @@ public class Integral extends func
 	@Override
 	public String toString2()
 	{
-		if(lim){
+		if(lim()){
 			return String.format("Integral{%s d%s,%s,%s}",a,dv,a1,a2);
 		}
 		return String.format("Integral{%s d%s}",a,dv);
@@ -237,8 +238,8 @@ public class Integral extends func
 	public boolean eq2(func f)
 	{
         Integral i=(Integral) f;
-        if(lim==i.lim){
-            if(lim){
+        if(lim()==i.lim()){
+            if(lim()){
                 return a.eq(i.a)&&dv.eq(i.dv)&&a1.eq(i.a1)&&a2.eq(i.a2);
             }else{
                 return a.eq(i.a)&&dv.eq(i.dv);
@@ -261,7 +262,7 @@ public class Integral extends func
     @Override
     public func simplify()
     {
-        if(lim){
+        if(lim()){
             
         }
         

@@ -7,7 +7,6 @@ public class exp extends pow
     
     public exp(func f){
         super(cons.E,f);
-        
     }
 
     @Override
@@ -18,7 +17,7 @@ public class exp extends pow
     @Override
     public func derivative(var v)
     {
-        return mul(a.derivative(v));
+        return signf(mul(b.derivative(v)));
     }
 
     @Override

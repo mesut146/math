@@ -183,7 +183,7 @@ public class add extends func
                 //merge two adds
                 for (func inner:p.f)
                 {
-                    l.add(inner.copy().sign(p.sign));
+                    l.add(p.signf(inner));
                 }
 			}
             else
@@ -209,21 +209,9 @@ public class add extends func
 			return signf(f.get(0));
 		}
         //System.out.println("f2="+f);
-        sort();
+        
         //System.out.println("f3="+this);
         return this;
-    }
-
-    void sort()
-    {
-        int i=find(types.constant);
-        if (i != -1 && i != f.size() - 1)
-        {
-            List<func> l=new LinkedList<func>(f);
-            func c=l.remove(i);
-            l.add(c);
-            set(l);
-        }
     }
 
 	public void cons0()
@@ -231,19 +219,24 @@ public class add extends func
 		double c=0;
 		List<func> l=getFree();
 		//System.out.println("fa="+f);
+        int idx=0;
 		for (int i=0;i < f.size();i++)
         {		
 			func p=f.get(i);
 			if (p.isCons0())
             {
 				c += p.eval();
+                idx=i;
 			}
             else
             {
 				l.add(p);
 			}
 		}
-		if (c != 0) l.add(new cons(c));
+		if (c != 0){
+            idx=idx>=l.size()?0:idx;
+            l.add(idx,new cons(c));
+        }
 		set(l);
 	}
 

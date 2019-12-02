@@ -26,9 +26,9 @@ public class Main
 		func f=null,g=null;
         
         
-        f=func.parse("e^x");
+        /*f=func.parse("e^x");
         System.out.println(f);
-        new graph(f,-5,5).calc();
+        new graph(f,-5,5).calc();*/
         
         //matrix();
 
@@ -39,7 +39,8 @@ public class Main
         
         //System.out.println(new zeta("2").eval());
         
-        //taylor();
+        taylor();
+        //System.out.println(func.parse("-1/x").derivative());
         //prime();
         
         //System.out.println(func.parse("x^i").getComplex());
@@ -167,8 +168,13 @@ public class Main
     }
     
     static void taylor(){
-        func f=func.parse("cos(x)");
-        System.out.println(taylor.numeric(f,0,10));
+        func f=func.parse("x*e^x");
+        //System.out.println(taylor.numeric(f,0,10));
+        /*System.out.println(f);
+        System.out.println(f.derivative());*/
+        System.out.println(new inv(f).taylor(0,5));
+        
+        //System.out.println(taylorsym.symbol("ln(x)","x",1,8));
     }
     
     static func random(int max){

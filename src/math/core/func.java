@@ -185,9 +185,14 @@ public abstract class func
 
 	public double eval(double d)
     {
-		return eval(var.x, d);
+        List<var> lv=vars();
+        if(lv.size()==0||lv.contains(var.x)){
+            return eval(var.x,d);
+        }
+		return eval(lv.get(0), d);
 	}
     
+    //multiplication inverse
     public func inv(){
         return cons.ONE.div(this);
     }
@@ -212,18 +217,41 @@ public abstract class func
         func r=getReal();
         func im=getImaginary();
         return r.pow(2).add(im.pow(2)).sqrt();
-    }//a
+    }//theta
     public func getArg(){
         return new atan(getImaginary().div(getReal()));
     }
-        
-    public abstract String toLatex();
+    public boolean isReal(){
+        return getComplex().is(0);
+    }
+    public boolean isComplex(){
+        return !getComplex().is(0);
+    }
 
     public final func derivative()
     {return derivative(var.x);}
     public abstract func derivative(var v);
     public final func derivative(String s)
     {return derivative(new var(s));}
+    public func derivative(int n)
+    {
+        return derivative(n, var.x);
+    }
+    public func derivative(int n,Object ov)
+    {
+        var v=Util.var(ov);
+        if (n < 1)
+        {
+            return this;
+        }
+        func d=this;
+        for (int i=0;i < n;i++)
+        {
+            d = d.derivative(v);
+        }
+        return d;
+    }
+    
 
     public final func integrate()
     {return integrate(var.x);}
@@ -238,30 +266,7 @@ public abstract class func
 		return integrate(a, b, var.x);
 	}
 
-	public func derivative(int n)
-    {
-		return derivative(n, var.x);
-	}
-    public func derivative(int n, String v)
-    {
-        return derivative(n, var.from(v));
-    }
-    public func derivative(int n, var v)
-    {
-        if (n < 1)
-        {
-            return this;
-        }
-        func d=this;
-        for (int i=0;i < n;i++)
-        {
-            d = d.derivative(v);
-        }
-		return d;
-    }
-
-	public func simplify()
-    {return this;}
+	public func simplify(){return this;}
 
 	//public func(){}
 
@@ -433,6 +438,7 @@ public abstract class func
         return s;
     }
 	public abstract String toString2();
+    public abstract String toLatex();
     public String top()
     {
 		if (fx)
@@ -629,10 +635,15 @@ public abstract class func
 	}
     public abstract func substitude0(var v, func p);
 
-	public taylor taylor()
+    //center,terms
+	public taylor taylor(double at,int n)
     {
-		return taylor.numeric(this,0,10);
+		return taylor.numeric(this,at,n);
 	}
+    //var,center,terms
+    public taylorsym taylorsym(var v,func at,int n){
+        return taylorsym.symbol(this,v,at,n);
+    }
 
 	static int fac(int p)
     {

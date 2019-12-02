@@ -9,7 +9,9 @@ public class gamma extends Integral
 	func v;// (v-1)!
     
     public gamma(Object o){
-        super(null,null,cons.ZERO,cons.INF);//e^-t*t^v
+        a1=cons.ZERO;
+        a2=cons.INF;
+        //e^-t*t^v
         v=Util.cast(o);
 
         List<var> l=vars();
