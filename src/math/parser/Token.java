@@ -85,7 +85,7 @@ public class Token{
             }    
         }else{
             if(fx.has(s)){
-                f=fx.get(s);
+                f=fx.getFx(s);
             }else{
                 f=new fx(s,this.param);
 

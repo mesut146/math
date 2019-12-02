@@ -8,14 +8,12 @@ public class set extends func
     @Override
     public func getReal()
     {
-        // TODO: Implement this method
         return null;
     }
 
     @Override
     public func getImaginary()
     {
-        // TODO: Implement this method
         return null;
     }
 
@@ -128,7 +126,7 @@ public class set extends func
             }
             if(sf.len()>len()){
                 for(int i=len();i<sf.len();i++){
-                    ns.put(sf.get(i));
+                    ns.put(sf.getTerm(i));
                 }
             }
             return ns;
@@ -223,7 +221,7 @@ public class set extends func
             }
             if(sf.len()>len()){
                 for(int i=len();i<sf.len();i++){
-                    ns.put(sf.get(i));
+                    ns.put(sf.getTerm(i));
                 }
             }
             return ns;
@@ -263,7 +261,7 @@ public class set extends func
         return s;
     }
 
-    public cons get(int i){
+    public cons getTerm(int i){
         return list.get(i);
     }
 

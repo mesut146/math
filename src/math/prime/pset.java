@@ -41,7 +41,9 @@ public class pset extends set
     }
     
     public static int get(int i){
-        assert i>=1;
+        if(i<1){
+            throw new RuntimeException(String.format("invalid index %d for primes",i));
+        }
         return p[i];
     }
     

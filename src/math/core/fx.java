@@ -39,7 +39,7 @@ public class fx extends var
         }
         return false;
     }
-    public static fx get(String n){
+    public static fx getFx(String n){
         for(fx f:ins){
             if(f.name.equals(n)){
                 return f;
