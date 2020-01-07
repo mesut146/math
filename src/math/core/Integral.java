@@ -142,8 +142,8 @@ public class Integral extends func
 	@Override
 	public double eval(var[] v, double[] d)
 	{
-		// TODO: Implement this method
         a=a.get(v,d);
+        System.out.println("int="+a+" dv="+dv);
 		return riemannSum();
 	}
 

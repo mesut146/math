@@ -88,11 +88,11 @@ public class Main
 	}
 
 	static void javacc(){
-	    String s="gamma(sin(x))";
+	    String s="gamma(x)";
         MathParser parser=new MathParser(new StringReader(s));
         try {
             func f=parser.line();
-            System.out.println("f="+f.eval("x=4")+" cls="+f.getClass()+" arr="+f.f);
+            System.out.println("f="+f.eval("x=5")+" cls="+f.getClass()+" arr="+f.f);
         }catch (Exception e) {
             e.printStackTrace();
         }
