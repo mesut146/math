@@ -1,5 +1,6 @@
 package math.core;
 
+import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.regex.*;
 import math.*;
@@ -22,12 +23,12 @@ public abstract class func
     public func a=null,b=null;
 	public List<func> f=new ArrayList<>();
 	public List<func> alter=new ArrayList<>();
-    
+    public static Map<String,Class<?>> map=new HashMap<>();
 	public static HashMap<func,func> rules=new HashMap<>();
 	//public HashMap<func,func> rules=new HashMap<>();
 
     static{
-        if(Token.map.size()==0){
+        if(map.size()==0){
             Config.init();
         }
     }
@@ -47,11 +48,43 @@ public abstract class func
 		}
 		addRule(a, b);
 	}
-    
+
+	public static func makeFunc(String name,List<func> args){
+        Class<func> c;
+        Constructor<func> co;
+        func res=null;
+        if(map.containsKey(name)){
+            try
+            {
+                c= (Class<func>) map.get(name);
+                if(args.size()==1){
+                    co=c.getDeclaredConstructor(func.class);
+                    res=co.newInstance(args.get(0));
+                }else{
+                    co=c.getDeclaredConstructor(new Class<?>[args.size()]);
+                    res=co.newInstance(args.toArray(new func[args.size()]));
+                }
+
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                //System.out.println(this);
+            }
+        }else{
+            if(math.core.fx.has(name)){
+                res=math.core.fx.getFx(name);
+            }else{
+                res=new fx(name,args.toArray(new func[args.size()]));
+            }
+        }
+        return res;
+    }
+
     //register func name and its class ex. (sin,math.trigo.sin)
-    public static void register(String fname,Class<?> cls){
+    public static void register(String fname,Class<? extends func> cls){
         //System.out.println(fname);
-        Token.map.put(fname,cls);
+        map.put(fname,cls);
         
     }
     

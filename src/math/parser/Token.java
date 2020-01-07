@@ -12,7 +12,7 @@ public class Token{
     public func f;
     func param;
     List<func> params=new ArrayList<>();
-    public static Map<String,Class<?>> map=new HashMap<>();
+
     public static Token
         COMMA=new Token(TokenType.Comma),
         OPEN=new Token(TokenType.Open),
@@ -63,34 +63,7 @@ public class Token{
         }
         //this.param=func.parse(param);
         //this.param=param;
-        Class<func> c;
-        Constructor<func> co;
-        if(map.containsKey(name)){
-            try
-            {
-                c=(Class<func>)map.get(name);
-                if(params.size()==1){
-                    co=c.getDeclaredConstructor(func.class);
-                    f=co.newInstance(this.params.get(0));
-                }else{
-                    co=c.getDeclaredConstructor(new Class<?>[params.size()]);
-                    f=co.newInstance(this.params.toArray(new func[0]));
-                }
-                
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-                //System.out.println(this);
-            }    
-        }else{
-            if(fx.has(s)){
-                f=fx.getFx(s);
-            }else{
-                f=new fx(s,this.param);
 
-            }
-        }
         
     }
 

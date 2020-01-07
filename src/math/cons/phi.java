@@ -7,7 +7,7 @@ public class phi extends cons
     public phi(){
         functional=true;
         val=1.61803398875;
-        a=parse("(1+sqrt(5))/2");
+        //TODO a=parse("(1+sqrt(5))/2");
     }
 
     @Override

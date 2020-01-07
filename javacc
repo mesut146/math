@@ -1,6 +1,8 @@
-dir="/storage/emulated/0/AppProjects/math"
+#dir="/storage/emulated/0/AppProjects/math"
+dir="/home/mesut/IdeaProjects/math"
 grammar="${dir}/math.jj"
 out="${dir}/src/math/parser2"
-cc="/storage/extSdCard/lib/javacc-7.0.5.jar"
+#cc="/storage/extSdCard/lib/javacc-7.0.5.jar"
+cc="/home/mesut/Desktop/lib/javacc-7.0.5.jar"
 
 java -cp $cc javacc -OUTPUT_DIRECTORY=${out} -FORCE_LA_CHECK=true $grammar

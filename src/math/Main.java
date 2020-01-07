@@ -5,6 +5,8 @@ import math.col.*;
 import math.core.*;
 import math.diff.*;
 import math.funcs.*;
+import math.parser2.MathParser;
+import math.parser2.ParseException;
 import math.prime.*;
 import java.io.*;
 import math.parser.*;
@@ -38,8 +40,8 @@ public class Main
         System.out.println(l.solve());*/
         
         //System.out.println(new zeta("2").eval());
-        
-        taylor();
+        javacc();
+        //taylor();
         //System.out.println(func.parse("-1/x").derivative());
         //prime();
         
@@ -82,6 +84,17 @@ public class Main
 
 		//a();
 	}
+
+	static void javacc(){
+	    String s="1+2*3";
+        MathParser parser=new MathParser(new StringReader(s));
+        try {
+            System.out.println(parser.expr());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     static void matrix(){
         matrix m1=new matrix("(1,2,3),(4,9,7)");
         matrix m2=new matrix("(4,7,2),(9,8,0)");

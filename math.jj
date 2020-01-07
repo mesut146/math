@@ -73,8 +73,8 @@ func expr():
 }
 {
   a=term()
-  (("+" b=expr()){a=new add(a,b);}
-  |("-" b=expr()){a=new add(a,b.negate());})*
+  ("+" b=expr(){a=new add(a,b);}
+  |"-" b=expr(){a=new add(a,b.negate());})*
   {return a.simplify();}
 }
 
@@ -84,9 +84,9 @@ func term():
 }
 {
   a=unary()
-  (("*" b=term()){a=new mul(a,b);}
-  |("/" b=term()){a=new div(a,b);}
-  |("^" b=term()){a=new pow(a,b);})*
+  ("*" b=term(){a=new mul(a,b);}
+  |"/" b=term(){a=new div(a,b);}
+  |"^" b=term(){a=new pow(a,b);})*
   {return a.simplify();}
 }
 
