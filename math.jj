@@ -1,0 +1,158 @@
+options
+{
+    JAVA_UNICODE_ESCAPE = true;
+    LOOKAHEAD=2;
+    STATIC=false;
+}
+
+PARSER_BEGIN(MathParser)
+
+package math.parser2;
+import math.core.*;
+import math.operator.*;
+import java.util.*;
+
+public class MathParser
+{
+ 
+}
+PARSER_END(MathParser)
+
+SKIP :
+{
+    " "  |   "\r"  |  "\n"  |  "\t"
+}
+
+TOKEN:
+{
+    < NUMBER: (<DIGIT>)+ ( "." (<DIGIT>)+ )? >  
+ |  < DIGIT: ["0"-"9"] >
+}
+
+TOKEN :
+{
+  < LPAREN: "(" >
+| < RPAREN: ")" >
+| < LBRACE: "{" >
+| < RBRACE: "}" >
+| < LBRACKET: "[" >
+| < RBRACKET: "]" >
+| < SEMICOLON: ";" >
+| < COLON: ":" >
+| < COMMA: "," >
+| < DOT: "." >
+}
+
+TOKEN:
+{
+  <EQ: "=" >
+| <PLUS: "+" >
+| <MINUS: "-">
+| <MUL: "*" >
+| <DIV: "/">
+}
+
+TOKEN:
+{
+  <PI: "pi"|"Pi"|"PI">
+  |<E: "e"|"E">
+  |<PHI: "phi"|"PHI"|"Phi">
+  |<I: "i">
+  |<INF: "inf"|"INF"|"Inf">
+}
+
+TOKEN:
+{
+  <IDENT: <CHAR> (<CHAR>|<DIGIT>)*> 
+| <#CHAR: ["a"-"z","A"-"Z"]>
+}
+
+func expr():
+{
+  func a,b;
+}
+{
+  a=term()
+  (("+" b=expr()){a=new add(a,b);}
+  |("-" b=expr()){a=new add(a,b.negate());})*
+  {return a.simplify();}
+}
+
+func term():
+{
+ func a,b;
+}
+{
+  a=unary()
+  (("*" b=term()){a=new mul(a,b);}
+  |("/" b=term()){a=new div(a,b);}
+  |("^" b=term()){a=new pow(a,b);})*
+  {return a.simplify();}
+}
+
+func unary():
+{
+  func a;
+}
+{
+  "-" a=element(){return a.negate();}
+  |a=element(){return a;}
+}
+
+func element():
+{
+  func a;
+}
+{
+  a=num(){return a;}
+  |a=cons(){return a;}
+  |a=funcCall(){return a;}
+  |a=var(){return a;}
+  |"(" a=expr() ")" {return a;}
+}
+
+func funcCall():
+{
+  Token name;
+  List<func> arg=new ArrayList<>();
+}
+{
+  name=<IDENT> "(" args(arg) ")"
+  {return func.makeFunc(name.toString(),arg);}
+}
+
+void args(List<func> arg):
+{
+  func a;
+}
+{
+  [a=expr(){arg.add(a);}] ("," a=expr(){arg.add(a);})*
+}
+
+func cons():
+{
+  func a;
+}
+{
+  <E>{return cons.E;}
+| <PI>{return cons.PI;}
+| <PHI>{return cons.PHI;}
+| <I>{return cons.i;}
+| <INF>{return cons.INF;}
+}
+
+func var():
+{
+  Token token;
+}
+{
+  token=<IDENT>{return new var(token.toString());}
+}
+
+func num():
+{
+  Token token;
+}
+{
+ token=<NUMBER>{return new cons(Double.parseDouble(token.toString()));}
+}
