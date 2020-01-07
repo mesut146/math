@@ -1,10 +1,12 @@
 package math;
 
+import java.lang.reflect.Constructor;
 import java.util.*;
 import math.col.*;
 import math.core.*;
 import math.diff.*;
 import math.funcs.*;
+import math.integral.laplace;
 import math.parser2.MathParser;
 import math.parser2.ParseException;
 import math.prime.*;
@@ -86,12 +88,12 @@ public class Main
 	}
 
 	static void javacc(){
-	    String s="x*y*z/t+pi";
+	    String s="gamma(sin(x))";
         MathParser parser=new MathParser(new StringReader(s));
         try {
-            func f=parser.expr();
-            System.out.println("f="+f+" cls="+f.getClass()+" arr="+f.f);
-        } catch (ParseException e) {
+            func f=parser.line();
+            System.out.println("f="+f.eval("x=4")+" cls="+f.getClass()+" arr="+f.f);
+        }catch (Exception e) {
             e.printStackTrace();
         }
     }

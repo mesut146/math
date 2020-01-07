@@ -1,7 +1,7 @@
 options
 {
     JAVA_UNICODE_ESCAPE = true;
-    LOOKAHEAD=2;
+    LOOKAHEAD=3;
     STATIC=false;
 }
 
@@ -67,6 +67,15 @@ TOKEN:
 | <#CHAR: ["a"-"z","A"-"Z"]>
 }
 
+func line():
+{
+  func f;
+}
+{
+  f=expr() <EOF>
+  {return f;}
+}
+
 func expr():
 {
   func a,b;
@@ -96,7 +105,7 @@ func unary():
 }
 {
   "-" a=element(){return a.negate();}
-  |a=element(){return a;}
+  | a=element() ["!"{return a.fac();}] {return a;}
 }
 
 func element():

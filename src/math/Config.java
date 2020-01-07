@@ -55,6 +55,7 @@ public abstract class Config {
         register("Ei",Ei.class);
         register("ei",Ei.class);
         register("erf",erf.class);
+        register("laplace",laplace.class);
         
         register("sin",sin.class);
         register("cos",cos.class);
@@ -75,6 +76,10 @@ public abstract class Config {
         register("PrimePi",pi.class);
         register("prime",prime.class);
         register("p",prime.class);
+
+        register("ramp",ramp.class);
+        register("step",step.class);
+
     }
     
 }

@@ -50,6 +50,7 @@ public abstract class func
 		addRule(a, b);
 	}
 
+	//TODO make args Object autocast
 	public static func makeFunc(String name,List<func> args){
         Class<func> c;
         Constructor<func> co;
@@ -62,7 +63,12 @@ public abstract class func
                     co=c.getDeclaredConstructor(func.class);
                     res=co.newInstance(args.get(0));
                 }else{
-                    co=c.getDeclaredConstructor(new Class<?>[args.size()]);
+                    //System.out.println("args="+args);
+                    Class<?>[] arr= new Class<?>[args.size()];
+                    for (int i=0;i<args.size();i++){
+                        arr[i]=func.class;
+                    }
+                    co=c.getDeclaredConstructor(arr);
                     res=co.newInstance(args.toArray(new func[args.size()]));
                 }
 

@@ -9,10 +9,14 @@ public class gamma extends Integral
 	func v;// (v-1)!
     
     public gamma(Object o){
+        this(Util.cast(o));
+    }
+
+    public gamma(func f){
         a1=cons.ZERO;
         a2=cons.INF;
         //e^-t*t^v
-        v=Util.cast(o);
+        v=f;
 
         List<var> l=vars();
         if(l.contains(var.t)){
@@ -22,18 +26,20 @@ public class gamma extends Integral
         }
         a=new exp(dv.negate()).mul(dv.pow(v));
     }
-    
+
+    @Override
+    public double eval(var[] v, double[] d) {
+        /*if(d.length==1&&cons.isInteger(d[0])){
+            return fac.compute((int) d[0]);
+        }*/
+        return super.eval(v,d);
+    }
+
     @Override
     public func get0(var[] v, cons[] c)
     {
 	    a = a.get0(v, c);
         return this;
-    }
-
-    @Override
-    public String toLatex()
-    {
-        return toLatex();
     }
 
     @Override

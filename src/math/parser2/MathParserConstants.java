@@ -89,11 +89,12 @@ public interface MathParserConstants {
     "<PI>",
     "<E>",
     "<PHI>",
-    "\"i\"",
+    "<I>",
     "<INF>",
     "<IDENT>",
     "<CHAR>",
     "\"^\"",
+    "\"!\"",
   };
 
 }

@@ -7,20 +7,27 @@ import java.util.*;
 
 public class MathParser implements MathParserConstants {
 
+  final public func line() throws ParseException {func f;
+    f = expr();
+    jj_consume_token(0);
+{if ("" != null) return f;}
+    throw new Error("Missing return statement in function");
+}
+
   final public func expr() throws ParseException {func a,b;
     a = term();
     label_1:
     while (true) {
-      if (jj_2_1(2)) {
+      if (jj_2_1(3)) {
         ;
       } else {
         break label_1;
       }
-      if (jj_2_2(2)) {
+      if (jj_2_2(3)) {
         jj_consume_token(PLUS);
         b = expr();
 a=new add(a,b);
-      } else if (jj_2_3(2)) {
+      } else if (jj_2_3(3)) {
         jj_consume_token(MINUS);
         b = expr();
 a=new add(a,b.negate());
@@ -37,20 +44,20 @@ a=new add(a,b.negate());
     a = unary();
     label_2:
     while (true) {
-      if (jj_2_4(2)) {
+      if (jj_2_4(3)) {
         ;
       } else {
         break label_2;
       }
-      if (jj_2_5(2)) {
+      if (jj_2_5(3)) {
         jj_consume_token(MUL);
         b = term();
 a=new mul(a,b);
-      } else if (jj_2_6(2)) {
+      } else if (jj_2_6(3)) {
         jj_consume_token(DIV);
         b = term();
 a=new div(a,b);
-      } else if (jj_2_7(2)) {
+      } else if (jj_2_7(3)) {
         jj_consume_token(29);
         b = term();
 a=new pow(a,b);
@@ -64,12 +71,18 @@ a=new pow(a,b);
 }
 
   final public func unary() throws ParseException {func a;
-    if (jj_2_8(2)) {
+    if (jj_2_9(3)) {
       jj_consume_token(MINUS);
       a = element();
 {if ("" != null) return a.negate();}
-    } else if (jj_2_9(2)) {
+    } else if (jj_2_10(3)) {
       a = element();
+      if (jj_2_8(3)) {
+        jj_consume_token(30);
+{if ("" != null) return a.fac();}
+      } else {
+        ;
+      }
 {if ("" != null) return a;}
     } else {
       jj_consume_token(-1);
@@ -79,19 +92,19 @@ a=new pow(a,b);
 }
 
   final public func element() throws ParseException {func a;
-    if (jj_2_10(2)) {
+    if (jj_2_11(3)) {
       a = num();
 {if ("" != null) return a;}
-    } else if (jj_2_11(2)) {
+    } else if (jj_2_12(3)) {
       a = cons();
 {if ("" != null) return a;}
-    } else if (jj_2_12(2)) {
+    } else if (jj_2_13(3)) {
       a = funcCall();
 {if ("" != null) return a;}
-    } else if (jj_2_13(2)) {
+    } else if (jj_2_14(3)) {
       a = var();
 {if ("" != null) return a;}
-    } else if (jj_2_14(2)) {
+    } else if (jj_2_15(3)) {
       jj_consume_token(LPAREN);
       a = expr();
       jj_consume_token(RPAREN);
@@ -114,7 +127,7 @@ a=new pow(a,b);
 }
 
   final public void args(List<func> arg) throws ParseException {func a;
-    if (jj_2_15(2)) {
+    if (jj_2_16(3)) {
       a = expr();
 arg.add(a);
     } else {
@@ -122,7 +135,7 @@ arg.add(a);
     }
     label_3:
     while (true) {
-      if (jj_2_16(2)) {
+      if (jj_2_17(3)) {
         ;
       } else {
         break label_3;
@@ -134,19 +147,19 @@ arg.add(a);
 }
 
   final public func cons() throws ParseException {func a;
-    if (jj_2_17(2)) {
+    if (jj_2_18(3)) {
       jj_consume_token(E);
 {if ("" != null) return cons.E;}
-    } else if (jj_2_18(2)) {
+    } else if (jj_2_19(3)) {
       jj_consume_token(PI);
 {if ("" != null) return cons.PI;}
-    } else if (jj_2_19(2)) {
+    } else if (jj_2_20(3)) {
       jj_consume_token(PHI);
 {if ("" != null) return cons.PHI;}
-    } else if (jj_2_20(2)) {
+    } else if (jj_2_21(3)) {
       jj_consume_token(I);
 {if ("" != null) return cons.i;}
-    } else if (jj_2_21(2)) {
+    } else if (jj_2_22(3)) {
       jj_consume_token(INF);
 {if ("" != null) return cons.INF;}
     } else {
@@ -336,76 +349,12 @@ arg.add(a);
     finally { jj_save(20, xla); }
   }
 
-  private boolean jj_3R_8()
+  private boolean jj_2_22(int xla)
  {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (!jj_3_17()) return false;
-    jj_scanpos = xsp;
-    if (!jj_3_18()) return false;
-    jj_scanpos = xsp;
-    if (!jj_3_19()) return false;
-    jj_scanpos = xsp;
-    if (!jj_3_20()) return false;
-    jj_scanpos = xsp;
-    if (jj_3_21()) return true;
-    return false;
-  }
-
-  private boolean jj_3_7()
- {
-    if (jj_scan_token(29)) return true;
-    if (jj_3R_5()) return true;
-    return false;
-  }
-
-  private boolean jj_3_17()
- {
-    if (jj_scan_token(E)) return true;
-    return false;
-  }
-
-  private boolean jj_3_6()
- {
-    if (jj_scan_token(DIV)) return true;
-    if (jj_3R_5()) return true;
-    return false;
-  }
-
-  private boolean jj_3_5()
- {
-    if (jj_scan_token(MUL)) return true;
-    if (jj_3R_5()) return true;
-    return false;
-  }
-
-  private boolean jj_3_4()
- {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (!jj_3_5()) return false;
-    jj_scanpos = xsp;
-    if (!jj_3_6()) return false;
-    jj_scanpos = xsp;
-    if (jj_3_7()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_5()
- {
-    if (jj_3R_11()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_4()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
-  private boolean jj_3_15()
- {
-    if (jj_3R_4()) return true;
-    return false;
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return (!jj_3_22()); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(21, xla); }
   }
 
   private boolean jj_3_3()
@@ -447,23 +396,32 @@ arg.add(a);
  {
     if (jj_scan_token(IDENT)) return true;
     if (jj_scan_token(LPAREN)) return true;
+    if (jj_3R_12()) return true;
+    if (jj_scan_token(RPAREN)) return true;
+    return false;
+  }
+
+  private boolean jj_3_8()
+ {
+    if (jj_scan_token(30)) return true;
+    return false;
+  }
+
+  private boolean jj_3_15()
+ {
+    if (jj_scan_token(LPAREN)) return true;
+    if (jj_3R_4()) return true;
+    if (jj_scan_token(RPAREN)) return true;
     return false;
   }
 
   private boolean jj_3_14()
  {
-    if (jj_scan_token(LPAREN)) return true;
-    if (jj_3R_4()) return true;
-    return false;
-  }
-
-  private boolean jj_3_13()
- {
     if (jj_3R_10()) return true;
     return false;
   }
 
-  private boolean jj_3_12()
+  private boolean jj_3_13()
  {
     if (jj_3R_9()) return true;
     return false;
@@ -475,7 +433,7 @@ arg.add(a);
     return false;
   }
 
-  private boolean jj_3_11()
+  private boolean jj_3_12()
  {
     if (jj_3R_8()) return true;
     return false;
@@ -485,25 +443,25 @@ arg.add(a);
  {
     Token xsp;
     xsp = jj_scanpos;
-    if (!jj_3_10()) return false;
-    jj_scanpos = xsp;
     if (!jj_3_11()) return false;
     jj_scanpos = xsp;
     if (!jj_3_12()) return false;
     jj_scanpos = xsp;
     if (!jj_3_13()) return false;
     jj_scanpos = xsp;
-    if (jj_3_14()) return true;
+    if (!jj_3_14()) return false;
+    jj_scanpos = xsp;
+    if (jj_3_15()) return true;
     return false;
   }
 
-  private boolean jj_3_10()
+  private boolean jj_3_11()
  {
     if (jj_3R_7()) return true;
     return false;
   }
 
-  private boolean jj_3_16()
+  private boolean jj_3_17()
  {
     if (jj_scan_token(COMMA)) return true;
     if (jj_3R_4()) return true;
@@ -516,9 +474,12 @@ arg.add(a);
     return false;
   }
 
-  private boolean jj_3_9()
+  private boolean jj_3_10()
  {
     if (jj_3R_6()) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_8()) jj_scanpos = xsp;
     return false;
   }
 
@@ -526,40 +487,124 @@ arg.add(a);
  {
     Token xsp;
     xsp = jj_scanpos;
-    if (!jj_3_8()) return false;
+    if (!jj_3_9()) return false;
     jj_scanpos = xsp;
-    if (jj_3_9()) return true;
+    if (jj_3_10()) return true;
     return false;
   }
 
-  private boolean jj_3_8()
+  private boolean jj_3_9()
  {
     if (jj_scan_token(MINUS)) return true;
     if (jj_3R_6()) return true;
     return false;
   }
 
-  private boolean jj_3_21()
+  private boolean jj_3_22()
  {
     if (jj_scan_token(INF)) return true;
     return false;
   }
 
-  private boolean jj_3_20()
+  private boolean jj_3_21()
  {
     if (jj_scan_token(I)) return true;
     return false;
   }
 
-  private boolean jj_3_19()
+  private boolean jj_3_20()
  {
     if (jj_scan_token(PHI)) return true;
     return false;
   }
 
-  private boolean jj_3_18()
+  private boolean jj_3_19()
  {
     if (jj_scan_token(PI)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_8()
+ {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (!jj_3_18()) return false;
+    jj_scanpos = xsp;
+    if (!jj_3_19()) return false;
+    jj_scanpos = xsp;
+    if (!jj_3_20()) return false;
+    jj_scanpos = xsp;
+    if (!jj_3_21()) return false;
+    jj_scanpos = xsp;
+    if (jj_3_22()) return true;
+    return false;
+  }
+
+  private boolean jj_3_18()
+ {
+    if (jj_scan_token(E)) return true;
+    return false;
+  }
+
+  private boolean jj_3_7()
+ {
+    if (jj_scan_token(29)) return true;
+    if (jj_3R_5()) return true;
+    return false;
+  }
+
+  private boolean jj_3_6()
+ {
+    if (jj_scan_token(DIV)) return true;
+    if (jj_3R_5()) return true;
+    return false;
+  }
+
+  private boolean jj_3_5()
+ {
+    if (jj_scan_token(MUL)) return true;
+    if (jj_3R_5()) return true;
+    return false;
+  }
+
+  private boolean jj_3_4()
+ {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (!jj_3_5()) return false;
+    jj_scanpos = xsp;
+    if (!jj_3_6()) return false;
+    jj_scanpos = xsp;
+    if (jj_3_7()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_5()
+ {
+    if (jj_3R_11()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3_4()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  private boolean jj_3_16()
+ {
+    if (jj_3R_4()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_12()
+ {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_16()) jj_scanpos = xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3_17()) { jj_scanpos = xsp; break; }
+    }
     return false;
   }
 
@@ -582,7 +627,7 @@ arg.add(a);
 	private static void jj_la1_init_0() {
 	   jj_la1_0 = new int[] {};
 	}
-  final private JJCalls[] jj_2_rtns = new JJCalls[21];
+  final private JJCalls[] jj_2_rtns = new JJCalls[22];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
 
@@ -788,7 +833,7 @@ arg.add(a);
   /** Generate ParseException. */
   public ParseException generateParseException() {
 	 jj_expentries.clear();
-	 boolean[] la1tokens = new boolean[30];
+	 boolean[] la1tokens = new boolean[31];
 	 if (jj_kind >= 0) {
 	   la1tokens[jj_kind] = true;
 	   jj_kind = -1;
@@ -802,7 +847,7 @@ arg.add(a);
 		 }
 	   }
 	 }
-	 for (int i = 0; i < 30; i++) {
+	 for (int i = 0; i < 31; i++) {
 	   if (la1tokens[i]) {
 		 jj_expentry = new int[1];
 		 jj_expentry[0] = i;
@@ -836,7 +881,7 @@ arg.add(a);
 
   private void jj_rescan_token() {
 	 jj_rescan = true;
-	 for (int i = 0; i < 21; i++) {
+	 for (int i = 0; i < 22; i++) {
 	   try {
 		 JJCalls p = jj_2_rtns[i];
 
@@ -865,6 +910,7 @@ arg.add(a);
 			   case 18: jj_3_19(); break;
 			   case 19: jj_3_20(); break;
 			   case 20: jj_3_21(); break;
+			   case 21: jj_3_22(); break;
 			 }
 		   }
 		   p = p.next;

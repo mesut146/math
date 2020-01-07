@@ -193,21 +193,21 @@ public class cons extends func
         return super.pow(f);
     }*/
     
-    
-    
     public BigDecimal decimal(){
         if(sign==-1){
             return big.negate();
         }
         return big;
     }
-    
-    
+
 	public boolean isInteger(){
         if (!functional){
             return val==(int)val;
         }
         return false;
+    }
+    public static boolean isInteger(double value){
+        return value==(double)(int)value;
     }
 
     public boolean isInf(){

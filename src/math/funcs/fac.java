@@ -6,6 +6,8 @@ import java.math.*;
 import java.util.*;
 import math.integral.*;
 
+//numeric factorial
+
 public class fac extends func
 {
     @Override
@@ -21,7 +23,6 @@ public class fac extends func
         // TODO: Implement this method
         return null;
     }
-
 
     @Override
     public String toLatex()
@@ -53,7 +54,11 @@ public class fac extends func
 	@Override
 	public double eval(var[] v, double[] d)
 	{
-		return sign*f((int)a.eval(v,d));
+		double aval=a.eval(v,d);
+		if (!cons.isInteger(aval)){
+			System.out.println("can't compute factorial of a real number use gamma function instead");
+		}
+		return sign*compute((int)aval);
 	}
 
     @Override
@@ -66,12 +71,12 @@ public class fac extends func
         return sc(new cons(bd));
     }
 
-	int f(int x){
-		int y=1;
+	public static int compute(int x){
+		int result=1;
 		for(int i=2;i<=x;i++){
-			y*=i;
+			result*=i;
 		}
-		return y;
+		return result;
 	}
 
 	@Override

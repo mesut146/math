@@ -30,7 +30,7 @@ class ShuntingYard
         return OPERATORS.get(token.name)[1] == type;
     }
 
-    private static final int cmpPrecedence(Token token1, Token token2)
+    private static int cmpPrecedence(Token token1, Token token2)
     {
         return OPERATORS.get(token1.name)[0] - OPERATORS.get(token2.name)[0];
     }
