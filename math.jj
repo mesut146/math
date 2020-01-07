@@ -52,12 +52,12 @@ TOKEN:
 | <DIV: "/">
 }
 
-TOKEN:
+TOKEN: /* must be before <ident>*/
 {
   <PI: "pi"|"Pi"|"PI">
   |<E: "e"|"E">
   |<PHI: "phi"|"PHI"|"Phi">
-  |<I: "i">
+  |<I: "i"|"I">
   |<INF: "inf"|"INF"|"Inf">
 }
 

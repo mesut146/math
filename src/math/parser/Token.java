@@ -61,17 +61,13 @@ public class Token{
         for(String p:sp){
             params.add(func.parse(p));
         }
-        //this.param=func.parse(param);
-        //this.param=param;
-
-        
+        f=func.makeFunc(s,params);
     }
 
     public Token(func f){
         this.f=f;
         type=TokenType.Function;
     }
-
 
     @Override
     public String toString() {

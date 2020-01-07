@@ -28,9 +28,10 @@ public abstract class func
 	//public HashMap<func,func> rules=new HashMap<>();
 
     static{
-        if(map.size()==0){
-            Config.init();
-        }
+        /*if(map.size()==0){
+
+        }*/
+        Config.init();
     }
     
 	public static void addRule(func a, func b)

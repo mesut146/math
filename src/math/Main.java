@@ -86,10 +86,11 @@ public class Main
 	}
 
 	static void javacc(){
-	    String s="1+2*3";
+	    String s="x*y*z/t+pi";
         MathParser parser=new MathParser(new StringReader(s));
         try {
-            System.out.println(parser.expr());
+            func f=parser.expr();
+            System.out.println("f="+f+" cls="+f.getClass()+" arr="+f.f);
         } catch (ParseException e) {
             e.printStackTrace();
         }

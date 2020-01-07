@@ -367,7 +367,7 @@ public class mul extends func
         sb.append("[");
         for (func y:l)
         {
-            sb.append(y.getClass() + ",");
+            sb.append(y.getClass()).append(",");
         }
         sb.append("]");
         return sb.toString();
