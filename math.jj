@@ -8,6 +8,7 @@ options
 PARSER_BEGIN(MathParser)
 
 package math.parser2;
+
 import math.core.*;
 import math.operator.*;
 import java.util.*;
@@ -59,6 +60,12 @@ TOKEN: /* must be before <ident>*/
   |<PHI: "phi"|"PHI"|"Phi">
   |<I: "i"|"I">
   |<INF: "inf"|"INF"|"Inf">
+}
+
+TOKEN: /*built in functions */
+{
+  <PRINT: "print">
+| <PLOT: "plot">
 }
 
 TOKEN:
@@ -128,6 +135,25 @@ func funcCall():
 {
   name=<IDENT> "(" args(arg) ")"
   {return func.makeFunc(name.toString(),arg);}
+}
+
+Node call():
+{
+  String name;
+  List<func> arg=new ArrayList<>();
+}
+{
+  name=fname() "(" args(arg) ")"
+  {return func.makeCall(name.toString(),arg);}
+}
+
+String fname():
+{
+  Token token;
+}
+{
+  (token="print" | token="plot")
+  {return token.toString();}
 }
 
 void args(List<func> arg):
