@@ -2,7 +2,7 @@
 a simple math library written in java
 
 ### Features:
-- supports multivariables from a-z
+- supports infinite multivariables
 - parsing from postfix
 - taking derivatives in multivariables
 - numeric derivatives
