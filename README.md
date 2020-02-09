@@ -15,11 +15,13 @@ a simple math library written in java
 
 ## Examples:
 
+```java
 func f=func.parse("e^(x^2)");
 
 System.out.println(f.derivative());
 
 Output: 2*x*e^(x^2)
+```
 
 func f=func.parse("e^-x*x^5");
 
