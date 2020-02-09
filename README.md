@@ -23,8 +23,10 @@ System.out.println(f.derivative());
 Output: 2*x*e^(x^2)
 ```
 
+```java
 func f=func.parse("e^-x*x^5");
 
 System.out.println(f.integrate("x",0,cons.INF));
 
 Output: 120
+```
