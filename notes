@@ -1,0 +1,20 @@
+make integrate func not abstract
+fix all sign
+
+
+f=sin(x)+cos(y)
+print(f)
+print(f.derivative(x)) #cos(x)
+g=df/dx+df/dy  #cos(x)-sin(y)
+plot(g)
+print(f(e^x,acos(y)))
+
+#print(expr)
+#plot(expr)
+#
+
+
+h=ln(x)
+dh/dx=1/x
+
+df/dh=cos(x)*dx/dh-sin(y)*dy/dh=cos(x)*x-sin(y)*0

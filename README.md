@@ -2,7 +2,7 @@
 a simple math library written in java
 
 ### Features:
-- supports multivariables from a-z
+- supports infinite multivariables
 - parsing from postfix
 - taking derivatives in multivariables
 - numeric derivatives
@@ -15,14 +15,18 @@ a simple math library written in java
 
 ## Examples:
 
+```java
 func f=func.parse("e^(x^2)");
 
 System.out.println(f.derivative());
 
 Output: 2*x*e^(x^2)
+```
 
+```java
 func f=func.parse("e^-x*x^5");
 
 System.out.println(f.integrate("x",0,cons.INF));
 
 Output: 120
+```
