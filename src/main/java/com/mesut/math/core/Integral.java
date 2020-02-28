@@ -162,7 +162,7 @@ public class Integral extends func {
             System.out.println("integral limits must be constant");
             return 0;
         }
-        System.out.println(upper.eval());
+        //todo scale upper
         double sum = 0;
         double k = Config.integral.interval;
         double low = lower.eval();
