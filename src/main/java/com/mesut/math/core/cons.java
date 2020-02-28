@@ -1,40 +1,45 @@
 package com.mesut.math.core;
-import com.mesut.math.cons.*;
-import java.math.*;
-import com.mesut.math.*;
-import java.util.*;
 
-public class cons extends func
-{
+import com.mesut.math.Config;
+import com.mesut.math.cons.e;
+import com.mesut.math.cons.i;
+import com.mesut.math.cons.phi;
+import com.mesut.math.cons.pi;
 
-    public static final cons ZERO=new cons(0),
-                             ONE=new cons(1),
-	                         TWO=new cons(2);
-	public static final cons NaN,INF,MINF;
-    public static final cons E=new e(),
-                             PI=new pi(),
-                             i=new i(),
-                             PHI=new phi();
-    public static final func PID2=PI.div(2),PID3=PI.div(3);
-    
-    public boolean functional=false;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.util.Set;
+
+public class cons extends func {
+
+    public static final cons ZERO = new cons(0),
+            ONE = new cons(1),
+            TWO = new cons(2);
+    public static final cons NaN, INF, MINF;
+    public static final cons E = new e(),
+            PI = new pi(),
+            i = new i(),
+            PHI = new phi();
+    public static final func PID2 = PI.div(2), PID3 = PI.div(3);
+
+    public boolean functional = false;
     public func ff;
-    public double val=0;
+    public double val = 0;
     public BigDecimal big;
-    boolean nan=false,inf=false;
-    public static MathContext mc=new MathContext(Config.precision);
-	//public static final Constant PI2,PI3,PI4,PI5,PI6;
+    boolean nan = false, inf = false;
+    public static MathContext mc = new MathContext(Config.precision);
+    //public static final Constant PI2,PI3,PI4,PI5,PI6;
 
-    static{
-        NaN=new cons();
-        NaN.nan=true;
-        INF=new cons();
-        INF.inf=true;
-        INF.val=Double.MAX_VALUE;
-        MINF=new cons();
-        MINF.inf=true;
-        MINF.val=Double.MAX_VALUE;
-        MINF.sign=-1;
+    static {
+        NaN = new cons();
+        NaN.nan = true;
+        INF = new cons();
+        INF.inf = true;
+        INF.val = Double.MAX_VALUE;
+        MINF = new cons();
+        MINF.inf = true;
+        MINF.val = Double.MAX_VALUE;
+        MINF.sign = -1;
 		/*PI2=(Constant)PI.div(2);
 		PI3=(Constant)PI.div(3);
 		PI4=(Constant)PI.div(4);
@@ -42,39 +47,46 @@ public class cons extends func
 		PI6=(Constant)PI.div(6);
 		*/
     }
-    
-    public cons(double d){
-        if(d<0){
-            sign=-1;
-            d=-d;
+
+    public cons(double d) {
+        if (d < 0) {
+            sign = -1;
+            d = -d;
         }
-        val=d;
-        if(Double.isInfinite(val)){
-            inf=true;
-        }else if(Double.isNaN(val)){
-            nan=true;
-        }else{
-            big=new BigDecimal(val);
+        val = d;
+        if (Double.isInfinite(val)) {
+            inf = true;
+        } else if (Double.isNaN(val)) {
+            nan = true;
+        } else {
+            big = new BigDecimal(val);
         }
-        type=types.constant;
-    }
-    public cons(func f){
-        ff=f;
-        functional=true;
-        type=types.constant;
-    }
-    public cons(BigDecimal b){
-        type=types.constant;
-        if(b.signum()==-1){
-            b=b.negate();
-            sign=-1;
-        }
-        big=b;
-        val=big.doubleValue();
+        type = types.constant;
     }
 
-    public cons(){
-        type=types.constant;
+    public cons(func f) {
+        ff = f;
+        functional = true;
+        type = types.constant;
+    }
+
+    public cons(BigDecimal b) {
+        type = types.constant;
+        if (b.signum() == -1) {
+            b = b.negate();
+            sign = -1;
+        }
+        big = b;
+        val = big.doubleValue();
+    }
+
+    public cons() {
+        type = types.constant;
+    }
+
+    @Override
+    public boolean isConstant() {
+        return true;
     }
 
     @Override
@@ -83,73 +95,66 @@ public class cons extends func
     }
 
     @Override
-    public func getReal()
-    {
+    public func getReal() {
         return this;
     }
 
     @Override
-    public func getImaginary()
-    {
+    public func getImaginary() {
         return ZERO;
     }
 
     @Override
-    public String toLatex()
-    {
-        if (functional){
+    public String toLatex() {
+        if (functional) {
             return a.toLatex();
         }
-        if(nan){
+        if (nan) {
             return "NaN";
         }
-        if(inf){
+        if (inf) {
             return "inf";
         }
-        if(Config.useBigDecimal){
+        if (Config.useBigDecimal) {
             return big.toString();
         }
-        if(isInteger()){
-            return Integer.toString((int)val);
+        if (isInteger()) {
+            return Integer.toString((int) val);
         }
         return Double.toString(val);
     }
 
     @Override
-    public func get0(var[] v, cons[] c)
-    {
-        if(functional){
-			if(ff==null){
-				return new cons(val).sign(sign);
-			}
+    public func get0(var[] v, cons[] c) {
+        if (functional) {
+            if (ff == null) {
+                return new cons(val).sign(sign);
+            }
             //System.out.println("ff="+ff);
             //return ff.get(v, c).s(sign);
         }
         return this;
     }
-    
+
     @Override
-    public void vars0(Set<var> vars)
-    {
-        
+    public void vars0(Set<var> vars) {
+
     }
 
-	@Override
-	public double eval(var[] v, double[] d)
-	{
-		if(functional){
+    @Override
+    public double eval(var[] v, double[] d) {
+        if (functional) {
             //System.out.println("ff="+ff);
-            return sign*ff.eval(v,d);
+            return sign * ff.eval(v, d);
         }
-        return sign*val;
-	}
+        return sign * val;
+    }
 
     @Override
-    public cons evalc(var[] v, double[] d)
-    {
-        if(functional){
+    public cons evalc(var[] v, double[] d) {
+        if (functional) {
             //System.out.println("ff="+ff);
-            return (cons)signf(ff.evalc(v,d));
+            return (cons) signf(ff.evalc(v, d));
         }
         return this;
     }
@@ -192,97 +197,93 @@ public class cons extends func
         }
         return super.pow(f);
     }*/
-    
-    public BigDecimal decimal(){
-        if(sign==-1){
+
+    public BigDecimal decimal() {
+        if (sign == -1) {
             return big.negate();
         }
         return big;
     }
 
-	public boolean isInteger(){
-        if (!functional){
-            return val==(int)val;
+    public boolean isInteger() {
+        if (!functional) {
+            return val == (int) val;
         }
         return false;
     }
-    public static boolean isInteger(double value){
-        return value==(double)(int)value;
+
+    public static boolean isInteger(double value) {
+        return value == (double) (int) value;
     }
 
-    public boolean isInf(){
+    public boolean isInf() {
         return inf;
     }
-    public boolean isBig(){
-        return big!=null;
+
+    public boolean isBig() {
+        return big != null;
     }
 
     @Override
-    public func derivative(var v)
-    {
+    public func derivative(var v) {
         return ZERO;
     }
 
     @Override
-    public func integrate(var v)
-    {
+    public func integrate(var v) {
         return mul(v);
-    } 
+    }
 
     @Override
-    public String toString2()
-    {
-        if(nan){
+    public String toString2() {
+        if (nan) {
             return "NaN";
         }
-        if(inf){
+        if (inf) {
             return "inf";
         }
-        if(functional){
+        if (functional) {
             return ff.toString();
         }
-        if(Config.useBigDecimal){
+        if (Config.useBigDecimal) {
             return big.toString();
         }
-        if(isInteger()){
-            return Integer.toString((int)val);
+        if (isInteger()) {
+            return Integer.toString((int) val);
         }
-        
+
         return Double.toString(val);
     }
 
-    public cons from(double d){
+    public cons from(double d) {
         return new cons(d);
     }
-	
-	@Override
-	public boolean eq2(func f)
-	{
-        cons c=(cons)f;
-		if(inf&&c.inf){
+
+    @Override
+    public boolean eq2(func f) {
+        cons c = (cons) f;
+        if (inf && c.inf) {
             return true;
         }
-        if(nan&&c.nan){
+        if (nan && c.nan) {
             return true;
         }
         //System.out.println("this="+this+" that="+f);
-        if(functional||((cons)f).functional){
+        if (functional || ((cons) f).functional) {
             //return ff.eq(((Constant)f).ff);
             //System.out.println(getClass()==f.getClass());
-			return getClass()==f.getClass();
+            return getClass() == f.getClass();
         }
-		if(val==f.eval()){
-			return true;
-		}
-		return false;
-	}
+        if (val == f.eval()) {
+            return true;
+        }
+        return false;
+    }
 
     @Override
-    public func substitude0(var v, func p)
-    {
+    public func substitude0(var v, func p) {
         return this;
     }
 
-    
-    
+
 }

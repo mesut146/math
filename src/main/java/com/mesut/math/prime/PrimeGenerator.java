@@ -77,7 +77,7 @@ public class PrimeGenerator {
         for (int i = 0; i < plen; i++) {
             primes[i] = dis.readInt();
         }
-        System.out.println("read " + plen + " primes to cache");
+        //System.out.println("read " + plen + " primes to cache");
     }
 
     public static void readFrom(InputStream is) throws IOException {

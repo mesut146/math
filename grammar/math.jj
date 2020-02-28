@@ -7,10 +7,10 @@ options
 
 PARSER_BEGIN(MathParser)
 
-package math.parser2;
+package com.mesut.math.parser2;
 
-import math.core.*;
-import math.operator.*;
+import com.mesut.math.core.*;
+import com.mesut.math.operator.*;
 import java.util.*;
 
 public class MathParser

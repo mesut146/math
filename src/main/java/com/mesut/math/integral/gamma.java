@@ -13,8 +13,8 @@ public class gamma extends Integral
     }
 
     public gamma(func f){
-        a1=cons.ZERO;
-        a2=cons.INF;
+        lower =cons.ZERO;
+        upper =cons.INF;
         //e^-t*t^v
         v=f;
 

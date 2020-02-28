@@ -6,8 +6,8 @@ import com.mesut.math.funcs.*;
 public class erf extends Integral
 {
     public erf(func f){
-        a1=cons.ZERO;
-        a2=f;
+        lower =cons.ZERO;
+        upper =f;
         setDummy(f,var.t);
         func coef=cons.TWO.div(cons.PI.sqrt());
         a=new exp(dv.pow(2).negate()).mul(coef);

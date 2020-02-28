@@ -6,8 +6,8 @@ public class Ei extends Integral
 {
 
     public Ei(func f){
-        a1=f;
-        a2=cons.INF;
+        lower =f;
+        upper =cons.INF;
         setDummy(f,var.t);
         a=new exp(dv.negate().div(dv));
         sign=-1;

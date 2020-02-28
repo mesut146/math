@@ -20,7 +20,7 @@ func f=func.parse("e^(x^2)");
 
 System.out.println(f.derivative());
 
-Output: 2*x*e^(x^2)
+Output: (e^(x^2))*x*2
 ```
 
 ```java

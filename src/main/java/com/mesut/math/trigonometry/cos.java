@@ -54,7 +54,7 @@ public class cos extends func
     @Override
     public func simplify() {
         if (a.isConstant()){
-			if(!a.cons().functional){
+			if(!a.asCons().functional){
 			    /*if (Config.trigonomety.stay){
 
                 }*/

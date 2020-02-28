@@ -15,7 +15,7 @@ public class Util
             return (func)o;
         }
         else{
-            throw new RuntimeException("unexpected type: "+o.getClass()+" ,"+o);
+            throw new RuntimeException("unexpected type: "+o.getClass()+" , "+o);
         }
     }
     
@@ -28,7 +28,7 @@ public class Util
             return (var)o;
         }
         else{
-            throw new RuntimeException("unexpected type: "+o.getClass()+" ,"+o);
+            throw new RuntimeException("unexpected type: "+o.getClass()+" , "+o);
         }
     }
 }
