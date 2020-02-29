@@ -53,7 +53,7 @@ TOKEN:
 | <DIV: "/">
 }
 
-TOKEN: /* must be before <ident>*/
+TOKEN: /* must be before <IDENT>*/
 {
   <PI: "pi"|"Pi"|"PI">
   |<E: "e"|"E">
@@ -70,7 +70,7 @@ TOKEN: /*built in functions */
 
 TOKEN:
 {
-  <IDENT: <CHAR> (<CHAR>|<DIGIT>)*> 
+  <IDENT: <CHAR> (<CHAR> | <DIGIT>)*>
 | <#CHAR: ["a"-"z","A"-"Z"]>
 }
 
@@ -91,7 +91,7 @@ func expr():
   a=term()
   ("+" b=expr(){a=new add(a,b);}
   |"-" b=expr(){a=new add(a,b.negate());})*
-  {return a.simplify();}
+  { return a; }
 }
 
 func term():
@@ -103,7 +103,7 @@ func term():
   ("*" b=term(){a=new mul(a,b);}
   |"/" b=term(){a=new div(a,b);}
   |"^" b=term(){a=new pow(a,b);})*
-  {return a.simplify();}
+  {return a;}
 }
 
 func unary():
@@ -137,7 +137,7 @@ func funcCall():
   {return func.makeFunc(name.toString(),arg);}
 }
 
-Node call():
+/*Node call():
 {
   String name;
   List<func> arg=new ArrayList<>();
@@ -145,7 +145,7 @@ Node call():
 {
   name=fname() "(" args(arg) ")"
   {return func.makeCall(name.toString(),arg);}
-}
+}*/
 
 String fname():
 {

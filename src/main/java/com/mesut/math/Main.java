@@ -126,19 +126,6 @@ public class Main {
         System.out.println(f.derivative(21));
     }
 
-    static void prime() {
-        func f;
-        /*f=func.parse("1/(x-2)+1/(x-3)+1/(x-5)+1/(x-7)");
-        System.out.println(f);
-        System.out.println(f.eval("x=53"));*/
-        set s = new pset(100);
-        System.out.println(s);
-        s = (set) s.pow(3).mul(2).add(1);
-        System.out.println(s);
-        System.out.println(factor.factorize(s));
-        System.out.println(new prime(2).eval());
-    }
-
     static void zeta() {
         /*prime pn=new prime("n");
         
@@ -154,14 +141,6 @@ public class Main {
         //System.out.println(func.parse("atan(1+i)").getComplex());
     }
 
-    static void dif1() {
-        //Config.mul.simplify=false;
-        func f;
-        //f=func.parse("f'(x)+f(x)*p(x)-q(x)");
-        f = func.parse("1/(3*x^2-3)");
-        System.out.println(f);
-        System.out.println(f.derivative(2));
-    }
 
     static void floor() {
         func f = func.parse("floor((n+3)/3)-floor((n+2)/3)");
@@ -169,13 +148,6 @@ public class Main {
         for (int n = 0; n < 20; n++) {
             System.out.printf("n=%d %s%n", n, f.eval("n", n));
         }
-    }
-
-    static void diff() {
-        FirstOrder fo = new FirstOrder();
-        fo.p = func.parse("1");
-        fo.q = func.parse("2*e^x+e^(x^2)*(2*x+1)");
-        fo.solve();
     }
 
     static void col() {
@@ -192,15 +164,6 @@ public class Main {
         }
     }
 
-    static void taylor() {
-        func f = func.parse("x*e^x");
-        //System.out.println(taylor.numeric(f,0,10));
-        /*System.out.println(f);
-        System.out.println(f.derivative());*/
-        System.out.println(new inv(f).taylor(0, 5));
-
-        //System.out.println(taylorsym.symbol("ln(x)","x",1,8));
-    }
 
     static func random(int max) {
         Random r = new Random();

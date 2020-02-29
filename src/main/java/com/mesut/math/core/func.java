@@ -6,11 +6,13 @@ import com.mesut.math.funcs.exp;
 import com.mesut.math.funcs.fac;
 import com.mesut.math.funcs.sqrt;
 import com.mesut.math.operator.*;
-import com.mesut.math.parser.Parser;
+import com.mesut.math.parser2.MathParser;
+import com.mesut.math.parser2.ParseException;
 import com.mesut.math.taylor;
 import com.mesut.math.taylorsym;
 import com.mesut.math.trigonometry.atan;
 
+import java.io.StringReader;
 import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -23,34 +25,15 @@ public abstract class func {
     }
 
     public types type = types.func;
-    public int sign = 1;
+    public int sign = 1;//positive by default
     public boolean fx = false;
-    public func a = null, b = null;
-    public List<func> f = new ArrayList<>();
-    public List<func> alter = new ArrayList<>();
+    public func a = null, b = null;//left - right for div and others
+    public List<func> f = new ArrayList<>();//list of internal functions
+    public List<func> alter = new ArrayList<>();//alternative representations
     public static Map<String, Class<?>> map = new HashMap<>();
-    public static HashMap<func, func> rules = new HashMap<>();
-    //public HashMap<func,func> rules=new HashMap<>();
 
     static {
-        /*if(map.size()==0){
-
-        }*/
         Config.init();
-    }
-
-    public static void addRule(func a, func b) {
-        rules.put(a, b);
-    }
-
-    public static void addRule(String s) {
-        String sp[] = s.split("=");
-        func a = parse(sp[0]);
-        func b = parse(sp[1]);
-        if (b.name().equals("fx")) {
-            //a=a.substitude();
-        }
-        addRule(a, b);
     }
 
     //TODO make args Object autocast
@@ -64,7 +47,8 @@ public abstract class func {
                 if (args.size() == 1) {
                     co = c.getDeclaredConstructor(func.class);
                     res = co.newInstance(args.get(0));
-                } else {
+                }
+                else {
                     //System.out.println("args="+args);
                     Class<?>[] arr = new Class<?>[args.size()];
                     for (int i = 0; i < args.size(); i++) {
@@ -78,10 +62,12 @@ public abstract class func {
                 e.printStackTrace();
                 //System.out.println(this);
             }
-        } else {
+        }
+        else {
             if (com.mesut.math.core.fx.has(name)) {
                 res = com.mesut.math.core.fx.getFx(name);
-            } else {
+            }
+            else {
                 res = new fx(name, args.toArray(new func[args.size()]));
             }
         }
@@ -99,14 +85,6 @@ public abstract class func {
         return new sqrt(this);
     }
 
-    public String d() {
-        return getClass() + " " + toString();
-    }
-
-    //public abstract fx find(String name);
-	/*protected String ss(){
-     return sign==-1?"-":"";
-     }*/
 
     public void set(List<func> l) {
         f.clear();
@@ -324,15 +302,17 @@ public abstract class func {
         return this;
     }
 
-    public func sign(func f) {
-        f.sign *= sign;
-        return f;
+    //sign other function form this
+    public func sign(func other) {
+        other.sign *= sign;
+        return other;
     }
 
-    public func signf(func f) {
-        func c = f.copy();
-        c.sign *= sign;
-        return c;
+    //sign with copy
+    public func signf(func other) {
+        func copy = other.copy();
+        copy.sign *= sign;
+        return copy;
     }
 
     public cons sc(func o) {
@@ -347,16 +327,16 @@ public abstract class func {
         return x;
     }
 
-    public func add(func f) {
-        func x = new add(this, f);
+    public func add(func other) {
+        func x = new add(this, other);
         if (Config.add.simplify) {
             x = x.simplify();
         }
-        return makeCons(x, f);
+        return makeCons(x, other);
     }
 
-    public func add(double d) {
-        return add(new cons(d));
+    public func add(double other) {
+        return add(new cons(other));
     }
 
     public func sub(func f) {
@@ -378,7 +358,8 @@ public abstract class func {
         }
         if (f.is(1)) {
             return this;
-        } else if (f.is(0)) {
+        }
+        else if (f.is(0)) {
             return cons.ZERO;
         }
         func x = new mul(this, f);
@@ -401,8 +382,8 @@ public abstract class func {
         return makeCons(x, f);
     }
 
-    public func div(double d) {
-        return div(new cons(d));
+    public func div(double val) {
+        return div(new cons(val));
     }
 
     public func pow(func f) {
@@ -434,37 +415,45 @@ public abstract class func {
         return type.toString();
     }
 
+    //negate without copy
+    public func negate0() {
+        sign = -sign;
+        return this;
+    }
+
+    //negate with copy
     public func negate() {
-        func c = copy();
-        c.sign = -c.sign;
-        return c;
+        func res = copy();
+        res.sign = -res.sign;
+        return res;
     }
 
     public final func copy() {
-        func f = copy0();
-        f.sign = sign;
-        return f;
+        func res = copy0();
+        res.sign = sign;
+        return res;
     }
 
-    public abstract func copy0();
+    public abstract func copy0();//internal
 
     public static List<func> getFree() {
-        return new ArrayList<func>();
+        return new ArrayList<>();
     }
 
     @Override
     public String toString() {
-        String s = toString2();
+        String str = toString2();
         if (sign == -1) {
-            s = "-" + s;
+            str = "-" + str;
         }
-        return s;
+        return str;
     }
 
     public abstract String toString2();
 
     public abstract String toLatex();
 
+    //print with parenthesis
     public String top() {
         if (fx) {
             return toString();
@@ -472,13 +461,12 @@ public abstract class func {
         return "(" + toString() + ")";
     }
 
-    public int find(types t) {
-        int i = 0;
-        for (func p : f) {
-            if (p.type == t) {
+    //get index of that type
+    public int find(types type) {
+        for (int i = 0; i < f.size(); i++) {
+            if (f.get(i).type == type) {
                 return i;
             }
-            i++;
         }
         return -1;
     }
@@ -540,67 +528,32 @@ public abstract class func {
         return isPow() && b.isVariable() && a.isConstant();
     }
 
-    /*public funcs root(){
-     funcs x=Constant.ONE,y;
-     funcs p=this.div(this.derivative());
-     int i=0,max=1000;
-     double eps=0.000000000000001;
-     while(i<max){
-     y=x.sub(p.eval(x.eval()));
-     System.out.println(y);
-     if(Math.abs(x-y)<=eps){
-     break;
-     }
-     x=y;
-     i++;
-     }
-     return x;
-     }
-
-     public BigDecimal root2(int len){
-     BigDecimal x=BigDecimal.ONE,y;
-     funcs p=this.div(this.derivative());
-     int i=0,max=1000;
-     BigDecimal eps=BigDecimal.TEN.pow(-len);
-     MathContext mc=new MathContext(len);
-     while(i<max){
-     //y=x-p.eval(x);
-     y=x.subtract(null,mc);
-     if(x.subtract(y,mc).abs(mc).compareTo(eps)<=0){
-
-     break;
-     }
-     x=y;
-     i++;
-     }
-     return x;
-     }*/
-
     public String name() {
-        String s = getClass().getName();
-        return s.substring(s.lastIndexOf(".") + 1);
+        String res = getClass().getName();
+        return res.substring(res.lastIndexOf(".") + 1);
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o != null && (o instanceof func)) {
-            return eq((func) o);
+    public boolean equals(Object other) {
+        if ((other instanceof func)) {
+            return eq((func) other);
         }
         return false;
     }
 
-    public boolean eq(func f) {
+    public boolean eq(func other) {
 
-        if (f != null && type == f.type) {
-            return sign == f.sign && eq2(f);
+        if (other != null && type == other.type) {
+            return sign == other.sign && eq2(other);
         }
         return false;
     }
 
-    public boolean eqws(func f) {
+    //equal without sign
+    public boolean eqws(func other) {
 
-        if (f != null && type == f.type) {
-            return eq2(f);
+        if (other != null && type == other.type) {
+            return eq2(other);
         }
         return false;
     }
@@ -608,16 +561,16 @@ public abstract class func {
     public abstract boolean eq2(func f);
 
     public static boolean isEq(List<func> l1, List<func> l2) {
-        int l;
-        if ((l = l1.size()) != l2.size()) {
+        int len = l1.size();
+        if (len != l2.size()) {
             return false;
         }
-        boolean b[] = new boolean[l];
+        boolean[] b = new boolean[len];
         main:
-        for (int i = 0; i < l; i++) {
-            func p = l1.get(i);
-            for (int j = 0; j < l; j++) {
-                if (!b[j] && p.eq(l2.get(j))) {
+        for (int i = 0; i < len; i++) {
+            func first = l1.get(i);
+            for (int j = 0; j < len; j++) {
+                if (!b[j] && first.eq(l2.get(j))) {
                     b[j] = true;
                     continue main;
                 }
@@ -628,15 +581,21 @@ public abstract class func {
     }
 
     public List<var> vars() {
-        Set<var> s = new HashSet<>();
-        vars0(s);
-        return new ArrayList<var>(s);
+        Set<var> set = new HashSet<>();
+        vars0(set);
+        return new ArrayList<>(set);
     }
 
     public abstract void vars0(Set<var> vars);
 
-    public static func parse(String s) {
-        return Parser.parse(s).simplify();
+    public static func parse(String expr) {
+        try {
+            return new MathParser(new StringReader(expr)).expr();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new Error(expr);
+        }
+        //return Parser.parse(expr).simplify();
     }
 
     public func substitude(var v, func f) {
@@ -655,13 +614,6 @@ public abstract class func {
         return taylorsym.symbol(this, v, at, n);
     }
 
-    static int fac(int p) {
-        int r = 1;
-        for (int i = 2; i <= p; i++) {
-            r *= i;
-        }
-        return r;
-    }
 
     public double numericDerivative(double at) {
         return numericDerivative(at, Config.numericDerivativePrecision);

@@ -7,7 +7,6 @@ import com.mesut.math.cons.phi;
 import com.mesut.math.cons.pi;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.Set;
 
 public class cons extends func {
@@ -16,29 +15,24 @@ public class cons extends func {
             ONE = new cons(1),
             TWO = new cons(2);
     public static final cons NaN, INF, MINF;
-    public static final cons E = new e(),
-            PI = new pi(),
-            i = new i(),
-            PHI = new phi();
-    public static final func PID2 = PI.div(2), PID3 = PI.div(3);
+    public static final cons E = new e();
+    public static final cons PI = new pi();
+    public static final cons i = new i();
+    public static final cons PHI = new phi();
+    //public static final func PID2 = PI.div(2), PID3 = PI.div(3);
 
     public boolean functional = false;
     public func ff;
     public double val = 0;
     public BigDecimal big;
     boolean nan = false, inf = false;
-    public static MathContext mc = new MathContext(Config.precision);
+    //public static MathContext mc = new MathContext(Config.precision);
     //public static final Constant PI2,PI3,PI4,PI5,PI6;
 
     static {
-        NaN = new cons();
-        NaN.nan = true;
-        INF = new cons();
-        INF.inf = true;
-        INF.val = Double.MAX_VALUE;
-        MINF = new cons();
-        MINF.inf = true;
-        MINF.val = Double.MAX_VALUE;
+        NaN = makeNan();
+        INF = makeInf();
+        MINF = makeInf();
         MINF.sign = -1;
 		/*PI2=(Constant)PI.div(2);
 		PI3=(Constant)PI.div(3);
@@ -56,9 +50,11 @@ public class cons extends func {
         val = d;
         if (Double.isInfinite(val)) {
             inf = true;
-        } else if (Double.isNaN(val)) {
+        }
+        else if (Double.isNaN(val)) {
             nan = true;
-        } else {
+        }
+        else {
             big = new BigDecimal(val);
         }
         type = types.constant;
@@ -80,6 +76,19 @@ public class cons extends func {
         val = big.doubleValue();
     }
 
+    private static cons makeInf() {
+        cons res = new cons();
+        res.val = Double.MAX_VALUE;
+        res.inf = true;
+        return res;
+    }
+
+    private static cons makeNan() {
+        cons res = new cons();
+        res.nan = true;
+        return res;
+    }
+
     public cons() {
         type = types.constant;
     }
@@ -91,6 +100,12 @@ public class cons extends func {
 
     @Override
     public func copy0() {
+        if (inf) {
+            return makeInf();
+        }
+        else if (nan) {
+            return makeNan();
+        }
         return new cons(val);
     }
 
@@ -214,6 +229,10 @@ public class cons extends func {
 
     public static boolean isInteger(double value) {
         return value == (double) (int) value;
+    }
+
+    public boolean isMinf() {
+        return inf && sign == -1;
     }
 
     public boolean isInf() {

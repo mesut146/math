@@ -94,7 +94,8 @@ public class Integral extends func {
         List<var> l = f.vars();
         if (l.contains(v)) {
             dv = makeDummy(l);
-        } else {
+        }
+        else {
             dv = v;
         }
     }
@@ -113,7 +114,8 @@ public class Integral extends func {
                 }
             }
             return new var("x0");
-        } else {
+        }
+        else {
             for (String sv : pref) {
                 if (!str.contains(sv)) {
                     return new var(sv);
@@ -142,6 +144,8 @@ public class Integral extends func {
 
     @Override
     public double eval() {
+        //check single variable
+        makeFinite();
         return riemannSum();
     }
 
@@ -149,7 +153,7 @@ public class Integral extends func {
     public double eval(var[] v, double[] d) {
         a = a.get(v, d);
         System.out.println("int=" + a + " dv=" + dv);
-        return riemannSum();
+        return eval();
     }
 
     @Override
@@ -157,25 +161,69 @@ public class Integral extends func {
         return new cons(eval(v, d));
     }
 
+    //transform infinite bounds to 0,1 range
+    public void makeFinite() {
+        boolean isLow = lower.asCons().isInf();
+        boolean isUp = upper.asCons().isInf();
+        if (isLow) {
+            if (isUp) {//both
+                var nv = var.t;
+                func tsq = nv.pow(2);
+                func ext = cons.ONE.add(tsq).div(cons.ONE.sub(tsq).pow(2));
+                func np = nv.div(cons.ONE.sub(tsq));
+                this.a = a.substitude(dv, np).mul(ext);
+                this.dv = nv;
+                this.lower = cons.ONE.negate();
+                this.upper = cons.ONE;
+            }
+            else {//low only
+                var nv = var.t;
+                func ext = nv.pow(-2);
+                func np = upper.sub(cons.ONE.sub(nv).div(nv));
+                this.a = a.substitude(dv, np).mul(ext);
+                this.dv = nv;
+                this.lower = cons.ZERO;
+                this.upper = cons.ONE;
+            }
+        }
+        else if (isUp) {//up only
+            var nv = var.t;
+            func ext = cons.ONE.div(cons.ONE.sub(nv).pow(2));
+            func np = lower.add(nv.div(cons.ONE.sub(nv)));
+            this.a = a.substitude(dv, np).mul(ext);
+            this.dv = nv;
+            this.lower = cons.ZERO;
+            this.upper = cons.ONE;
+        }
+    }
+
     double riemannSum() {
         if (!lower.isConstant() || !upper.isConstant()) {
-            System.out.println("integral limits must be constant");
-            return 0;
+            throw new Error("integral limits must be constant");
         }
-        //todo scale upper
         double sum = 0;
         double k = Config.integral.interval;
         double low = lower.eval();
         double dx = (upper.eval() - low) / k;
-        //a+n*dx
-        //func fx=new add(new cons(a), new mul(new var("n"), new cons(dx))).simplify();
-        //System.out.println(fx);
 
-        for (int i = 0; i <= k; i++) {
+        double convRange = Math.pow(10, -Config.integral.convDecimal);
+        int curTries = 0;
+        double curVal = 0;
+        for (int i = 1; i < k; i++) {
             double p = low + i * dx;
-            sum = sum + a.eval(dv, p) * dx;
-            System.out.println(sum);
-            if ((k / 10) % i == 0) System.out.println(sum);
+            curVal = a.eval(dv, p) * dx;
+            //check if we converged enough
+            /*if (Math.abs(curVal) <= convRange) {
+                curTries++;
+                if (curTries == Config.integral.convMaxTries) {
+                    //break;
+                }
+            }*/
+            sum += curVal;
+            //System.out.println(i + "-sum=" + sum);
+            /*if ((k / 10) % i == 0) {
+                System.out.println("sum=" + sum);
+            }*/
         }
         return sum;
     }
@@ -194,7 +242,8 @@ public class Integral extends func {
             if (b1 || b2) {
                 if (l3.contains(v)) {
 
-                } else {//fubuni's theorem
+                }
+                else {//fubuni's theorem
                     func ls = a.substitude(dv, upper).mul(upper.derivative(v));
                     func rs = a.substitude(dv, lower).mul(lower.derivative(v));
                     return ls.sub(rs);
@@ -244,7 +293,8 @@ public class Integral extends func {
         if (hasLimits() == i.hasLimits()) {
             if (hasLimits()) {
                 return a.eq(i.a) && dv.eq(i.dv) && lower.eq(i.lower) && upper.eq(i.upper);
-            } else {
+            }
+            else {
                 return a.eq(i.a) && dv.eq(i.dv);
             }
 

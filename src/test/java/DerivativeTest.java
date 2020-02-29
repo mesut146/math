@@ -15,4 +15,14 @@ public class DerivativeTest {
         System.out.println(f.derivative().eval(1));
         System.out.println(f.numericDerivative(1));
     }
+
+    @Test
+    public void dif1() {
+        //Config.mul.simplify=false;
+        func f;
+        //f=func.parse("f'(x)+f(x)*p(x)-q(x)");
+        f = func.parse("1/(3*x^2-3)");
+        System.out.println(f);
+        System.out.println(f.derivative(2));
+    }
 }
