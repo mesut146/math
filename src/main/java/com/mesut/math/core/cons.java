@@ -128,7 +128,7 @@ public class cons extends func {
             return "NaN";
         }
         if (inf) {
-            return "inf";
+            return "\\infty";
         }
         if (Config.useBigDecimal) {
             return big.toString();

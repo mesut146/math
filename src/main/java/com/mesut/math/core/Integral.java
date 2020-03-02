@@ -197,7 +197,7 @@ public class Integral extends func {
         }
     }
 
-    double riemannSum() {
+    public double riemannSum() {
         if (!lower.isConstant() || !upper.isConstant()) {
             throw new Error("integral limits must be constant");
         }
@@ -226,6 +226,47 @@ public class Integral extends func {
             }*/
         }
         return sum;
+    }
+
+    public double calcWithTaylor(int n) {
+        double sum = 0;
+        set set = new set();
+        for (int i = 0; i < n; i++) {
+
+        }
+        sum = set.sum();
+        return sum;
+    }
+
+    public double calcWithTaylor() {
+        return calcWithTaylor(10);
+    }
+
+    public double rectangleRule() {
+        double a = lower.eval();
+        double b = upper.eval();
+
+        return (b - a) * this.a.eval((a + b) / 2);
+    }
+
+    public double trapezoidalRule() {
+        double a = lower.eval();
+        double b = upper.eval();
+
+        return (b - a) * (this.a.eval(a) + this.a.eval(b)) / 2;
+    }
+
+    public double composizeTrapezoidalRule(int n) {
+        double a = lower.eval();
+        double b = upper.eval();
+
+        double total = (b - a) / n;
+        var sigVar = var.t;
+        func newFunc = new cons(a).add(sigVar.mul(total));
+
+        sigma sigma = new sigma(this.a.substitude(dv, newFunc), sigVar, 1, n - 1);
+        double rest = sigma.eval();
+        return total * (this.a.eval(a) / 2 + this.a.eval(b) / 2 + rest);
     }
 
     @Override

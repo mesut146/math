@@ -105,7 +105,7 @@ public class inv extends func
     @Override
     public taylor taylor(double at,int n)
     {
-        func df=a.derivative();
+        /*func df=a.derivative();
         func d=var.x;
         //centered f(at)
         num.at=a.eval(at);
@@ -114,7 +114,7 @@ public class inv extends func
             d=d.derivative().div(df);
             System.out.println(d);
             num.put(d.eval(at)/new fac(i).eval(),i);
-        }
+        }*/
         return num;
     }
     

@@ -80,11 +80,11 @@ public class add extends func {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < f.size(); i++) {
-            func p = f.get(i);
-            if (i == 0 && sign * p.sign == -1) {
+            func term = f.get(i);
+            if (i == 0 && sign * term.sign == -1) {
                 sb.append("-");
             }
-            sb.append(p.toString2());
+            sb.append(term.toString2());
             if (i < f.size() - 1) {
                 int s = f.get(i + 1).sign * sign;
                 if (s == 1) {

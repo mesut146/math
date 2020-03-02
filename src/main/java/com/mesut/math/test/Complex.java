@@ -1,4 +1,4 @@
-package com.mesut.math;
+package com.mesut.math.test;
 
 import com.mesut.math.core.*;
 import com.mesut.math.trigonometry.*;

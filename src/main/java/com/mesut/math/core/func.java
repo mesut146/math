@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 public abstract class func {
 
     public enum types {
-        func, fx, constant, variable, add, sub, mul, div, pow, ln, sin, cos;
+        func, fx, constant, variable, add, sub, mul, div, pow, ln, sin, cos
     }
 
     public types type = types.func;
@@ -189,11 +189,12 @@ public abstract class func {
     }
 
     public double eval(double d) {
-        List<var> lv = vars();
-        if (lv.size() == 0 || lv.contains(var.x)) {
+        List<var> vars = vars();
+
+        if (vars.size() == 0 || vars.contains(var.x)) {
             return eval(var.x, d);
         }
-        return eval(lv.get(0), d);
+        return eval(vars.get(0), d);
     }
 
     //multiplication inverse
@@ -240,13 +241,17 @@ public abstract class func {
     }
 
     public final func derivative() {
-        return derivative(var.x);
+        List<var> set = vars();
+        if (set.isEmpty()) {
+            return cons.ZERO;
+        }
+        return derivative(set.get(0));
     }
 
     public abstract func derivative(var v);
 
-    public final func derivative(String s) {
-        return derivative(new var(s));
+    public final func derivative(String varStr) {
+        return derivative(new var(varStr));
     }
 
     public func derivative(int n) {
@@ -258,11 +263,11 @@ public abstract class func {
         if (n < 1) {
             return this;
         }
-        func d = this;
+        func res = this;
         for (int i = 0; i < n; i++) {
-            d = d.derivative(v);
+            res = res.derivative(v);
         }
-        return d;
+        return res;
     }
 
 
@@ -606,13 +611,15 @@ public abstract class func {
 
     //center,terms
     public taylor taylor(double at, int n) {
-        return taylor.numeric(this, at, n);
+        taylor taylor = new taylor(this, at);
+        taylor.calc(n);
+        return taylor;
     }
 
     //var,center,terms
-    public taylorsym taylorsym(var v, func at, int n) {
+    /*public taylorsym taylorsym(var v, func at, int n) {
         return taylorsym.symbol(this, v, at, n);
-    }
+    }*/
 
 
     public double numericDerivative(double at) {

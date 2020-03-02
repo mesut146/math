@@ -1,4 +1,4 @@
-package com.mesut.math;
+package com.mesut.math.test;
 import java.util.*;
 
 public class Rules
