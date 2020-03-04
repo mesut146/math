@@ -49,3 +49,16 @@ Ouptut: p{2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97
 System.out.println(factor.factorize(1000));
 Output: 2^3*5^3
 ```
+
+### Imaginary numbers
+```java
+func f = func.parse("e^(i*x)");
+System.out.println(f.getReal()); //cos(x)
+System.out.println(f.getImaginary()); //sin(x)
+
+func f = func.parse("ln(x+i)^i");
+System.out.println(f.getReal());
+Output: (e^(-atan((atan(1/x))/(ln(sqrt(x^2+1))))))*cos(ln(sqrt(ln(sqrt(x^2+1))^2+(atan(1/x))^2)))
+System.out.println(f.getImaginary());
+Output: (e^(-atan((atan(1/x))/(ln(sqrt(x^2+1))))))*sin(ln(sqrt(ln(sqrt(x^2+1))^2+(atan(1/x))^2)))
+```

@@ -33,13 +33,6 @@
 
 
     <dependencies>
-        <dependency>
-            <groupId>png</groupId>
-            <artifactId>pngj</artifactId>
-            <version>2.1.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/pngj-2.1.1.jar</systemPath>
-        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
