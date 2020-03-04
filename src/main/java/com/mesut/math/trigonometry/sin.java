@@ -21,7 +21,7 @@ public class sin extends func
         this(f,1);
     }
     public sin(func f,int s){
-        type=types.sin;
+        //type=types.sin;
         a=f;
         sign=s*f.sign;
 		f.sign=1;

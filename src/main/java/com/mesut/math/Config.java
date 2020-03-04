@@ -9,12 +9,12 @@ import com.mesut.math.trigonometry.*;
 import static com.mesut.math.core.func.register;
 
 public class Config {
-    public static boolean useBigDecimal = false;
-    public static int precision = 25;
+    public static int printDecimals = -1;//#digits will be printed , -1 means disabled
+    public static boolean useBigDecimal = false;//cons will use math.BigDecimal instead of double
+    public static int precision = 25;//bigdecimal digits
     public static int numericDerivativePrecision = 5;
     public static int maxIteration = 100000;//sigma
     public static int digits = 5;//sigma
-    //public static String primePath;
 
     public static class add {
         public static boolean simplify = true;
@@ -39,8 +39,8 @@ public class Config {
 
     public static class integral {
         public static int interval = 100000;//divide to this much sub intervals
-        public static int convDecimal=16;//number of decimal for convergence
-        public static int convMaxTries=10;//if sum doesn't grow this iteration we stop
+        public static int convDecimal = 16;//number of decimal for convergence
+        public static int convMaxTries = 10;//if sum doesn't grow this iteration we stop
         public static boolean converge = false;
     }
 

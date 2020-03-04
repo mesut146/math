@@ -7,6 +7,7 @@ import com.mesut.math.cons.phi;
 import com.mesut.math.cons.pi;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Set;
 
 public class cons extends func {
@@ -57,23 +58,32 @@ public class cons extends func {
         else {
             big = new BigDecimal(val);
         }
-        type = types.constant;
+        //type = types.constant;
     }
 
     public cons(func f) {
         ff = f;
         functional = true;
-        type = types.constant;
+        //type = types.constant;
     }
 
     public cons(BigDecimal b) {
-        type = types.constant;
+        //type = types.constant;
         if (b.signum() == -1) {
             b = b.negate();
             sign = -1;
         }
         big = b;
         val = big.doubleValue();
+    }
+
+    public cons() {
+        //type = types.constant;
+    }
+
+    @Override
+    public boolean isConstant() {
+        return true;
     }
 
     private static cons makeInf() {
@@ -89,15 +99,6 @@ public class cons extends func {
         return res;
     }
 
-    public cons() {
-        type = types.constant;
-    }
-
-    @Override
-    public boolean isConstant() {
-        return true;
-    }
-
     @Override
     public func copy0() {
         if (inf) {
@@ -109,11 +110,13 @@ public class cons extends func {
         return new cons(val);
     }
 
+    //all cons are real except i
     @Override
     public func getReal() {
         return this;
     }
 
+    //i will override this
     @Override
     public func getImaginary() {
         return ZERO;
@@ -270,7 +273,12 @@ public class cons extends func {
         if (isInteger()) {
             return Integer.toString((int) val);
         }
-
+        if (Config.printDecimals > 0) {
+            DecimalFormat df = new DecimalFormat("#.##");
+            df.setMaximumFractionDigits(Config.printDecimals);
+            return df.format(val);
+            //return String.format("%." + Config.printDecimals + "f", val);
+        }
         return Double.toString(val);
     }
 

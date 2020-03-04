@@ -2,148 +2,86 @@ package com.mesut.math.operator;
 
 import com.mesut.math.Config;
 import com.mesut.math.core.cons;
-import com.mesut.math.core.var;
 import com.mesut.math.core.func;
+import com.mesut.math.core.var;
+import com.mesut.math.funcs.ln;
 
 import java.util.*;
 
-public class mul extends func
-{
+public class mul extends func {
 
-    static int idc=0;
+    static int idc = 0;
     int id;
-    
-    @Override
-    public func getReal()
-    {
-        func p=left();
-		func q=right();
-        func ac=p.getReal().mul(q.getReal());
-        func bd=p.getImaginary().mul(q.getImaginary());
-        return sign(ac.sub(bd));
+
+    public mul(func... args) {
+        Collections.addAll(f, args);
+        //type = types.mul;
+        id = idc++;
+    }
+
+    public mul(List<func> args) {
+        f.addAll(args);
+        //type = types.mul;
+        id = idc++;
     }
 
     @Override
-    public func getImaginary()
-    {
-        func p=left();//a+bi
-        func q=right();//c+di
-        func ad=p.getReal().mul(q.getImaginary());
-        func bc=p.getImaginary().mul(q.getReal());//
-        
-        return sign(ad.add(bc));
-    }
-    
-    func left(){
-        return f.get(0);
-    }
-    func right(){
-        return f.size() == 2?f.get(1): new mul(f.subList(1, f.size()));
-    }
-    
-    @Override
-    public String toLatex()
-    {
-        StringBuilder sb=new StringBuilder();
-        func x;
-        for (int i=0;i < f.size();i++)
-        {
-            x = f.get(i);
-            if (x.isAdd())
-            {
-                sb.append("(");
-                sb.append(x.toLatex());
-                sb.append(")");
-            }
-            else
-            {
-                sb.append(x.toLatex());
-            }
-
-            if (i < f.size() - 1)
-            {
-                sb.append("*");
-            }
-        }
-        return sb.toString();
+    public boolean isMul() {
+        return true;
     }
 
     @Override
-    public void vars0(Set<var> vars)
-    {
-        for(func term:f){
+    public void vars0(Set<var> vars) {
+        for (func term : f) {
             term.vars0(vars);
         }
     }
 
-    public mul(func...f1)
-    {
-        Collections.addAll(f,f1);
-		type = types.mul;
-        id=idc++;
-    }
-
-	public mul(List<func> f1)
-    {
-		f.addAll(f1);
-		type = types.mul;
-        id=idc++;
+    @Override
+    public func get0(var[] v, cons[] c) {
+        mul res = new mul();
+        for (func term : f) {
+            res.f.add(term.get(v, c));
+        }
+        return sign(res.simplify());
     }
 
     @Override
-    public func get0(var[] v, cons[] c)
-    {
-        mul m=new mul();
-        for (func term:f)
-        {
-            m.f.add(term.get(v,c));
+    public double eval(var[] v, double[] d) {
+        double res = 1;
+        for (func term : f) {
+            res *= term.eval(v, d);
         }
-		return sign(m);
+        return sign * res;
     }
 
-	@Override
-	public double eval(var[] v, double[] d)
-	{
-		double m=1;
-        for (func f1:f)
-        {
-            m *= f1.eval(v, d);
-        }
-		return sign * m;
-	}
-    
     @Override
-    public cons evalc(var[] v, double[] d)
-    {
-        func m=cons.ONE;
-        for (func f1:f)
-        {
-            m = m.mul(f1.evalc(v, d));
+    public cons evalc(var[] v, double[] d) {
+        func m = cons.ONE;
+        for (func term : f) {
+            m = m.mul(term.evalc(v, d));
         }
         return sc(m);
-	}
+    }
 
     @Override
-    public func derivative(var v)
-    {
+    public func derivative(var v) {
         //a*b ==> a'*b+a*b'
-		func p=left();
-		func q=right();
-		func o=p.derivative(v).mul(q).add(p.mul(q.derivative(v)));
-        //System.out.println("o="+p);
+        func p = left();
+        func q = right();
+        func o = p.derivative(v).mul(q).add(p.mul(q.derivative(v)));
         return sign(o);
     }
 
     @Override
-    public func integrate(var v)
-    {
-        int i=find(types.constant);
-        if (i != -1)
-        {
-            List<func> l=getFree();
-            l.addAll(f);      
-            func k=l.remove(i);
-            func m=new mul(l);
+    public func integrate(var v) {
+        return this;
+        /*int index = find(types.constant);
+        if (index != -1) {
+            List<func> list = getFree();
+            list.addAll(f);
+            func k = list.remove(index);
+            func m = new mul(list);
             return k.mul(m.integrate(v));
         }
         if (f.size() == 1)//add invisible 1
@@ -151,151 +89,167 @@ public class mul extends func
             f.add(cons.ONE);
         }
         order();
-        return byParts();
+        return byParts();*/
     }
 
-    public func byParts()
-    {
-        func a=f.get(0);
-        func b=f.get(1);
-        func g=b.integrate();
-        func h=a.derivative().mul(g);
+    public func byParts() {
+        func a = f.get(0);
+        func b = f.get(1);
+        func g = b.integrate();
+        func h = a.derivative().mul(g);
         System.out.println(String.format("a=%s,b=%s,g=%s,h=%s", a, b, g, h));
 
         return a.mul(g).sub(h.integrate());
     }
 
-    void order()
-    {
-        if (f.size() < 2)
-        {
+    void order() {
+        if (f.size() < 2) {
             return;
         }
         //laptü
-        //System.out.println("f="+f);
-        func a=f.get(0);
-        func b=f.get(1);
-        if (logarithmic(b) || b.isPolinom() || b.isPower())
-        {
+        func a = f.get(0);
+        func b = f.get(1);
+        if (isLogarithmic(b) || b.isPolynom() || b.isPower()) {
             f.set(0, b);
             f.set(1, a);
         }
     }
 
-    void swap()
-    {
-        func a=f.get(0);
-        func b=f.get(1);
-        f.set(0, b);
-        f.set(1, a);
-    }
-
-    boolean logarithmic(func p)
-    {
-        //System.out.println("f="+f);
-        if (p.type == types.ln)
-        {
-            return true;
-        }
-        return false;
+    boolean isLogarithmic(func p) {
+        return p instanceof ln;
     }
 
     @Override
-    public String toString2()
-    {
-		StringBuffer sb=new StringBuffer();
-		for (int i=0;i < f.size();i++)
-        {
-			func p=f.get(i);
-			if (p.isAdd())
-            {
-				sb.append(p.top());
-			}
-            else if (p.isPow())
-            {
-                sb.append(p.top());
-            }
-            else
-            {
-				sb.append(p);
-			}
-			if (i < f.size() - 1)
-            {
-				sb.append("*");
-			}
-		}
-		return sb.toString();
+    public func getReal() {
+        func p = left();
+        func q = right();
+        func ac = p.getReal().mul(q.getReal());
+        func bd = p.getImaginary().mul(q.getImaginary());
+        return sign(ac.sub(bd));
     }
 
-    void log(String s){
-        if(s!=null&&s.length()>0){
-            System.out.printf("id=%d f=%s %s\n",id,f,s);
-        }else{
-            System.out.printf("id=%d f=%s\n",id,f);
-        }
-        
+    @Override
+    public func getImaginary() {
+        func p = left();//a+bi
+        func q = right();//c+di
+        func ad = p.getReal().mul(q.getImaginary());
+        func bc = p.getImaginary().mul(q.getReal());//
+
+        return sign(ad.add(bc));
     }
-    
-    public func simplify()
-    {
-        if(!Config.mul.simplify){
+
+    func left() {
+        return f.get(0);
+    }
+
+    func right() {
+        return f.size() == 2 ? f.get(1) : new mul(f.subList(1, f.size()));
+    }
+
+    @Override
+    public String toString2() {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < f.size(); i++) {
+            func term = f.get(i);
+
+            if (term.isAdd()) {
+                sb.append(term.top());
+            }
+            else if (term.isPow()) {
+                sb.append(term.top());
+            }
+            else {
+                sb.append(term);
+            }
+            if (i < f.size() - 1) {
+                sb.append("*");
+            }
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String toLatex() {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < f.size(); i++) {
+            func term = f.get(i);
+
+            if (term.isAdd()) {
+                sb.append("(");
+                sb.append(term.toLatex());
+                sb.append(")");
+            }
+            else {
+                sb.append(term.toLatex());
+            }
+
+            if (i < f.size() - 1) {
+                sb.append("*");
+            }
+        }
+        return sb.toString();
+    }
+
+    void log(String msg) {
+        if (msg != null && msg.length() > 0) {
+            System.out.printf("id=%d f=%s %s\n", id, f, msg);
+        }
+        else {
+            System.out.printf("id=%d f=%s\n", id, f);
+        }
+    }
+
+    public func simplify() {
+        if (!Config.mul.simplify) {
             return this;
         }
-		List<func> l=getFree();
+        List<func> list = getFree();
         //log("before");
-		for (func p:f)
-        {
-            if (p.is(0))
-            {
+        for (func term : f) {
+            if (term.is(0)) {
                 return cons.ZERO;
             }
-			if (p.isMul())
-            {
-				l.addAll(p.f);
-                sign *= p.sign;
-                p.sign=1;
-			}
-            else if (p.is(1)||p.is(-1))
-            {
-                sign *= p.eval();
-                continue;
+            if (term.isMul()) {//merge
+                list.addAll(term.f);
+                sign *= term.sign;
+                term.sign = 1;
             }
-			else
-            {
-                l.add(p);
+            else if (term.is(1) || term.is(-1)) {
+                sign *= term.eval();
             }
-		}
-		set(l);
+            else {
+                list.add(term);
+            }
+        }
+        set(list);
         //System.out.println("after f="+f+" s="+sign);
-        if (f.size() == 0)
-        {
+        if (f.size() == 0) {
             return signf(cons.ONE);
         }
-        if (f.size() == 1)
-        {
+        if (f.size() == 1) {
             return signf(f.get(0));
         }
         //log("before mu");
         mu();
         //log("after mu");
-        if (f.size() == 1)
-        {
+        if (f.size() == 1) {
             return signf(f.get(0));
-		}
+        }
         cons0();
         //log("after cons");
-        if (f.size() == 1)
-        {
+        if (f.size() == 1) {
             return signf(f.get(0));
-		}
-		//l.clear();
+        }
+        //l.clear();
 		/*for(int i=0;i<f.size();i++){
          func p=f.get(i).copy();
          sign*=p.sign;
          p.sign=1;
 
          }*/
-		//f=l;
+        //f=l;
 		/*if (f.size()==0){
          return Constant.ONE.sign(sign);
          }
@@ -317,7 +271,7 @@ public class mul extends func
          }
          }
          if(b) return p.simplify().div(q.simplify());*/
-		//sort();
+        //sort();
         /*if(f.size()==2&&f.get(0).isCons0()&&f.get(1).isAdd()){
             //n*(a+b+c)=an+bn+cn
             func c=f.get(0).sign(f.get(1).sign);
@@ -327,135 +281,112 @@ public class mul extends func
             }
             return a.simplify();
         }*/
-		return this;
+        return this;
     }
-    
-    public mul wout(types t){
-        mul m=new mul();
-        m.sign=sign;
-        for(func p:f){
-            if(p.type!=t){
+
+    /*public mul wout(types t) {
+        mul m = new mul();
+        m.sign = sign;
+        for (func p : f) {
+            if (p.type != t) {
                 m.f.add(p);
             }
         }
         return m;
-    }
-    public func get(types t){
-        for(func p:f){
-            if(p.type==t){
-                return p;
+    }*/
+
+    /*public func get(types type) {
+        for (func term : f) {
+            if (term.type == type) {
+                return term;
             }
         }
         return null;
-    }
+    }*/
 
-    void sort()
-    {
-        int i=find(types.constant);
-        if (i > 0)
-        {
-            List<func> l=new LinkedList<func>(f);
-            func c=l.remove(i);
-            l.add(0, c);
-            set(l);
+    //put cons in front
+    /*void sort() {
+        int i = find(types.constant);
+        if (i > 0) {
+            List<func> list = new ArrayList<>(f);
+            func cons = list.remove(i);
+            list.add(0, cons);
+            set(list);
         }
-    }
-
-    String pr(List<func> l)
-    {
-        StringBuilder sb=new StringBuilder();
-        sb.append("[");
-        for (func y:l)
-        {
-            sb.append(y.getClass()).append(",");
-        }
-        sb.append("]");
-        return sb.toString();
-    }
+    }*/
 
     //multiply conss
-	public void cons0()
-    {
-		double c=1;
-        cons bc=cons.ONE;
-		List<func> l=getFree();
-		//System.out.println("f="+f);
+    public void cons0() {
+        double c = 1;
+        cons bc = cons.ONE;
+        List<func> l = getFree();
+        //System.out.println("f="+f);
         //System.out.println("cl="+pr(f));
-		for (int i=0;i < f.size();i++)
-        {		
-			func p=f.get(i);
-			//System.out.println("p="+p);
-			if (p.isCons0())
-            {
-                if(Config.useBigDecimal){
-                    bc=(cons) bc.mul(p.evalc());
+        for (int i = 0; i < f.size(); i++) {
+            func p = f.get(i);
+            //System.out.println("p="+p);
+            if (p.isCons0()) {
+                if (Config.useBigDecimal) {
+                    bc = (cons) bc.mul(p.evalc());
                 }
-				c *= p.eval();
-				//System.out.println("c="+c);
-			}
-            else
-            {
-				l.add(p);
-			}
-		}
-		
-        if(Config.useBigDecimal){
-            if(bc.sign==-1){
-                sign=-sign;
-                bc=(cons) bc.negate();
+                c *= p.eval();
+                //System.out.println("c="+c);
             }
-            if(!bc.is(1)){
+            else {
+                l.add(p);
+            }
+        }
+
+        if (Config.useBigDecimal) {
+            if (bc.sign == -1) {
+                sign = -sign;
+                bc = (cons) bc.negate();
+            }
+            if (!bc.is(1)) {
                 l.add(bc);
             }
         }
-        if (c < 0)
-        {
+        if (c < 0) {
             sign = -sign;
             c = -c;
         }
-        if (c != 1)
-        {
-		    l.add(new cons(c));
+        if (c != 1) {
+            l.add(new cons(c));
         }
-		set(l);
-	}
+        set(l);
+    }
 
-	//  x^a*x^b=x^(a+b)
+    //  x^a*x^b=x^(a+b)
     //  a^x*b^x=(a*b)^x
-	public void mu()
-    {
-		List<func> l=getFree();
-		boolean b[]=new boolean[f.size()];
-        boolean flag=false;
+    public void mu() {
+        List<func> list = getFree();
+        boolean[] b = new boolean[f.size()];
+        boolean flag = false;
         //System.out.println("id="+id+" in mu");
-		for (int i=0;i < f.size()-1;i++)
-        {
-            if(b[i]){
+        for (int i = 0; i < f.size() - 1; i++) {
+            if (b[i]) {
                 continue;
             }
-			func v=f.get(i);
+            func term = f.get(i);
             //System.out.println("v="+v+" org="+f.get(i));
-			func base=v;
-            func power=cons.ONE;
+            func base = term;
+            func power = cons.ONE;
             //int vsig=v.sign;
-            if (v.isPow())
-            {
-                power = v.b;
-                base = v.a;
+            if (term.isPow()) {
+                power = term.b;
+                base = term.a;
             }
             //System.out.println("v="+base+" p="+power);
-            for (int j=i + 1;j < f.size();j++)
-            {
-                if(b[j]){
+            for (int j = i + 1; j < f.size(); j++) {
+                if (b[j]) {
                     continue;
                 }
-                holder h=e3(base, f.get(j));
+                holder h = e3(base, f.get(j));
                 //System.out.println("h="+h.f);
-                
-                if (h.b)
-                {
-                    if(!flag){
-                        flag=true;
+
+                if (h.b) {
+                    if (!flag) {
+                        flag = true;
                     }
                     //System.out.println("h="+f.get(j)+" s="+h.sign);
                     b[j] = true;
@@ -467,63 +398,56 @@ public class mul extends func
             //System.out.println("id="+id+" base="+base+" pow="+power+" all="+r);
 
             //l.add(base.pow(power).sign(vsig));
-            if(flag){
-                l.add(base.pow(power));
-            }else{
-                l.add(v);
+            if (flag) {
+                list.add(base.pow(power));
             }
-		}
-        if(!b[f.size()-1]){
-            l.add(f.get(f.size()-1));
+            else {
+                list.add(term);
+            }
+        }
+        if (!b[f.size() - 1]) {
+            list.add(f.get(f.size() - 1));
         }
         //System.out.println("id="+id+" out mu");
-		set(l);
-	}
+        set(list);
+    }
 
-	public static holder e3(func f1, func f2)
-    {
+    public static holder e3(func f1, func f2) {
         //System.out.println("f1="+f1.getClass()+" f2="+f2.getClass()+" "+f1.eq(f2));
-		if (f1.eqws(f2))
-        {
-            holder h=new holder(cons.ONE, 0, null, true);
+        if (f1.eqws(f2)) {
+            holder h = new holder(cons.ONE, 0, null, true);
             h.sign = f2.sign;
             return h;
         }
 
-		if (f2.isPow())
-        {
-            func p=f2.b;
-			func base=f2.a;
-            if (f1.eqws(base))
-            {
-                holder h=new holder(p, 0, null, true);
+        if (f2.isPow()) {
+            func p = f2.b;
+            func base = f2.a;
+            if (f1.eqws(base)) {
+                holder h = new holder(p, 0, null, true);
                 h.sign = base.sign;
                 return h;
             }
-		}
-		return new holder(null, 0, null, false);
-	}
-
-	@Override
-	public boolean eq2(func f1)
-	{
-		return isEq(f, f1.f);
-	}
+        }
+        return new holder(null, 0, null, false);
+    }
 
     @Override
-    public func substitude0(var v, func p)
-    {
-        List<func> l=getFree();
-        for (func u:f)
-        {
+    public boolean eq2(func f1) {
+        return isEq(f, f1.f);
+    }
+
+    @Override
+    public func substitude0(var v, func p) {
+        List<func> l = getFree();
+        for (func u : f) {
             l.add(u.substitude(v, p));
         }
         return new mul(l);
     }
 
     @Override
-    public func copy0()
-    {
+    public func copy0() {
         return new mul(f);
     }
 }

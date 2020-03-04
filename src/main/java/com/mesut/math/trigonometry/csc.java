@@ -35,7 +35,7 @@ public class csc extends func
 
     public csc(func f){
         this.a=f;
-        alter.add(div(new sin(f)).inv());
+        alter.add(div(new sin(f)).MulInverse());
 		fx=true;
     }
 

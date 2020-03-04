@@ -1,24 +1,53 @@
 package com.mesut.math;
 
+import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
 import com.mesut.math.funcs.fac;
-
-import java.util.ArrayList;
-import java.util.List;
 
 //symbolic taylor series
 public class taylorsym extends taylor {
-    List<term> list = new ArrayList<>();
 
-    public taylorsym(func func, double at) {
-        super(func, at);
+    public func at;
+
+    public taylorsym(func func, Object var, Object at) {
+        this.func = func;
+        this.var = Util.var(var);
+        this.at = Util.cast(at);
+    }
+
+    public taylorsym(func func, Object at) {
+        this(func, func.vars().get(0), at);
     }
 
     public taylorsym() {
         super();
     }
-    //var v;
+
+    @Override
+    public void calc(int n) {
+        func center = var.sub(at);
+
+        f.add(makeTerm(func.substitude(var, at).simplify(), 0, center));
+
+        for (int i = 1; i <= n; i++) {
+            func = func.derivative();
+            func coeff = func.substitude(var, at).simplify().div(new fac(i).eval());
+            f.add(makeTerm(coeff, i, center));
+        }
+        simplify();
+    }
+
+    private func makeTerm(func coeff, int pow, func center) {
+        if (coeff.is(0)) {
+            return cons.ZERO;
+        }
+        if (coeff.is(1)) {
+            return center.pow(pow);
+        }
+        else {
+            return new cons(coeff).mul(center.pow(pow));
+        }
+    }
 
     /*public static taylorsym symbol(Object fo, Object vo, func at, int n) {
         func f = Util.cast(fo);
@@ -33,7 +62,7 @@ public class taylorsym extends taylor {
         return t;
     }*/
 
-    @Override
+    /*@Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         /*for (int i = 0; i < list.size(); i++) {
@@ -54,9 +83,9 @@ public class taylorsym extends taylor {
                 }
             }
 
-        }*/
+        }
         return sb.toString();
-    }
+    }*/
 
     /*public func conv() {
         func res = cons.ZERO;
@@ -65,10 +94,6 @@ public class taylorsym extends taylor {
         }
         return res;
     }*/
-
-    public double coeff(func f) {
-        return 0;
-    }
 
 
 }

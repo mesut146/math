@@ -2,6 +2,7 @@ package com.mesut.math.core;
 
 import java.util.*;
 
+//placeholder for user defined functions
 public class fx extends var
 {
 	String name;
@@ -11,34 +12,36 @@ public class fx extends var
 	public fx(){
 		this("f");
 	}
-	public fx(String s){
-		this(s, var.x);
+
+	public fx(String name){
+		this(name, var.x);
 	}
-	public fx(String s,func f){
-        super("var_fx_"+s);
-		name=s;
-		a=f;
-        type=types.fx;
+
+	public fx(String name,func content){
+        super("var_fx_"+name);
+		this.name =name;
+		a=content;
+        //type=types.fx;
 		ins.add(this);
-	}public fx(String s,func... f){
-        super("var_fx_"+s);
-        name=s;
+	}public fx(String name,func... f){
+        super("var_fx_"+name);
+        this.name =name;
         Collections.addAll(this.f,f);
-        type=types.fx;
+        //type=types.fx;
         ins.add(this);
 	}
     
-    public static boolean has(String n){
+    public static boolean has(String name){
         for(fx f:ins){
-            if(f.name.equals(n)){
+            if(f.name.equals(name)){
                 return true;
             }
         }
         return false;
     }
-    public static fx getFx(String n){
+    public static fx getFx(String name){
         for(fx f:ins){
-            if(f.name.equals(n)){
+            if(f.name.equals(name)){
                 return f;
             }
         }

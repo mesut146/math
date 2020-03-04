@@ -4,26 +4,32 @@ import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
 import com.mesut.math.core.var;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 public class add extends func {
 
     public add() {
-        type = types.add;
+        //type = types.add;
     }
 
     public add(func... args) {
-        type = types.add;
-        //since Arrays.aslist returns abstract list
-        f = new ArrayList<>(Arrays.asList(args));
+        //type = types.add;
+        /*for(func term:args){
+            f.add(term);
+        }*/
+        Collections.addAll(f, args);
     }
 
     public add(List<func> args) {
-        type = types.add;
+        //type = types.add;
         f = args;
+    }
+
+    @Override
+    public boolean isAdd() {
+        return true;
     }
 
     @Override
@@ -56,8 +62,10 @@ public class add extends func {
     @Override
     public func derivative(var v) {
         func res = cons.ZERO;
+        //add res = new add(cons.ZERO);
         for (func term : f) {
             res = res.add(term.derivative(v));
+            //res.f.add(term.derivative(v));
         }
         return sign(res);
     }
@@ -130,32 +138,29 @@ public class add extends func {
         if (f.size() == 1) {
             return signf(f.get(0));
         }
-        //System.out.println("f2="+f);
-
-        //System.out.println("f3="+this);
         return this;
     }
 
     public void cons0() {
-        double c = 0;
-        List<func> l = getFree();
-        //System.out.println("fa="+f);
+        double sum = 0;
+        List<func> list = getFree();
         int idx = 0;
         for (int i = 0; i < f.size(); i++) {
-            func p = f.get(i);
-            if (p.isCons0()) {
-                c += p.eval();
+            func term = f.get(i);
+            if (term.isCons0()) {
+                sum += term.eval();
                 idx = i;
             }
             else {
-                l.add(p);
+                list.add(term);
             }
         }
-        if (c != 0) {
-            idx = idx >= l.size() ? 0 : idx;
-            l.add(idx, new cons(c));
+        if (sum != 0) {
+            //put sum where last cons seen
+            idx = idx > list.size() ? 0 : idx;
+            list.add(idx, new cons(sum));
         }
-        set(l);
+        set(list);
     }
 
     //2x+3x=5x

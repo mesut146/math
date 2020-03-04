@@ -20,7 +20,7 @@ public class Iexp
                 @Override
                 public int compare(func p1, func p2)
                 {
-                    if(p1.isPolinom()){
+                    if(p1.isPolynom()){
                         return -1;
                     }
                     if(p1.isPower()){
@@ -36,6 +36,6 @@ public class Iexp
         return f.isPow()&&f.eq(func.parse("e^x"));
     }
     boolean isPoly(func f){
-        return f.isPolinom();
+        return f.isPolynom();
     }
 }

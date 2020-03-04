@@ -4,6 +4,7 @@ import com.mesut.math.Config;
 import com.mesut.math.Util;
 import com.mesut.math.funcs.exp;
 import com.mesut.math.funcs.fac;
+import com.mesut.math.funcs.inv;
 import com.mesut.math.funcs.sqrt;
 import com.mesut.math.operator.*;
 import com.mesut.math.parser2.MathParser;
@@ -24,7 +25,7 @@ public abstract class func {
         func, fx, constant, variable, add, sub, mul, div, pow, ln, sin, cos
     }
 
-    public types type = types.func;
+    //public types type = types.func;
     public int sign = 1;//positive by default
     public boolean fx = false;
     public func a = null, b = null;//left - right for div and others
@@ -197,9 +198,13 @@ public abstract class func {
         return eval(vars.get(0), d);
     }
 
-    //multiplication inverse
-    public func inv() {
+    //multiplicative inverse
+    public func MulInverse() {
         return cons.ONE.div(this);
+    }
+
+    public func inverse() {
+        return new inv(this);
     }
 
     //a
@@ -416,9 +421,9 @@ public abstract class func {
         return isConstant() && !asCons().functional && eval() == d;
     }
 
-    public String getType() {
+    /*public String getType() {
         return type.toString();
-    }
+    }*/
 
     //negate without copy
     public func negate0() {
@@ -467,14 +472,15 @@ public abstract class func {
     }
 
     //get index of that type
-    public int find(types type) {
+    public int find(Class<func> type) {
         for (int i = 0; i < f.size(); i++) {
-            if (f.get(i).type == type) {
+            if (f.get(i).getClass() == type) {
                 return i;
             }
         }
         return -1;
     }
+
 
     public boolean isNumber() {
         return isConstant() && !isConsfunc();
@@ -493,42 +499,35 @@ public abstract class func {
     }
 
     public boolean isVariable() {
-        return type == types.variable;
+        return false;
     }
 
     public boolean isAdd() {
-        return type == types.add;
-    }
-
-    public boolean isSub() {
-        return type == types.sub;
+        return false;
     }
 
     public boolean isMul() {
-        return type == types.mul;
+        return false;
     }
 
     public boolean isDiv() {
-        return type == types.div;
+        return false;
     }
 
     public boolean isPow() {
-        return type == types.pow;
+        return false;
     }
 
     public boolean isOperator() {
-        return type == types.add ||
-                type == types.sub ||
-                type == types.mul ||
-                type == types.div ||
-                type == types.pow;
-        //return type.val >= types.add.val && type.val <= types.pow.val;
+        return isAdd() || isMul() || isDiv() || isPow();
     }
 
-    public boolean isPolinom() {
+    //var^cons
+    public boolean isPolynom() {
         return isPow() && a.isVariable() && b.isConstant();
     }
 
+    //cons^var
     public boolean isPower() {
         return isPow() && b.isVariable() && a.isConstant();
     }
@@ -547,8 +546,7 @@ public abstract class func {
     }
 
     public boolean eq(func other) {
-
-        if (other != null && type == other.type) {
+        if (other != null && getClass() == other.getClass()) {
             return sign == other.sign && eq2(other);
         }
         return false;
@@ -557,7 +555,7 @@ public abstract class func {
     //equal without sign
     public boolean eqws(func other) {
 
-        if (other != null && type == other.type) {
+        if (other != null && getClass() == other.getClass()) {
             return eq2(other);
         }
         return false;
@@ -570,19 +568,22 @@ public abstract class func {
         if (len != l2.size()) {
             return false;
         }
-        boolean[] b = new boolean[len];
-        main:
-        for (int i = 0; i < len; i++) {
-            func first = l1.get(i);
+        boolean[] b = new boolean[len];//processed flags for l2
+        boolean matchedAny = false;//flag for an element is not matched
+
+        for (func first : l1) {
             for (int j = 0; j < len; j++) {
                 if (!b[j] && first.eq(l2.get(j))) {
                     b[j] = true;
-                    continue main;
+                    matchedAny = true;
+                    break;
                 }
             }
-            return false;
+            if (!matchedAny) {
+                return false;
+            }
         }
-        return true;
+        return false;
     }
 
     public List<var> vars() {
@@ -617,9 +618,11 @@ public abstract class func {
     }
 
     //var,center,terms
-    /*public taylorsym taylorsym(var v, func at, int n) {
-        return taylorsym.symbol(this, v, at, n);
-    }*/
+    public taylorsym taylorsym(Object var, func at, int n) {
+        taylorsym taylorsym = new taylorsym(this, var, at);
+        taylorsym.calc(n);
+        return taylorsym;
+    }
 
 
     public double numericDerivative(double at) {

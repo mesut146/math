@@ -25,7 +25,6 @@ public class ln extends func
 
 
     public ln(func f) {
-        type = types.ln;
         a = f;
         fx = true;
 		/*if(f.isPow()){

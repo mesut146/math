@@ -43,7 +43,7 @@ public class cos extends func
         this(f,1);
     }
     public cos(func f,int s){
-        type=types.cos;
+        //type=types.cos;
 		f.sign=1;
         a=f;
         sign=s;

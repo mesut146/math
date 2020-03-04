@@ -5,7 +5,7 @@ import java.util.Set;
 public class DefaultFunc extends func {
     @Override
     public func get0(var[] v, cons[] c) {
-        return null;
+        return this;
     }
 
     @Override
@@ -15,32 +15,32 @@ public class DefaultFunc extends func {
 
     @Override
     public cons evalc(var[] v, double[] d) {
-        return null;
+        return cons.ZERO;
     }
 
     @Override
     public func getReal() {
-        return null;
+        return this;
     }
 
     @Override
     public func getImaginary() {
-        return null;
+        return this;
     }
 
     @Override
     public func derivative(var v) {
-        return null;
+        return this;
     }
 
     @Override
     public func integrate(var v) {
-        return null;
+        return this;
     }
 
     @Override
     public func copy0() {
-        return null;
+        return this;
     }
 
     @Override
@@ -65,6 +65,6 @@ public class DefaultFunc extends func {
 
     @Override
     public func substitude0(var v, func p) {
-        return null;
+        return this;
     }
 }

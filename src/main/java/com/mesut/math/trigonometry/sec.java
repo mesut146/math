@@ -35,7 +35,7 @@ public class sec extends func
 
     public sec(func f){
         this.a=f;
-        alter.add(new cos(f).inv());
+        alter.add(new cos(f).MulInverse());
 		fx=true;
     }
 

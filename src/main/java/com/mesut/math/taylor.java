@@ -10,9 +10,9 @@ import com.mesut.math.operator.mul;
 //numeric taylor series(faster than symbolic one)
 public class taylor extends add {
 
-    //List<term> list = new ArrayList<>();
-    func func;
+    public func func;
     public double at;
+    public func center;//var-at
     public var var;
 
     public taylor(func func, double at) {
@@ -26,15 +26,31 @@ public class taylor extends add {
     }
 
     public void calc(int n) {
-        func center = var.sub(at);
+        center = var.sub(at);
 
-        this.f.add(new term(func.eval(at), 0, center));
-
+        f.add(makeTerm(func.eval(at), 0, center));
 
         for (int i = 1; i <= n; i++) {
             func = func.derivative();
             double coeff = func.eval(at) / new fac(i).eval();
-            this.f.add(new term(coeff, i, center));
+            f.add(makeTerm(coeff, i, center));
+        }
+        simplify();
+    }
+
+    public void put(double coeff, int power, func center) {
+        f.add(makeTerm(coeff, power, center));
+    }
+
+    private func makeTerm(double coeff, int pow, func center) {
+        if (coeff == 0) {
+            return cons.ZERO;
+        }
+        if (coeff == 1) {
+            return center.pow(pow);
+        }
+        else {
+            return new cons(coeff).mul(center.pow(pow));
         }
     }
 
@@ -84,7 +100,7 @@ public class taylor extends add {
             this.f.add(center.pow(pow));
         }
 
-        @Override
+        /*@Override
         public String toString() {
             return toString2();
         }
@@ -108,6 +124,6 @@ public class taylor extends add {
                 return center.toString();
             }
             return center + "^" + pow;
-        }
+        }*/
     }
 }

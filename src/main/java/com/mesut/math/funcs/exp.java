@@ -1,39 +1,37 @@
 package com.mesut.math.funcs;
-import com.mesut.math.core.*;
-import com.mesut.math.operator.*;
 
-public class exp extends pow
-{
-    
-    public exp(func f){
-        super(cons.E,f);
+import com.mesut.math.core.Integral;
+import com.mesut.math.core.cons;
+import com.mesut.math.core.func;
+import com.mesut.math.core.var;
+import com.mesut.math.operator.pow;
+
+//e^x
+public class exp extends pow {
+    func pow;
+
+    public exp(func f) {
+        super(cons.E, f);
+        pow = f;
     }
 
     @Override
-    public String getType() {
-        return "exp";
+    public func derivative(var v) {
+        return signf(mul(pow.derivative(v)));
     }
 
     @Override
-    public func derivative(var v)
-    {
-        return signf(mul(b.derivative(v)));
-    }
-
-    @Override
-    public func integrate(var v)
-    {
-        if (b.eq(v)){
+    public func integrate(var v) {
+        if (pow.eq(v)) {
             return this;
         }
-        return new Integral(this,v);
+        return new Integral(this, v);
     }
 
     @Override
-    public boolean eq2(func f)
-    {
+    public boolean eq2(func f) {
         return b.eq(f.b);
     }
-    
-    
+
+
 }
