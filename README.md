@@ -14,21 +14,21 @@ a simple math library written in java
 
 ## Examples:
 
-###Derivative
+### Derivative
 ```java
 func f=func.parse("e^(x^2)");
 System.out.println(f.derivative());
 Output: (e^(x^2))*x*2
 ```
 
-###Integral
+### Integral
 ```java
 func f=func.parse("e^-x*x^5");//gamma
 System.out.println(f.integrate("x",0,cons.INF));
 Output: 120
 ```
 
-###Taylor series
+### Taylor series
 ```java
 //e^x
 func f=func.parse("e^x");
@@ -41,7 +41,7 @@ System.out.println(f.inverse().taylor(0,5));
 Output: x-x^2+(x^3)*1.5-(x^4)*2.6666666666666665+(x^5)*5.208333333333333
 
 ```
-###Prime numbers
+### Prime numbers
 ```java
 System.out.println(new pset(100));
 Ouptut: p{2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97}
