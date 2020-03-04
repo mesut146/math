@@ -26,10 +26,22 @@ public class PrimeTest {
     @Test
     public void setTest() {
         set s = new pset(100);
+        set s2 = (set) s.pow(3).mul(2).add(1);
+
         System.out.println(s);
-        s = (set) s.pow(3).mul(2).add(1);
-        System.out.println(s);
+        System.out.println(s2);
         System.out.println(factor.factorize(s));
-        System.out.println(new prime(2).eval());
+        System.out.println(factor.factorize(s2));
+    }
+
+    @Test
+    public void factor() {
+        System.out.println(factor.factorize(1000).derivative());
+    }
+
+
+    @Test
+    public void pn() {
+        System.out.println(new prime(5).eval());
     }
 }

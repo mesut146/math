@@ -248,6 +248,7 @@ public abstract class func {
     public final func derivative() {
         List<var> set = vars();
         if (set.isEmpty()) {
+            //no var means we are cons
             return cons.ZERO;
         }
         return derivative(set.get(0));

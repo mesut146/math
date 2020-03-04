@@ -3,31 +3,29 @@ import java.util.*;
 import com.mesut.math.*;
 import com.mesut.math.core.*;
 
-public class prime extends func//pn
+//n th prime p(n)
+public class prime extends func
 {
     
-    public prime(Object o){
-        a=Util.cast(o);//a=5,a=x
+    public prime(Object n){
+        a=Util.cast(n);
     }
 
     @Override
     public func getReal()
     {
-        // TODO: Implement this method
         return null;
     }
 
     @Override
     public func getImaginary()
     {
-        // TODO: Implement this method
         return null;
     }
     
     @Override
     public func get0(var[] v, cons[] c)
     {
-        // TODO: Implement this method
         a=a.get0(v,c);
         return this;
     }
@@ -41,7 +39,6 @@ public class prime extends func//pn
     @Override
     public cons evalc(var[] v, double[] d)
     {
-        // TODO: Implement this method
         return new cons(eval(v,d));
     }
 

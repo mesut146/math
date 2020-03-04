@@ -1,17 +1,13 @@
 package com.mesut.math.prime;
 
-import com.mesut.math.Config;
 import com.mesut.math.core.cons;
 import com.mesut.math.core.set;
-
-import java.io.*;
-import java.nio.ByteBuffer;
 
 public class pset extends set {
 
     int n;
     static int[] primeArray;//prime cache
-    static int plen;
+    //static int plen;
 
     //up to n
     public pset(int n) {
@@ -31,10 +27,13 @@ public class pset extends set {
 
     //read primes from cache and generate pset object
     public void fill() {
+        PrimeGenerator.init();
+        primeArray = PrimeGenerator.primes;
         for (int value : primeArray) {
             if (value <= n) {
                 list.add(new cons(value));
-            } else {
+            }
+            else {
                 break;
             }
         }
@@ -45,11 +44,8 @@ public class pset extends set {
         if (i < 1) {
             throw new RuntimeException(String.format("invalid index %d for primes", i));
         }
-        return primeArray[i];
+        return primeArray[i-1];
     }
-
-
-
 
 
 }

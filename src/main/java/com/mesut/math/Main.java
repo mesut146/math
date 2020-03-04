@@ -18,20 +18,6 @@ import java.util.Random;
 
 public class Main {
 
-    static {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    PrimeGenerator.readFrom(ClassLoader.getSystemClassLoader().getResourceAsStream("primes.txt"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-    }
-
     public static void main(String[] args) throws Exception {
 
 

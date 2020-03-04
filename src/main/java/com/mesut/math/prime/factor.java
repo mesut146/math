@@ -1,54 +1,65 @@
 package com.mesut.math.prime;
 
+import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
 import com.mesut.math.core.set;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class factor {
+//factorization of an integer
+public class factor extends cons {
 
     List<Integer> base = new ArrayList<>();
     List<Integer> pow = new ArrayList<>();
-    int x;
 
-    public static List<factor> factorize(set s) {
-        List<factor> l = new ArrayList<>();
-        for (func term : s.getList()) {
-            l.add(factorize((int) term.eval()));
-        }
-        return l;
+    public factor(int val) {
+        this.val = val;
     }
 
-    public static factor factorize(int x) {
-        factor res = new factor();
-        res.x = x;
-        int p = 0;
-        while (x % 2 == 0) {
-            p++;
-            x = x / 2;
-        }
-        if (p > 0) {
-            res.base.add(2);
-            res.pow.add(p);
-        }
+    public factor factorize() {
+        int x = (int) val;
+        x = single(x, 2);
         for (int i = 3; i <= x; i += 2) {
-            p = 0;
-            while (x % i == 0) {
-                p++;
-                x = x / i;
-            }
-            if (p > 0) {
-                res.base.add(i);
-                res.pow.add(p);
-            }
+            x = single(x, i);
         }
-        return res;
+        return this;
+    }
+
+    //factorize elements of set
+    public static List<factor> factorize(set set) {
+        List<factor> list = new ArrayList<>();
+        for (func term : set.getList()) {
+            list.add(factorize((int) term.eval()));
+        }
+        return list;
+    }
+
+
+    public static factor factorize(int x) {
+        factor res = new factor(x);
+        return res.factorize();
+    }
+
+    //factorize x by @prime
+    private int single(int x, int prime) {
+        int pwr = 0;
+
+        while (x % prime == 0) {
+            pwr++;
+            x = x / prime;
+        }
+        if (pwr > 0) {
+            base.add(prime);
+            pow.add(pwr);
+        }
+        return x;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+
         for (int i = 0; i < base.size(); i++) {
             sb.append(base.get(i));
             if (pow.get(i) > 1) {

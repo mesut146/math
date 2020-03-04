@@ -8,6 +8,24 @@ public class PrimeGenerator {
     public static int plen;//prime total
     public static int[] primes;//prime array
 
+    static {
+        init();
+    }
+
+    //load from in-jar resource
+    public static void init() {
+        if (primes != null) {
+            //already initialized
+            return;
+        }
+        try {
+            PrimeGenerator.readFrom(ClassLoader.getSystemClassLoader().getResourceAsStream("primes.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //https://stackoverflow.com/a/1043247/4579125
     public static BitSet computePrimes(int limit) {
         final BitSet primes = new BitSet();
         primes.set(0, false);
@@ -84,49 +102,4 @@ public class PrimeGenerator {
         readFrom(is, Integer.MAX_VALUE);
     }
 
-    /*public static void calc(DataOutputStream os) throws IOException {
-        int[] arr = new int[lim / 2];
-        primeArray = new int[lim / 2];
-        os.writeInt(2);
-        primeArray[0] = 2;
-        os.writeInt(3);
-        primeArray[1] = 3;
-        os.writeInt(5);
-        primeArray[2] = 5;
-        os.writeInt(7);
-        primeArray[3] = 7;
-        os.writeInt(11);
-        primeArray[4] = 11;
-        os.writeInt(13);
-        primeArray[5] = 13;
-        os.writeInt(17);
-        primeArray[6] = 17;
-        os.writeInt(19);
-        primeArray[7] = 19;
-        plen = 8;
-        int len = 0;
-        for (int i = 3; i <= arr.length; i += 2) {
-            if (i % 3 != 0 && i % 5 != 0 && i % 7 != 0
-                    && i % 11 != 0 && i % 13 != 0 && i % 17 != 0 && i % 19 != 0) {
-                arr[len++] = i;
-            }
-        }
-
-        for (int i = 0; i < len; i++) {
-            if (arr[i] != 0) {
-                os.writeInt(arr[i]);
-                primeArray[plen++] = arr[i];
-                for (int k = i + 1; k < len; k++) {
-                    if (arr[k] % arr[i] == 0) {
-                        arr[k] = 0;
-                    }
-                }
-            }
-
-            if (i % (len / 10) == 0) {
-                System.out.println(i + "/" + len);
-            }
-        }
-        System.out.println("calc done");
-    }*/
 }
