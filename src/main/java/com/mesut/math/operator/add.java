@@ -27,6 +27,42 @@ public class add extends func {
         f = args;
     }
 
+    public static holder e3(func f1, func f2) {
+        if (f1.eq(f2)) {
+            return new holder(f1, 1, null, true);
+        }
+
+        if (!f1.isMul()) {
+            f1 = new mul(f1, cons.ONE);
+        }
+        if (!f2.isMul()) {
+            f2 = new mul(f2, cons.ONE);
+        }
+        holder o1 = rm((mul) f1);
+        holder o2 = rm((mul) f2);
+
+        if (isEq(o1.l, o2.l)) {
+            return new holder(new mul(o1.l), o1.d + o2.d - 1, null, true);
+        }
+
+        return new holder(null, 0, null, false);
+    }
+
+    public static holder rm(mul t) {
+        double d = 1;
+        List<func> l = getFree();
+        for (func p : t.f) {
+            if (p.isCons0()) {
+                d *= p.eval();
+            }
+            else {
+                l.add(p);
+            }
+        }
+        d *= t.sign;
+        return new holder(null, d, l, false);
+    }
+
     @Override
     public boolean isAdd() {
         return true;
@@ -195,42 +231,6 @@ public class add extends func {
     @Override
     public boolean eq2(func f1) {
         return isEq(f, f1.f);
-    }
-
-    public static holder e3(func f1, func f2) {
-        if (f1.eq(f2)) {
-            return new holder(f1, 1, null, true);
-        }
-
-        if (!f1.isMul()) {
-            f1 = new mul(f1, cons.ONE);
-        }
-        if (!f2.isMul()) {
-            f2 = new mul(f2, cons.ONE);
-        }
-        holder o1 = rm((mul) f1);
-        holder o2 = rm((mul) f2);
-
-        if (isEq(o1.l, o2.l)) {
-            return new holder(new mul(o1.l), o1.d + o2.d - 1, null, true);
-        }
-
-        return new holder(null, 0, null, false);
-    }
-
-    public static holder rm(mul t) {
-        double d = 1;
-        List<func> l = getFree();
-        for (func p : t.f) {
-            if (p.isCons0()) {
-                d *= p.eval();
-            }
-            else {
-                l.add(p);
-            }
-        }
-        d *= t.sign;
-        return new holder(null, d, l, false);
     }
 
     @Override

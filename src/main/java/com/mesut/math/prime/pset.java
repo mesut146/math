@@ -5,8 +5,8 @@ import com.mesut.math.core.set;
 
 public class pset extends set {
 
-    int n;
     static int[] primeArray;//prime cache
+    int n;
     //static int plen;
 
     //up to n
@@ -25,6 +25,14 @@ public class pset extends set {
 
     }
 
+    //return i th prime
+    public static int get(int i) {
+        if (i < 1) {
+            throw new RuntimeException(String.format("invalid index %d for primes", i));
+        }
+        return primeArray[i - 1];
+    }
+
     //read primes from cache and generate pset object
     public void fill() {
         PrimeGenerator.init();
@@ -37,14 +45,6 @@ public class pset extends set {
                 break;
             }
         }
-    }
-
-    //return i th prime
-    public static int get(int i) {
-        if (i < 1) {
-            throw new RuntimeException(String.format("invalid index %d for primes", i));
-        }
-        return primeArray[i-1];
     }
 
 

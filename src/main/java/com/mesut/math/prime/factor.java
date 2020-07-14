@@ -17,15 +17,6 @@ public class factor extends cons {
         this.val = val;
     }
 
-    public factor factorize() {
-        int x = (int) val;
-        x = single(x, 2);
-        for (int i = 3; i <= x; i += 2) {
-            x = single(x, i);
-        }
-        return this;
-    }
-
     //factorize elements of set
     public static List<factor> factorize(set set) {
         List<factor> list = new ArrayList<>();
@@ -35,10 +26,18 @@ public class factor extends cons {
         return list;
     }
 
-
     public static factor factorize(int x) {
         factor res = new factor(x);
         return res.factorize();
+    }
+
+    public factor factorize() {
+        int x = (int) val;
+        x = single(x, 2);
+        for (int i = 3; i <= x; i += 2) {
+            x = single(x, i);
+        }
+        return this;
     }
 
     //factorize x by @prime

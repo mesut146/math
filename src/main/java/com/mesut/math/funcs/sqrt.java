@@ -1,41 +1,38 @@
 package com.mesut.math.funcs;
+
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.operator.*;
+import com.mesut.math.operator.pow;
 
-public class sqrt extends pow
-{
-    
+public class sqrt extends pow {
+
+    public sqrt(func f) {
+        super(f, cons.ONE.div(2));
+    }
+
+    public sqrt(double d) {
+        this(new cons(d));
+    }
+
     @Override
-    public String toLatex()
-    {
-        return "\\sqrt{"+a.toLatex()+"}";
+    public String toLatex() {
+        return "\\sqrt{" + a.toLatex() + "}";
     }
 
-	public sqrt(func f){
-        super(f,cons.ONE.div(2));
-	}
-	public sqrt(double d){
-	    this(new cons(d));
+    @Override
+    public func copy0() {
+        return new sqrt(a);
     }
 
-	@Override
-	public func copy0()
-	{
-		return new sqrt(a);
-	}
+    @Override
+    public String toString2() {
+        return "sqrt(" + a + ")";
+    }
 
-	@Override
-	public String toString2()
-	{
-		return "sqrt("+a+")";
-	}
-
-	@Override
-	public boolean eq2(func f)
-	{
-		return a.eq(f.a);
-	}
+    @Override
+    public boolean eq2(func f) {
+        return a.eq(f.a);
+    }
 
     /*@Override
     public func simplify() {

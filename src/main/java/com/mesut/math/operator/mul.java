@@ -6,7 +6,9 @@ import com.mesut.math.core.func;
 import com.mesut.math.core.var;
 import com.mesut.math.funcs.ln;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class mul extends func {
 
@@ -23,6 +25,26 @@ public class mul extends func {
         f.addAll(args);
         //type = types.mul;
         id = idc++;
+    }
+
+    public static holder e3(func f1, func f2) {
+        //System.out.println("f1="+f1.getClass()+" f2="+f2.getClass()+" "+f1.eq(f2));
+        if (f1.eqws(f2)) {
+            holder h = new holder(cons.ONE, 0, null, true);
+            h.sign = f2.sign;
+            return h;
+        }
+
+        if (f2.isPow()) {
+            func p = f2.b;
+            func base = f2.a;
+            if (f1.eqws(base)) {
+                holder h = new holder(p, 0, null, true);
+                h.sign = base.sign;
+                return h;
+            }
+        }
+        return new holder(null, 0, null, false);
     }
 
     @Override
@@ -201,6 +223,37 @@ public class mul extends func {
         }
     }
 
+    /*public mul wout(types t) {
+        mul m = new mul();
+        m.sign = sign;
+        for (func p : f) {
+            if (p.type != t) {
+                m.f.add(p);
+            }
+        }
+        return m;
+    }*/
+
+    /*public func get(types type) {
+        for (func term : f) {
+            if (term.type == type) {
+                return term;
+            }
+        }
+        return null;
+    }*/
+
+    //put cons in front
+    /*void sort() {
+        int i = find(types.constant);
+        if (i > 0) {
+            List<func> list = new ArrayList<>(f);
+            func cons = list.remove(i);
+            list.add(0, cons);
+            set(list);
+        }
+    }*/
+
     public func simplify() {
         if (!Config.mul.simplify) {
             return this;
@@ -283,37 +336,6 @@ public class mul extends func {
         }*/
         return this;
     }
-
-    /*public mul wout(types t) {
-        mul m = new mul();
-        m.sign = sign;
-        for (func p : f) {
-            if (p.type != t) {
-                m.f.add(p);
-            }
-        }
-        return m;
-    }*/
-
-    /*public func get(types type) {
-        for (func term : f) {
-            if (term.type == type) {
-                return term;
-            }
-        }
-        return null;
-    }*/
-
-    //put cons in front
-    /*void sort() {
-        int i = find(types.constant);
-        if (i > 0) {
-            List<func> list = new ArrayList<>(f);
-            func cons = list.remove(i);
-            list.add(0, cons);
-            set(list);
-        }
-    }*/
 
     //multiply conss
     public void cons0() {
@@ -410,26 +432,6 @@ public class mul extends func {
         }
         //System.out.println("id="+id+" out mu");
         set(list);
-    }
-
-    public static holder e3(func f1, func f2) {
-        //System.out.println("f1="+f1.getClass()+" f2="+f2.getClass()+" "+f1.eq(f2));
-        if (f1.eqws(f2)) {
-            holder h = new holder(cons.ONE, 0, null, true);
-            h.sign = f2.sign;
-            return h;
-        }
-
-        if (f2.isPow()) {
-            func p = f2.b;
-            func base = f2.a;
-            if (f1.eqws(base)) {
-                holder h = new holder(p, 0, null, true);
-                h.sign = base.sign;
-                return h;
-            }
-        }
-        return new holder(null, 0, null, false);
     }
 
     @Override

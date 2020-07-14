@@ -1,6 +1,5 @@
 package com.mesut.math;
 
-import com.mesut.math.col.col;
 import com.mesut.math.core.*;
 import com.mesut.math.funcs.zeta;
 import com.mesut.math.parser2.MathParser;
@@ -11,63 +10,9 @@ import java.util.Random;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        func f = null, g = null;
-
-        /*f=func.parse("e^x");
-        System.out.println(f);
-        new graph(f,-5,5).calc();*/
-
-        //matrix();
-
-        //integral();
-        /*lineq l=new lineq(10,3,"c");
-        System.out.println(l);
-        System.out.println(l.solve());*/
-
-        //System.out.println(new zeta("2").eval());
-        //javacc();
-        //taylor();
-        //System.out.println(func.parse("-1/x").derivative());
-        //prime();
-
-        //System.out.println(func.parse("x^i").getComplex());
-        //zeta();
-        //pset.init();
-
-        //System.out.println(func.parse("sin(x)").getClass());
-
-        //System.out.println(func.parse("inv(x+e^x)").taylor());
-        //col();
-        //simp();
-        //set();
-        //der();
-        //f=func.parse("x^n*e^x");
-        //new Iexp().integ(f);
-        //diff();
-        //floor();
-        //dif1();
-        
-        /*Config.useBigDecimal=true;
-        f=func.parse("x^5-1");
-        System.out.println(f);*/
-        //Sequence.solve("1","1","x",1);
-        //System.out.println(f.derivative());
-        //taylor();
-        /*for(int i=0;i<1000;i++)
-            System.out.println(random(100));*/
-		/*f=func.parse("e^(x^2*y)");
-        System.out.println(f.derivative());*/
-        /*ero ee=ero.init();
-        ee.next(3);*/
-        //System.out.println(ee);
-        /*for(int i=1;i<=10;i++){
-            f=f.der(1,new Variable("fx"));
-            System.out.println("f"+i+"(0)="+f.eval(0));
-        }*/
-
-        //System.out.println(f.eval(Variable.from("b"),1));
-
-        //a();
+        for (int i = 0; i < 10; i++) {
+            System.out.println(random(20));
+        }
     }
 
     static void javacc() {
@@ -125,10 +70,6 @@ public class Main {
         }
     }
 
-    static void col() {
-        col.p1();
-    }
-
     static void der() {
         func f = func.parse("e^x*y(x)");
         fx.table.put(func.parse("y''(x)"), func.parse("e^x*y(x)"));
@@ -139,43 +80,30 @@ public class Main {
         }
     }
 
-
     static func random(int max) {
-        Random r = new Random();
-        int n = r.nextInt(5);
+        Random random = new Random();
+        int type = random.nextInt(5);
         if (max <= 1) {
-            n = 4;
+            type = 1;
         }
         //max--;
-        func f = null;
-        //add,mul,pow,var,cons
-        if (n == 0) {//add
-            //need m random funcs
-            f = cons.ZERO;
-            int m = r.nextInt(max - 2) + 2;
-            for (int i = 0; i < m; i++) {
-                f = f.add(random(max / 2));
-            }
+        func func = null;
+        if (type == 0) {//var
+            func = getVar();
         }
-        else if (n == 1) {//mul
-            f = cons.ONE;
-            int m = r.nextInt(max - 1);
-            for (int i = 0; i < m; i++) {
-                f = f.mul(random(max / 2));
-            }
+        else if (type == 1) {//cons
+            func = getCons();
         }
-        else if (n == 2) {//pow
-            func a = random(max / 2);
-            func b = random(max / 2);
-            f = a.pow(b);
+        else if (type == 2) {//add
+            func = random(max / 2).add(random(max / 2));
         }
-        else if (n == 3) {//var
-            f = getVar();
+        else if (type == 3) {//mul
+            func = random(max / 2).mul(random(max / 2));
         }
-        else if (n == 4) {
-            f = getCons();
+        else if (type == 4) {//pow
+            func = random(max / 2).pow(random(max / 2));
         }
-        return f;
+        return func;
     }
 
     static func getVar() {
@@ -201,22 +129,6 @@ public class Main {
 
         //f=func.parse("ln(sin(x))");
         //System.out.println(f.integrate(0,Math.PI,var.x));
-    }
-
-    static void rule() {
-        //func.addRule("ln(e)=1");
-        //func.addRule("ln(f(fx)^g(fx))=g(fx)*ln(f(fx))");
-        //func ex=func.parse("e^f(fx)");
-    }
-
-
-    static void a() {
-        int o = 11;
-        int p = o - 1;
-        for (int m = 1; m < 100; m++) {
-            int x = (o + 1) * m - o - p * (int) Math.floor((m - 1) / p);
-            System.out.println(x);
-        }
     }
 
 

@@ -1,44 +1,40 @@
 package com.mesut.math.cons;
 
-import com.mesut.math.core.*;
+import com.mesut.math.core.cons;
+import com.mesut.math.core.func;
+import com.mesut.math.core.var;
 
-public class i extends cons
-{
-	
-	public i(){
-		functional=true;
-		ff=this;
-	}
-	
-	@Override
-	public String toString2()
-	{
-		return "i";
-	}
+public class i extends cons {
 
-	@Override
-	public func copy0()
-	{
-		return new i();
-	}
+    public i() {
+        functional = true;
+        ff = this;
+    }
 
     @Override
-    public func getReal()
-    {
+    public String toString2() {
+        return "i";
+    }
+
+    @Override
+    public func copy0() {
+        return new i();
+    }
+
+    @Override
+    public func getReal() {
         return ZERO;
     }
 
     @Override
-    public func getImaginary()
-    {
+    public func getImaginary() {
         return signf(ONE);
     }
-   
-	@Override
-	public boolean eq2(func f)
-	{
-		return getClass()==f.getClass();
-	}
+
+    @Override
+    public boolean eq2(func f) {
+        return getClass() == f.getClass();
+    }
 
 	/*@Override
 	public func pow(func f)
@@ -63,25 +59,22 @@ public class i extends cons
 		return new cos(f).simplify().add(i.mul(new sin(f).simplify()));
 	}*/
 
-	@Override
-	public func get0(var[] v, cons[] c)
-	{
-		return this;
-	}
+    @Override
+    public func get0(var[] v, cons[] c) {
+        return this;
+    }
 
     @Override
-    public double eval(var[] v, double[] d)
-    {
+    public double eval(var[] v, double[] d) {
         //System.out.println("error: tried to eval i");
         throw new RuntimeException("error: tried to eval i");
         //return 0;
     }
 
     @Override
-    public cons evalc(var[] v, double[] d)
-    {
+    public cons evalc(var[] v, double[] d) {
         return this;
     }
-	
-	
+
+
 }

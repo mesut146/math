@@ -1,28 +1,14 @@
 package com.mesut.math.funcs;
 
-import java.util.*;
-import com.mesut.math.core.*;
-import com.mesut.math.operator.*;
-import com.mesut.math.trigonometry.*;
+import com.mesut.math.core.cons;
+import com.mesut.math.core.func;
+import com.mesut.math.core.var;
+import com.mesut.math.operator.mul;
+import com.mesut.math.trigonometry.atan;
 
-public class ln extends func
-{
-    
-    @Override
-    public func getReal()
-    {
-        func r=a.getReal().pow(2).add(a.getImaginary().pow(2));
-        return sign(new ln(r.sqrt().simplify())).simplify();
-    }
+import java.util.Set;
 
-    @Override
-    public func getImaginary()
-    {
-        func ar=a.getReal().simplify();
-        func ba=a.getImaginary().simplify().div(ar).simplify();
-        return sign(new atan(ba)).simplify();
-    }
-
+public class ln extends func {
 
     public ln(func f) {
         a = f;
@@ -33,13 +19,25 @@ public class ln extends func
     }
 
     @Override
+    public func getReal() {
+        func r = a.getReal().pow(2).add(a.getImaginary().pow(2));
+        return sign(new ln(r.sqrt().simplify())).simplify();
+    }
+
+    @Override
+    public func getImaginary() {
+        func ar = a.getReal().simplify();
+        func ba = a.getImaginary().simplify().div(ar).simplify();
+        return sign(new atan(ba)).simplify();
+    }
+
+    @Override
     public String toLatex() {
         return "ln(" + a.toLatex() + ")";
     }
-    
+
     @Override
-    public void vars0(Set<var> vars)
-    {
+    public void vars0(Set<var> vars) {
         a.vars0(vars);
     }
 
@@ -54,9 +52,8 @@ public class ln extends func
     }
 
     @Override
-    public cons evalc(var[] v, double[] d)
-    {
-        return new cons(sign*Math.log(a.evalc(v,d).decimal().doubleValue()));
+    public cons evalc(var[] v, double[] d) {
+        return new cons(sign * Math.log(a.evalc(v, d).decimal().doubleValue()));
     }
 
     @Override
@@ -102,13 +99,13 @@ public class ln extends func
 			}
 			return new Constant(this);
 		}*/
-        if (a.isPow()&&a.a.eq(cons.E)) {
+        if (a.isPow() && a.a.eq(cons.E)) {
             return signf(a.b);
         }
         if (a.eq(cons.E)) {
             return signf(cons.ONE);
         }
-        if(a.is(1)){
+        if (a.is(1)) {
             return cons.ZERO;
         }
 		/*for(func r:rules.keySet()){

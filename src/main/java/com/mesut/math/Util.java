@@ -1,35 +1,41 @@
 package com.mesut.math;
 
-import com.mesut.math.core.*;
+import com.mesut.math.core.cons;
+import com.mesut.math.core.func;
+import com.mesut.math.core.var;
 
-public class Util
-{
-    public static func cast(Object obj){
+public class Util {
+    public static func cast(Object obj) {
         //start from subtype
-        if(obj instanceof var){
-            return (var)obj;
-        }else if(obj instanceof String){
-            return func.parse((String)obj);
-        }else if(obj instanceof Integer){
-            return new cons((Integer)obj);
-        }else if(obj instanceof func){
-            return (func)obj;
+        if (obj instanceof var) {
+            return (var) obj;
         }
-        else{
-            throw new RuntimeException("unexpected type: "+obj.getClass()+" , "+obj);
+        else if (obj instanceof String) {
+            return func.parse((String) obj);
+        }
+        else if (obj instanceof Integer) {
+            return new cons((Integer) obj);
+        }
+        else if (obj instanceof func) {
+            return (func) obj;
+        }
+        else {
+            throw new RuntimeException("unexpected type: " + obj.getClass() + " , " + obj);
         }
     }
-    
-    public static var var(Object obj){
-        if(obj instanceof var){
-            return (var)obj;
-        }else if(obj instanceof String){
-            return new var((String)obj);
-        }else if(obj instanceof func){
-            return (var)obj;
+
+    public static var var(Object obj) {
+        if (obj instanceof var) {
+            return (var) obj;
         }
-        else{
-            throw new RuntimeException("unexpected type: "+obj.getClass()+" , "+obj);
+        else if (obj instanceof String) {
+            return new var((String) obj);
+        }
+        else if (obj instanceof func) {
+            return (var) obj;
+        }
+        else {
+            throw new RuntimeException("unexpected type: " + obj.getClass() + " , " + obj);
         }
     }
 }
