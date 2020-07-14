@@ -13,16 +13,16 @@ public class PrimeTest {
         return "/home/mesut/IdeaProjects/math/prime-test.bin";
     }
 
-    @Test
+    /*@Test
     public void readFromFile() throws Exception {
         PrimeGenerator.readFrom(new FileInputStream(getPath()));
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void generate() throws Exception {
         //PrimeGenerator.generate(new File(getPath()), 1000*1000);
         PrimeGenerator.computePrimes(1000 * 1000);
-    }
+    }*/
 
     @Test
     public void setTest() {
@@ -41,8 +41,8 @@ public class PrimeTest {
     }
 
 
-    @Test
+    /*@Test
     public void pn() {
         System.out.println(new prime(5).eval());
-    }
+    }*/
 }
