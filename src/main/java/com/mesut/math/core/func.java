@@ -19,10 +19,13 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//base class for all expressions
 public abstract class func {
 
-    public enum types {
-        func, fx, constant, variable, add, sub, mul, div, pow, ln, sin, cos
+    public static Map<String, Class<?>> map = new HashMap<>();//name to function class
+
+    static {
+        Config.init();
     }
 
     //public types type = types.func;
@@ -31,11 +34,6 @@ public abstract class func {
     public func a = null, b = null;//left - right for div and others
     public List<func> f = new ArrayList<>();//list of internal functions
     public List<func> alter = new ArrayList<>();//alternative representations
-    public static Map<String, Class<?>> map = new HashMap<>();
-
-    static {
-        Config.init();
-    }
 
     //TODO make args Object autocast
     public static func makeFunc(String name, List<func> args) {
@@ -82,10 +80,45 @@ public abstract class func {
 
     }
 
+    public static List<func> getFree() {
+        return new ArrayList<>();
+    }
+
+    public static boolean isEq(List<func> l1, List<func> l2) {
+        int len = l1.size();
+        if (len != l2.size()) {
+            return false;
+        }
+        boolean[] b = new boolean[len];//processed flags for l2
+        boolean matchedAny = false;//flag for an element is not matched
+
+        for (func first : l1) {
+            for (int j = 0; j < len; j++) {
+                if (!b[j] && first.eq(l2.get(j))) {
+                    b[j] = true;
+                    matchedAny = true;
+                    break;
+                }
+            }
+            if (!matchedAny) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public static func parse(String expr) {
+        try {
+            return new MathParser(new StringReader(expr)).expr();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new Error(expr);
+        }
+    }
+
     public func sqrt() {
         return new sqrt(this);
     }
-
 
     public void set(List<func> l) {
         f.clear();
@@ -276,7 +309,6 @@ public abstract class func {
         return res;
     }
 
-
     public final func integrate() {
         return integrate(var.x);
     }
@@ -291,14 +323,6 @@ public abstract class func {
         return new Integral(this, v, new cons(a), new cons(b)).eval();
     }
 
-    public double integrate(double a, double b) {
-        return integrate(a, b, var.x);
-    }
-
-    public func simplify() {
-        return this;
-    }
-
     //public func(){}
 
 	/*public static func sign(func f, int s)
@@ -307,6 +331,14 @@ public abstract class func {
      z.sign *= s;
      return z;
      }*/
+
+    public double integrate(double a, double b) {
+        return integrate(a, b, var.x);
+    }
+
+    public func simplify() {
+        return this;
+    }
 
     public func sign(int s) {
         sign *= s;
@@ -378,7 +410,7 @@ public abstract class func {
             x = x.simplify();
         }
         return makeCons(x, f);
-        //return new mul(this, f).simplify(); 
+        //return new mul(this, f).simplify();
     }
 
     public func mul(double d) {
@@ -413,6 +445,10 @@ public abstract class func {
         return new fac(this);
     }
 
+    /*public String getType() {
+        return type.toString();
+    }*/
+
     public cons asCons() {
         return (cons) this;
     }
@@ -421,10 +457,6 @@ public abstract class func {
         //System.out.println(cons().functional);
         return isConstant() && !asCons().functional && eval() == d;
     }
-
-    /*public String getType() {
-        return type.toString();
-    }*/
 
     //negate without copy
     public func negate0() {
@@ -446,10 +478,6 @@ public abstract class func {
     }
 
     public abstract func copy0();//internal
-
-    public static List<func> getFree() {
-        return new ArrayList<>();
-    }
 
     @Override
     public String toString() {
@@ -481,7 +509,6 @@ public abstract class func {
         }
         return -1;
     }
-
 
     public boolean isNumber() {
         return isConstant() && !isConsfunc();
@@ -564,29 +591,6 @@ public abstract class func {
 
     public abstract boolean eq2(func f);
 
-    public static boolean isEq(List<func> l1, List<func> l2) {
-        int len = l1.size();
-        if (len != l2.size()) {
-            return false;
-        }
-        boolean[] b = new boolean[len];//processed flags for l2
-        boolean matchedAny = false;//flag for an element is not matched
-
-        for (func first : l1) {
-            for (int j = 0; j < len; j++) {
-                if (!b[j] && first.eq(l2.get(j))) {
-                    b[j] = true;
-                    matchedAny = true;
-                    break;
-                }
-            }
-            if (!matchedAny) {
-                return false;
-            }
-        }
-        return false;
-    }
-
     public List<var> vars() {
         Set<var> set = new HashSet<>();
         vars0(set);
@@ -594,16 +598,6 @@ public abstract class func {
     }
 
     public abstract void vars0(Set<var> vars);
-
-    public static func parse(String expr) {
-        try {
-            return new MathParser(new StringReader(expr)).expr();
-        } catch (ParseException e) {
-            e.printStackTrace();
-            throw new Error(expr);
-        }
-        //return Parser.parse(expr).simplify();
-    }
 
     public func substitude(var v, func f) {
         return signf(substitude0(v, f));
@@ -624,7 +618,6 @@ public abstract class func {
         taylorsym.calc(n);
         return taylorsym;
     }
-
 
     public double numericDerivative(double at) {
         return numericDerivative(at, Config.numericDerivativePrecision);

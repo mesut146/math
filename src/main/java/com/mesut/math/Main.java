@@ -1,29 +1,18 @@
 package com.mesut.math;
 
-import com.mesut.math.col.Linear;
 import com.mesut.math.col.col;
 import com.mesut.math.core.*;
-import com.mesut.math.diff.FirstOrder;
-import com.mesut.math.funcs.inv;
 import com.mesut.math.funcs.zeta;
 import com.mesut.math.parser2.MathParser;
-import com.mesut.math.prime.PrimeGenerator;
-import com.mesut.math.prime.factor;
-import com.mesut.math.prime.prime;
-import com.mesut.math.prime.pset;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.Random;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-
-
         func f = null, g = null;
-        
-        
+
         /*f=func.parse("e^x");
         System.out.println(f);
         new graph(f,-5,5).calc();*/
@@ -167,19 +156,23 @@ public class Main {
             for (int i = 0; i < m; i++) {
                 f = f.add(random(max / 2));
             }
-        } else if (n == 1) {//mul
+        }
+        else if (n == 1) {//mul
             f = cons.ONE;
             int m = r.nextInt(max - 1);
             for (int i = 0; i < m; i++) {
                 f = f.mul(random(max / 2));
             }
-        } else if (n == 2) {//pow
+        }
+        else if (n == 2) {//pow
             func a = random(max / 2);
             func b = random(max / 2);
             f = a.pow(b);
-        } else if (n == 3) {//var
+        }
+        else if (n == 3) {//var
             f = getVar();
-        } else if (n == 4) {
+        }
+        else if (n == 4) {
             f = getCons();
         }
         return f;
@@ -214,20 +207,6 @@ public class Main {
         //func.addRule("ln(e)=1");
         //func.addRule("ln(f(fx)^g(fx))=g(fx)*ln(f(fx))");
         //func ex=func.parse("e^f(fx)");
-    }
-
-    static void b() {
-
-
-        for (int k = 4; k < 50; k += 4) {
-            for (int i = 1; i < k; i += 2) {
-                Linear l = new Linear(k, i);
-                System.out.println(l + " " + l.col());
-            }
-            System.out.println("------------");
-        }
-
-
     }
 
 

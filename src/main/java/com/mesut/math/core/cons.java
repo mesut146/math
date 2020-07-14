@@ -22,14 +22,6 @@ public class cons extends func {
     public static final cons PHI = new phi();
     //public static final func PID2 = PI.div(2), PID3 = PI.div(3);
 
-    public boolean functional = false;
-    public func ff;
-    public double val = 0;
-    public BigDecimal big;
-    boolean nan = false, inf = false;
-    //public static MathContext mc = new MathContext(Config.precision);
-    //public static final Constant PI2,PI3,PI4,PI5,PI6;
-
     static {
         NaN = makeNan();
         INF = makeInf();
@@ -42,6 +34,14 @@ public class cons extends func {
 		PI6=(Constant)PI.div(6);
 		*/
     }
+
+    public boolean functional = false;
+    public func ff;
+    public double val = 0;
+    public BigDecimal big;
+    //public static MathContext mc = new MathContext(Config.precision);
+    //public static final Constant PI2,PI3,PI4,PI5,PI6;
+    boolean nan = false, inf = false;
 
     public cons(double d) {
         if (d < 0) {
@@ -81,11 +81,6 @@ public class cons extends func {
         //type = types.constant;
     }
 
-    @Override
-    public boolean isConstant() {
-        return true;
-    }
-
     private static cons makeInf() {
         cons res = new cons();
         res.val = Double.MAX_VALUE;
@@ -97,6 +92,15 @@ public class cons extends func {
         cons res = new cons();
         res.nan = true;
         return res;
+    }
+
+    public static boolean isInteger(double value) {
+        return value == (double) (int) value;
+    }
+
+    @Override
+    public boolean isConstant() {
+        return true;
     }
 
     @Override
@@ -168,15 +172,6 @@ public class cons extends func {
         return sign * val;
     }
 
-    @Override
-    public cons evalc(var[] v, double[] d) {
-        if (functional) {
-            //System.out.println("ff="+ff);
-            return (cons) signf(ff.evalc(v, d));
-        }
-        return this;
-    }
-
     /*@Override
     public func add(func f)
     {
@@ -216,6 +211,15 @@ public class cons extends func {
         return super.pow(f);
     }*/
 
+    @Override
+    public cons evalc(var[] v, double[] d) {
+        if (functional) {
+            //System.out.println("ff="+ff);
+            return (cons) signf(ff.evalc(v, d));
+        }
+        return this;
+    }
+
     public BigDecimal decimal() {
         if (sign == -1) {
             return big.negate();
@@ -228,10 +232,6 @@ public class cons extends func {
             return val == (int) val;
         }
         return false;
-    }
-
-    public static boolean isInteger(double value) {
-        return value == (double) (int) value;
     }
 
     public boolean isMinf() {

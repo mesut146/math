@@ -1,5 +1,4 @@
 package com.mesut.math.core;
 
-public class sigmaSet
-{
+public class sigmaSet {
 }

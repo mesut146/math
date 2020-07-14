@@ -6,11 +6,11 @@ import java.util.*;
 public class set extends func {
 
 
+    public static boolean print = true;
     public String name = "c";
     public int start, end;
     //public var v = var.n;//cn variable
     protected List<func> list = new ArrayList<>();
-    public static boolean print = true;
 
     public set() {
 

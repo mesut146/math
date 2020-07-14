@@ -24,13 +24,13 @@ public class var extends func {
         this(String.valueOf(c));
     }
 
+    public static var from(String s) {
+        return new var(s);
+    }
+
     @Override
     public boolean isVariable() {
         return true;
-    }
-
-    public static var from(String s) {
-        return new var(s);
     }
 
     @Override

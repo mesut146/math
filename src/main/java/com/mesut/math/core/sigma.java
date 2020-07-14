@@ -8,8 +8,8 @@ import java.util.Set;
 public class sigma extends func {
 
 
-    func start, end;//var or cons
     public func fx;
+    func start, end;//var or cons
     var var;
 
     public sigma(Object func, Object var, Object start, Object end) {
