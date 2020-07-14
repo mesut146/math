@@ -11,26 +11,23 @@ public class TaylorTest {
         func inv = f.inverse();
 
         System.out.println(inv.taylor(0, 7));
-        System.out.println(f.inverse().taylor(0,5));
+        System.out.println(f.inverse().taylor(0, 5));
     }
 
     @Test
-    public void taylor1() {
-
+    public void numeric() {
         func f = func.parse("exp(x)");
         taylor taylor = new taylor(f, 0);
         taylor.calc(5);
         System.out.println(taylor);
         System.out.println(taylor.derivative("x"));
-
     }
 
     @Test
-    public void symbol1() {
-
+    public void symbolic() {
         func f = func.parse("sin(x)");
-        taylor taylor = new taylorsym(f, 0);
-        taylor.calc(10);
+        taylorsym taylor = new taylorsym(f, 0);
+        taylor.calc(10, true);
         System.out.println(taylor);
         System.out.println(taylor.derivative("x"));
 

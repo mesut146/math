@@ -49,7 +49,6 @@ public class Integral extends func {
             if (lower.isReal() && upper.isReal()) {
                 return sign(new Integral(func.getReal(), dv, lower, upper));
             }
-
         }
         return sign(new Integral(func.getReal(), dv));
     }

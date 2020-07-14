@@ -26,9 +26,9 @@ public class ln extends func {
 
     @Override
     public func getImaginary() {
-        func ar = a.getReal().simplify();
-        func ba = a.getImaginary().simplify().div(ar).simplify();
-        return sign(new atan(ba)).simplify();
+        func re = a.getReal().simplify();
+        func im = a.getImaginary().simplify().div(re).simplify();
+        return sign(new atan(im)).simplify();
     }
 
     @Override

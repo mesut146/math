@@ -2,9 +2,8 @@ package com.mesut.math.core;
 
 import java.util.*;
 
-//represents a finite set with elements of cons
+//a finite set with elements of type cons
 public class set extends func {
-
 
     public static boolean print = true;
     public String name = "c";

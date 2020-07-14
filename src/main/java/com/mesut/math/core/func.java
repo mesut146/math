@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 //base class for all expressions
 public abstract class func {
 
+    //used ny parser
     public static Map<String, Class<?>> map = new HashMap<>();//name to function class
 
     static {
@@ -75,9 +76,7 @@ public abstract class func {
 
     //register func name and its class ex. (sin,math.trigo.sin)
     public static void register(String fname, Class<? extends func> cls) {
-        //System.out.println(fname);
         map.put(fname, cls);
-
     }
 
     public static List<func> getFree() {

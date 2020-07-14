@@ -4,9 +4,15 @@ import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
 import com.mesut.math.core.var;
 
+//y'+y*p=q
 public class FirstOrder {
     public func p;
     public func q;
+
+    public FirstOrder(func p, func q) {
+        this.p = p;
+        this.q = q;
+    }
 
     public void solve() {
         //y'+y*p=q

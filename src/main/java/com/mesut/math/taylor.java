@@ -25,6 +25,7 @@ public class taylor extends add {
 
     }
 
+
     public void calc(int n) {
         center = var.sub(at);
 

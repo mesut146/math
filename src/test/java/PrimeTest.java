@@ -9,29 +9,30 @@ import java.io.FileInputStream;
 
 public class PrimeTest {
 
-    @Test
-    public void readFromFile() throws Exception {
-        String path = "/home/mesut/IdeaProjects/math/prime-test.bin";
-        PrimeGenerator.readFrom(new FileInputStream(path));
+    String getPath() {
+        return "/home/mesut/IdeaProjects/math/prime-test.bin";
     }
 
+    @Test
+    public void readFromFile() throws Exception {
+        PrimeGenerator.readFrom(new FileInputStream(getPath()));
+    }
 
     @Test
     public void generate() throws Exception {
-        String path = "/home/mesut/IdeaProjects/math/prime-test.bin";
-        //PrimeGenerator.generate(new File(path), 1000*1000);
+        //PrimeGenerator.generate(new File(getPath()), 1000*1000);
         PrimeGenerator.computePrimes(1000 * 1000);
     }
 
     @Test
     public void setTest() {
-        set s = new pset(100);
-        set s2 = (set) s.pow(3).mul(2).add(1);
+        set set1 = new pset(100);
+        set set2 = (set) set1.pow(3).mul(2).add(1);
 
-        System.out.println(s);
-        System.out.println(s2);
-        System.out.println(factor.factorize(s));
-        System.out.println(factor.factorize(s2));
+        System.out.println(set1);
+        System.out.println(set2);
+        System.out.println(factor.factorize(set1));
+        System.out.println(factor.factorize(set2));
     }
 
     @Test

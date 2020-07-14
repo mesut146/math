@@ -7,13 +7,11 @@ import com.mesut.math.core.var;
 import java.util.Set;
 
 //number of primes less than p
-
 public class pi extends func {
 
     public pi(func p) {
         //p>=1
         a = p;
-
     }
 
     @Override

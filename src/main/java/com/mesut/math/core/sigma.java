@@ -5,8 +5,8 @@ import com.mesut.math.Util;
 
 import java.util.Set;
 
+//summation symbol (sigma)
 public class sigma extends func {
-
 
     public func fx;
     func start, end;//var or cons
@@ -55,10 +55,6 @@ public class sigma extends func {
 
         for (int i = si + 1; i <= ei; i++) {
             sum += fx2.eval(var, i);
-            //System.out.println(fx2.eval(var,i));
-            //System.out.println(sum);
-            //1.6449340668
-            //1.6449240668982262
             if (i == Config.maxIteration) {
 
                 return sum;
