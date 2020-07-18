@@ -17,6 +17,9 @@ e^(-i*x)=cos(x)-i*sin(x)
 sin(x)=(i*e^(-i*x)-i*e^(i*x)/2)
 cos(x)=(e^(i*x)+e^(-i*x)/2)
 
+sin(i*x)=(i*e^x-i*e^(-x))/2
+cos(i*x)=(e^(-x)+e^x)/2
+
 #hyper
 sinh(x)=(e^x-e^-x)/2
 cosh(x)=(e^x+e^-x)/2

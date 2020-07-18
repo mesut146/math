@@ -4,9 +4,9 @@
     <groupId>com.mesut</groupId>
     <artifactId>math</artifactId>
     <packaging>jar</packaging>
-    <version>1.0</version>
+    <version>1.1</version>
     <name>math</name>
-    <url>http://maven.apache.org</url>
+    <url>https://github.com/mesut146/math</url>
 
     <properties>
         <maven.compiler.source>1.7</maven.compiler.source>
