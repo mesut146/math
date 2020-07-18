@@ -28,10 +28,10 @@ jobs:
         run: mvn package -DskipTests
         
       - name: set output name
-        run: echo ${{ math.name }} > $(basename ./target/math-*.jar)
+        run: echo ${{ env.name }} > $(basename ./target/math-*.jar)
         
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ math.name }}
+          name: ${{ env.name }}
           path: ./target/math-*.jar
