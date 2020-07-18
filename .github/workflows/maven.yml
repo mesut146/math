@@ -27,5 +27,5 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${name}
+          name: ${{ runner.os }}
           path: ./target/math-*.jar
