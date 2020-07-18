@@ -25,10 +25,10 @@ jobs:
         run: mvn package -DskipTests
         
       - name: set output name
-        run: echo '::set-env name=jar_name::$(basename ./target/math-*.jar)'
+        run: echo ${{ jar_name }} > $(basename ./target/math-*.jar)'
         
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: $jar_name
+          name: ${{ jar_name }}
           path: ./target/math-*.jar
