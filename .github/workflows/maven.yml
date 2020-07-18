@@ -7,9 +7,8 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      math:
-        name: 'math.jar' 
+    env:
+      name: 'math.jar' 
 
     steps:
       - uses: actions/checkout@v2
