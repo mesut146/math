@@ -155,18 +155,20 @@ public abstract class func {
     //comma separated vars and val array
     public final double eval(String vars, double... values) {
         if (values.length == 0) {
-            throw new RuntimeException("value size must be positive: " + values.length);
+            return evalStr(vars);
         }
-        variable[] varArr = new variable[values.length];
-        String[] sp = vars.split(",");
-        for (int i = 0; i < values.length; i++) {
-            varArr[i] = new variable(sp[i]);
+        else {
+            variable[] varArr = new variable[values.length];
+            String[] sp = vars.split(",");
+            for (int i = 0; i < values.length; i++) {
+                varArr[i] = new variable(sp[i]);
+            }
+            return eval(varArr, values);
         }
-        return eval(varArr, values);
     }
 
-    //@see get(String)
-    public final double eval(String s) {
+
+    private double evalStr(String s) {
         String[] sp = s.split(",");
         variable[] vars = new variable[sp.length];
         double[] vals = new double[sp.length];
