@@ -2,6 +2,7 @@ package com.mesut.math.funcs;
 
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
+import com.mesut.math.core.variable;
 import com.mesut.math.operator.pow;
 
 public class sqrt extends pow {
@@ -32,6 +33,11 @@ public class sqrt extends pow {
     @Override
     public boolean eq0(func f) {
         return a.eq(f.a);
+    }
+
+    @Override
+    public func substitute0(variable v, func p) {
+        return new sqrt(a.substitute(v, p));
     }
 
     @Override

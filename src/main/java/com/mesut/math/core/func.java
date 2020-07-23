@@ -566,8 +566,24 @@ public abstract class func {
 
     public abstract void vars0(Set<variable> vars);
 
-    public func substitute(variable v, func f) {
+    public final func substitute(variable v, func f) {
         return signf(substitute0(v, f));
+    }
+
+    public final func substitute(String v, func f) {
+        return substitute(new variable(v), f);
+    }
+
+    //x=y,n=5
+    public final func substitute(String s) {
+        func res = this;
+        for (String sp : s.split(",")) {
+            String[] lr = sp.split("=");
+            variable v = new variable(lr[0]);
+            func val = func.parse(lr[1]);
+            res = substitute(v, val);
+        }
+        return res;
     }
 
     public abstract func substitute0(variable v, func p);

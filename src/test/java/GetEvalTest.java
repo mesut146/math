@@ -1,5 +1,4 @@
 import com.mesut.math.core.func;
-import com.mesut.math.core.variable;
 import org.junit.Test;
 
 public class GetEvalTest {
@@ -11,5 +10,11 @@ public class GetEvalTest {
         assert f.eval("a,b", 3, 4) == 5;
     }
 
+    @Test
+    public void substitute() {
+        func f = func.parse("sqrt(a^2+b^2)");
+        System.out.println(f.substitute("a=5"));
+        System.out.println(f);
+    }
 
 }
