@@ -69,28 +69,28 @@ public class add extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
+    public func get0(variable[] vars, cons[] vals) {
         func res = cons.ZERO;
         for (func term : f) {
-            res = res.add(term.get(v, c));
+            res = res.add(term.get(vars, vals));
         }
         return sign(res);
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
+    public double eval(variable[] v, double[] vals) {
         double sum = 0;
         for (func f1 : f) {
-            sum += f1.eval(v, d);
+            sum += f1.eval(v, vals);
         }
         return sign * sum;
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
+    public cons evalc(variable[] vars, double[] vals) {
         cons sum = cons.ZERO;
         for (func term : f) {
-            sum = (cons) sum.add(term.evalc(v, d));
+            sum = (cons) sum.add(term.evalc(vars, vals));
         }
         return sc(sum);
     }
@@ -234,10 +234,10 @@ public class add extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
+    public func substitute0(variable v, func p) {
         List<func> arr = getFree();
         for (func term : f) {
-            arr.add(term.substitude0(v, p));
+            arr.add(term.substitute0(v, p));
         }
         return new add(arr).simplify();
     }

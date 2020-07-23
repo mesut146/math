@@ -147,7 +147,7 @@ public class cons extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
+    public func get0(variable[] vars, cons[] vals) {
         if (functional) {
             if (ff == null) {
                 return new cons(val).sign(sign);
@@ -164,10 +164,10 @@ public class cons extends func {
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
+    public double eval(variable[] v, double[] vals) {
         if (functional) {
             //System.out.println("ff="+ff);
-            return sign * ff.eval(v, d);
+            return sign * ff.eval(v, vals);
         }
         return sign * val;
     }
@@ -212,10 +212,10 @@ public class cons extends func {
     }*/
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
+    public cons evalc(variable[] vars, double[] vals) {
         if (functional) {
             //System.out.println("ff="+ff);
-            return (cons) signf(ff.evalc(v, d));
+            return (cons) signf(ff.evalc(vars, vals));
         }
         return this;
     }
@@ -308,7 +308,7 @@ public class cons extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
+    public func substitute0(variable v, func p) {
         return this;
     }
 

@@ -42,18 +42,18 @@ public class ln extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        return sign(new ln(a.get(v, c)));
+    public func get0(variable[] vars, cons[] vals) {
+        return sign(new ln(a.get(vars, vals)));
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
-        return sign * Math.log(a.eval(v, d));
+    public double eval(variable[] v, double[] vals) {
+        return sign * Math.log(a.eval(v, vals));
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
-        return new cons(sign * Math.log(a.evalc(v, d).decimal().doubleValue()));
+    public cons evalc(variable[] vars, double[] vals) {
+        return new cons(sign * Math.log(a.evalc(vars, vals).decimal().doubleValue()));
     }
 
     @Override
@@ -87,8 +87,8 @@ public class ln extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
-        return new ln(a.substitude0(v, p));
+    public func substitute0(variable v, func p) {
+        return new ln(a.substitute0(v, p));
     }
 
     @Override

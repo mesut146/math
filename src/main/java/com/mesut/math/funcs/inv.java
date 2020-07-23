@@ -21,21 +21,21 @@ public class inv extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        a = a.get0(v, c);
+    public func get0(variable[] vars, cons[] vals) {
+        a = a.get0(vars, vals);
         return this;
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
+    public double eval(variable[] v, double[] vals) {
         // TODO: Implement this method
         return 0;
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
+    public cons evalc(variable[] vars, double[] vals) {
         // TODO: Implement this method
-        return new cons(eval(v, d));
+        return new cons(eval(vars, vals));
     }
 
     @Override
@@ -89,8 +89,8 @@ public class inv extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
-        a = a.substitude(v, p);
+    public func substitute0(variable v, func p) {
+        a = a.substitute(v, p);
         return this;
     }
 

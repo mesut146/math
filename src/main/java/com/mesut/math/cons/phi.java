@@ -13,7 +13,7 @@ public class phi extends cons {
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
+    public double eval(variable[] v, double[] vals) {
         return val;
     }
 

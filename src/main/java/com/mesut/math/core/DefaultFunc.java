@@ -4,17 +4,17 @@ import java.util.Set;
 
 public class DefaultFunc extends func {
     @Override
-    public func get0(variable[] v, cons[] c) {
+    public func get0(variable[] vars, cons[] vals) {
         return this;
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
+    public double eval(variable[] v, double[] vals) {
         return 0;
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
+    public cons evalc(variable[] vars, double[] vals) {
         return cons.ZERO;
     }
 
@@ -64,7 +64,7 @@ public class DefaultFunc extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
+    public func substitute0(variable v, func p) {
         return this;
     }
 }

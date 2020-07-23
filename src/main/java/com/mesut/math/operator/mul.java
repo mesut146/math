@@ -60,28 +60,28 @@ public class mul extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
+    public func get0(variable[] vars, cons[] vals) {
         mul res = new mul();
         for (func term : f) {
-            res.f.add(term.get(v, c));
+            res.f.add(term.get(vars, vals));
         }
         return sign(res.simplify());
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
+    public double eval(variable[] v, double[] vals) {
         double res = 1;
         for (func term : f) {
-            res *= term.eval(v, d);
+            res *= term.eval(v, vals);
         }
         return sign * res;
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
+    public cons evalc(variable[] vars, double[] vals) {
         func m = cons.ONE;
         for (func term : f) {
-            m = m.mul(term.evalc(v, d));
+            m = m.mul(term.evalc(vars, vals));
         }
         return sc(m);
     }
@@ -440,10 +440,10 @@ public class mul extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
+    public func substitute0(variable v, func p) {
         List<func> l = getFree();
         for (func u : f) {
-            l.add(u.substitude(v, p));
+            l.add(u.substitute(v, p));
         }
         return new mul(l);
     }

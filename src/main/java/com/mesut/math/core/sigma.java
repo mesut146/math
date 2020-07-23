@@ -27,7 +27,7 @@ public class sigma extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
+    public func get0(variable[] vars, cons[] vals) {
         /*if(this.var.eq2(v)){
 
          }*/
@@ -35,9 +35,9 @@ public class sigma extends func {
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
-        func s = start.get(v, d);
-        func e = end.get(v, d);
+    public double eval(variable[] v, double[] vals) {
+        func s = start.get(v, vals);
+        func e = end.get(v, vals);
         //sigma(x^n/n^2,n=1 to k) get(x=2,k=33)
 
         if (!isInt(s)) {
@@ -49,7 +49,7 @@ public class sigma extends func {
         int si = (int) s.eval();
         int ei = (int) e.eval();
 
-        func fx2 = fx.get(v, d);
+        func fx2 = fx.get(v, vals);
         double precision = Math.pow(10, -Config.digits);
         double sum = fx2.eval(var, si), last = 0;
 
@@ -65,9 +65,9 @@ public class sigma extends func {
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
+    public cons evalc(variable[] vars, double[] vals) {
         // TODO: Implement this method
-        return new cons(eval(v, d));
+        return new cons(eval(vars, vals));
     }
 
     @Override
@@ -107,8 +107,8 @@ public class sigma extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
-        fx = fx.substitude(v, p);
+    public func substitute0(variable v, func p) {
+        fx = fx.substitute(v, p);
         return this;
     }
 

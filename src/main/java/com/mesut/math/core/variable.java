@@ -53,12 +53,12 @@ public class variable extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        for (int i = 0; i < v.length; i++) {
-            if (eq2(v[i])) {
+    public func get0(variable[] vars, cons[] vals) {
+        for (int i = 0; i < vars.length; i++) {
+            if (eq2(vars[i])) {
                 //TODO: mutable or not?
                 //return new Constant(c[i]).s(sign);
-                return c[i].sign(sign);
+                return vals[i].sign(sign);
             }
         }
 
@@ -66,20 +66,20 @@ public class variable extends func {
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
+    public double eval(variable[] v, double[] vals) {
         for (int i = 0; i < v.length; i++) {
             if (eq2(v[i])) {
-                return d[i] * sign;
+                return vals[i] * sign;
             }
         }
         return 0;
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
-        for (int i = 0; i < v.length; i++) {
-            if (eq2(v[i])) {
-                return new cons(BigDecimal.valueOf(sign * d[i]));
+    public cons evalc(variable[] vars, double[] vals) {
+        for (int i = 0; i < vars.length; i++) {
+            if (eq2(vars[i])) {
+                return new cons(BigDecimal.valueOf(sign * vals[i]));
             }
         }
         return cons.ZERO;
@@ -117,7 +117,7 @@ public class variable extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
+    public func substitute0(variable v, func p) {
         return eq2(v) ? p : this;
     }
 

@@ -128,13 +128,13 @@ public class Integral extends func {
 
 
     @Override
-    public func get0(variable[] v, cons[] c) {
+    public func get0(variable[] vars, cons[] vals) {
         Integral res = (Integral) copy();
         if (hasLimits()) {
-            res.lower = res.lower.get0(v, c);
-            res.upper = res.upper.get0(v, c);
+            res.lower = res.lower.get0(vars, vals);
+            res.upper = res.upper.get0(vars, vals);
         }
-        res.func = res.func.get0(v, c);
+        res.func = res.func.get0(vars, vals);
         return res;
     }
 
@@ -146,15 +146,15 @@ public class Integral extends func {
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
-        a = a.get(v, d);
+    public double eval(variable[] v, double[] vals) {
+        a = a.get(v, vals);
         System.out.println("int=" + a + " dv=" + dv);
         return eval();
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
-        return new cons(eval(v, d));
+    public cons evalc(variable[] vars, double[] vals) {
+        return new cons(eval(vars, vals));
     }
 
     //transform infinite bounds to 0,1 range
@@ -167,7 +167,7 @@ public class Integral extends func {
                 func tsq = nv.pow(2);
                 func ext = cons.ONE.add(tsq).div(cons.ONE.sub(tsq).pow(2));
                 func np = nv.div(cons.ONE.sub(tsq));
-                this.func = func.substitude(dv, np).mul(ext);
+                this.func = func.substitute(dv, np).mul(ext);
                 this.dv = nv;
                 this.lower = cons.ONE.negate();
                 this.upper = cons.ONE;
@@ -176,7 +176,7 @@ public class Integral extends func {
                 variable nv = variable.t;
                 func ext = nv.pow(-2);
                 func np = upper.sub(cons.ONE.sub(nv).div(nv));
-                this.func = func.substitude(dv, np).mul(ext);
+                this.func = func.substitute(dv, np).mul(ext);
                 this.dv = nv;
                 this.lower = cons.ZERO;
                 this.upper = cons.ONE;
@@ -186,7 +186,7 @@ public class Integral extends func {
             variable nv = variable.t;
             func ext = cons.ONE.div(cons.ONE.sub(nv).pow(2));
             func np = lower.add(nv.div(cons.ONE.sub(nv)));
-            this.func = func.substitude(dv, np).mul(ext);
+            this.func = func.substitute(dv, np).mul(ext);
             this.dv = nv;
             this.lower = cons.ZERO;
             this.upper = cons.ONE;
@@ -261,7 +261,7 @@ public class Integral extends func {
         variable sigVar = variable.t;
         func newFunc = new cons(a).add(sigVar.mul(total));
 
-        sigma sigma = new sigma(this.func.substitude(dv, newFunc), sigVar, 1, n - 1);
+        sigma sigma = new sigma(this.func.substitute(dv, newFunc), sigVar, 1, n - 1);
         double rest = sigma.eval();
         return total * (this.func.eval(a) / 2 + this.func.eval(b) / 2 + rest);
     }
@@ -282,8 +282,8 @@ public class Integral extends func {
 
                 }
                 else {//fubuni's theorem
-                    func ls = func.substitude(dv, upper).mul(upper.derivative(v));
-                    func rs = func.substitude(dv, lower).mul(lower.derivative(v));
+                    func ls = func.substitute(dv, upper).mul(upper.derivative(v));
+                    func rs = func.substitute(dv, lower).mul(lower.derivative(v));
                     return ls.sub(rs);
                 }
             }
@@ -341,10 +341,10 @@ public class Integral extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
-        func = func.substitude(v, p);
-        lower = lower.substitude(v, p);
-        upper = upper.substitude(v, p);
+    public func substitute0(variable v, func p) {
+        func = func.substitute(v, p);
+        lower = lower.substitute(v, p);
+        upper = upper.substitute(v, p);
         return this;
         //return new Integral(a.substitude0(v,p),this.v);
     }

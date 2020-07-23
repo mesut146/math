@@ -72,18 +72,18 @@ public class cos extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        return new cos(a.get0(v, c), sign).simplify();
+    public func get0(variable[] vars, cons[] vals) {
+        return new cos(a.get0(vars, vals), sign).simplify();
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
-        return sign * Math.cos(a.eval(v, d));
+    public double eval(variable[] v, double[] vals) {
+        return sign * Math.cos(a.eval(v, vals));
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
-        return new cons(sign * Math.cos(a.evalc(v, d).decimal().doubleValue()));
+    public cons evalc(variable[] vars, double[] vals) {
+        return new cons(sign * Math.cos(a.evalc(vars, vals).decimal().doubleValue()));
     }
 
     @Override
@@ -110,8 +110,8 @@ public class cos extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
-        return new cos(a.substitude0(v, p)).simplify();
+    public func substitute0(variable v, func p) {
+        return new cos(a.substitute0(v, p)).simplify();
     }
 
 

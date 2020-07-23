@@ -13,14 +13,14 @@ public class step extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        a = a.get(v, c);
+    public func get0(variable[] vars, cons[] vals) {
+        a = a.get(vars, vals);
         return this;
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
-        double av = a.eval(v, d);
+    public double eval(variable[] v, double[] vals) {
+        double av = a.eval(v, vals);
         if (av >= 0) {
             return 1;
         }
@@ -28,8 +28,8 @@ public class step extends func {
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
-        return new cons(eval(v, d));
+    public cons evalc(variable[] vars, double[] vals) {
+        return new cons(eval(vars, vals));
     }
 
     @Override
@@ -80,8 +80,8 @@ public class step extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
-        a = a.substitude(v, p);
+    public func substitute0(variable v, func p) {
+        a = a.substitute(v, p);
         return this;
     }
 

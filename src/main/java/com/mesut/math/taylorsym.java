@@ -31,16 +31,16 @@ public class taylorsym extends taylor {
     public void calc(int n, boolean fac) {
         func center = var.sub(at);
 
-        f.add(makeTerm(func.substitude(var, at).simplify(), 0, center));
+        f.add(makeTerm(func.substitute(var, at).simplify(), 0, center));
 
         for (int i = 1; i <= n; i++) {
             func = func.derivative();
             func coeff;
             if (!fac) {
-                coeff = func.substitude(var, at).simplify().div(new fac(i).eval());
+                coeff = func.substitute(var, at).simplify().div(new fac(i).eval());
             }
             else {
-                coeff = func.substitude(var, at).simplify().div(new fac(i));
+                coeff = func.substitute(var, at).simplify().div(new fac(i));
             }
             f.add(makeTerm(coeff, i, center));
         }

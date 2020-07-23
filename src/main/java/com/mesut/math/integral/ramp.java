@@ -17,22 +17,22 @@ public class ramp extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        return new ramp(a.get(v, c));
+    public func get0(variable[] vars, cons[] vals) {
+        return new ramp(a.get(vars, vals));
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
+    public double eval(variable[] v, double[] vals) {
         double x;
-        if ((x = a.eval(v, d)) >= 0) {
+        if ((x = a.eval(v, vals)) >= 0) {
             return x;
         }
         return 0;
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
-        return new cons(eval(v, d));
+    public cons evalc(variable[] vars, double[] vals) {
+        return new cons(eval(vars, vals));
     }
 
     @Override
@@ -89,9 +89,9 @@ public class ramp extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
+    public func substitute0(variable v, func p) {
         // TODO: Implement this method
-        a = a.substitude(v, p);
+        a = a.substitute(v, p);
         return this;
     }
 

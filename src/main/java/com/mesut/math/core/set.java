@@ -226,18 +226,18 @@ public class set extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        a = a.get(v, c);
+    public func get0(variable[] vars, cons[] vals) {
+        a = a.get(vars, vals);
         return this;
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
+    public double eval(variable[] v, double[] vals) {
         throw new RuntimeException("can' eval set");
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
+    public cons evalc(variable[] vars, double[] vals) {
         throw new RuntimeException("can' eval set");
     }
 
@@ -322,9 +322,9 @@ public class set extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
+    public func substitute0(variable v, func p) {
         for (int i = 0; i < list.size(); i++) {
-            list.set(i, list.get(i).substitude(v, p));
+            list.set(i, list.get(i).substitute(v, p));
         }
         return this;
     }

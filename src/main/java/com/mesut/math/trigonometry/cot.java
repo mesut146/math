@@ -36,18 +36,18 @@ public class cot extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        return signf(alter.get(0).get0(v, c));
+    public func get0(variable[] vars, cons[] vals) {
+        return signf(alter.get(0).get0(vars, vals));
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
-        return sign * 1.0 / Math.tan(a.eval(v, d));
+    public double eval(variable[] v, double[] vals) {
+        return sign * 1.0 / Math.tan(a.eval(v, vals));
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
-        return new cons(eval(v, d));
+    public cons evalc(variable[] vars, double[] vals) {
+        return new cons(eval(vars, vals));
     }
 
     @Override
@@ -71,8 +71,8 @@ public class cot extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
-        a = a.substitude(v, p);
+    public func substitute0(variable v, func p) {
+        a = a.substitute(v, p);
         return this;
     }
 

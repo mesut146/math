@@ -33,18 +33,18 @@ public class sin extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        return new sin(a.get0(v, c), sign).simplify();
+    public func get0(variable[] vars, cons[] vals) {
+        return new sin(a.get0(vars, vals), sign).simplify();
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
-        return sign * Math.sin(a.eval(v, d));
+    public double eval(variable[] v, double[] vals) {
+        return sign * Math.sin(a.eval(v, vals));
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
-        return new cons(sign * Math.sin(a.evalc(v, d).decimal().doubleValue()));
+    public cons evalc(variable[] vars, double[] vals) {
+        return new cons(sign * Math.sin(a.evalc(vars, vals).decimal().doubleValue()));
     }
 
     @Override
@@ -71,8 +71,8 @@ public class sin extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
-        return new sin(a.substitude0(v, p), sign);
+    public func substitute0(variable v, func p) {
+        return new sin(a.substitute0(v, p), sign);
     }
 
     @Override

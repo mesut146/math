@@ -36,18 +36,18 @@ public class tan extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        return signf(alter.get(0).get(v, c));
+    public func get0(variable[] vars, cons[] vals) {
+        return signf(alter.get(0).get(vars, vals));
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
-        return sign * Math.tan(a.eval(v, d));
+    public double eval(variable[] v, double[] vals) {
+        return sign * Math.tan(a.eval(v, vals));
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
-        return new cons(sign * Math.tan(a.evalc(v, d).decimal().doubleValue()));
+    public cons evalc(variable[] vars, double[] vals) {
+        return new cons(sign * Math.tan(a.evalc(vars, vals).decimal().doubleValue()));
     }
 
     @Override
@@ -71,7 +71,7 @@ public class tan extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
+    public func substitute0(variable v, func p) {
         return null;
     }
 

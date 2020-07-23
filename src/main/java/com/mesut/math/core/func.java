@@ -16,8 +16,6 @@ import com.mesut.math.trigonometry.atan;
 import java.io.StringReader;
 import java.lang.reflect.Constructor;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 //base class for all expressions
 public abstract class func {
@@ -125,27 +123,25 @@ public abstract class func {
         l.clear();
     }
 
-    public final func get(cons c) {
-        //System.out.println("fget(c)="+c);
-        return get(variable.x, c);
+    //get---------------------
+    public final func get(cons val) {
+        return get(variable.x, val);
     }
 
-    public final func get(double d) {
-        //System.out.println("fget(d)="+d);
-        return get(variable.x, new cons(d));
+    public final func get(double val) {
+        return get(variable.x, new cons(val));
     }
 
-    public final func get(variable v, double d) {
-        //System.out.println("fget(v,d)="+v+","+d);
-        return get(v, new cons(d));
+    public final func get(variable v, double val) {
+        return get(v, new cons(val));
     }
 
-    public final func get(variable[] v, double[] d) {
-        cons[] c = new cons[d.length];
+    public final func get(variable[] vars, double[] vals) {
+        cons[] c = new cons[vals.length];
         for (int i = 0; i < c.length; i++) {
-            c[i] = new cons(d[i]);
+            c[i] = new cons(vals[i]);
         }
-        return get0(v, c);
+        return get0(vars, c);
     }
 
     public final func get(variable[] v, cons[] c) {
@@ -153,6 +149,8 @@ public abstract class func {
         return f.simplify();
     }
 
+    //comma separated assignments
+    //x=5,y=1,z=5...
     public final func get(String s) {
         String[] sp = s.split(",");
         variable[] va = new variable[sp.length];
@@ -171,65 +169,53 @@ public abstract class func {
         return get0(new variable[]{v}, new cons[]{c});
     }
 
+    //substitute vals with vars
+    public abstract func get0(variable[] vars, cons[] vals);
+
+    //eval----------------------------------
     public double eval() {
         return eval(variable.x, 0);
     }
 
-    public final double eval(String s, double... d) {
-        if (d.length == 0) {
-            Pattern p = Pattern.compile("(\\w)+=(\\d+(\\.\\d+)?)");
-            Matcher m = p.matcher(s);
-            List<variable> vl = new ArrayList<>();
-            List<Double> dl = new ArrayList<>();
-            while (m.find()) {
-                vl.add(new variable(m.group(1)));
-                dl.add(Double.parseDouble(m.group(2)));
-                //System.out.println(m.group(1));
-                //System.out.println(m.group(2));
-
-            }
-            return eval(vl.toArray(new variable[0]), cast(dl));
+    //comma separated vars and val array
+    public final double eval(String vars, double... values) {
+        if (values.length == 0) {
+            throw new RuntimeException("value size must be positive: " + values.length);
         }
-        variable[] v = new variable[d.length];
-        String[] sp = s.split(",");
-        for (int i = 0; i < d.length; i++) {
-            v[i] = new variable(sp[i]);
+        variable[] varArr = new variable[values.length];
+        String[] sp = vars.split(",");
+        for (int i = 0; i < values.length; i++) {
+            varArr[i] = new variable(sp[i]);
         }
-        return eval(v, d);
-    }
-
-    double[] cast(List<Double> list) {
-        double[] r = new double[list.size()];
-
-        for (int i = 0; i < r.length; i++) {
-            r[i] = list.get(i);
-        }
-        return r;
-    }
-
-    public abstract func get0(variable[] v, cons[] c);
-
-    public abstract double eval(variable[] v, double[] d);
-
-    public abstract cons evalc(variable[] v, double[] d);
-
-    public cons evalc() {
-        return evalc(new variable[]{}, new double[]{});
+        return eval(varArr, values);
     }
 
     public double eval(variable v, double d) {
         return eval(new variable[]{v}, new double[]{d});
     }
 
-    public double eval(double d) {
+    //auto find var and assign val
+    public double eval(double val) {
         List<variable> vars = vars();
 
+        //default var is x if none is specified
         if (vars.size() == 0 || vars.contains(variable.x)) {
-            return eval(variable.x, d);
+            return eval(variable.x, val);
         }
-        return eval(vars.get(0), d);
+        //todo throw error if more than 1 var
+        return eval(vars.get(0), val);
     }
 
+    public abstract double eval(variable[] vars, double[] vals);
+
+    public abstract cons evalc(variable[] vars, double[] vals);
+
+    public cons evalc() {
+        return evalc(new variable[]{}, new double[]{});
+    }
+
+
+    //--------------------------------------------
     //multiplicative inverse
     public func MulInverse() {
         return cons.ONE.div(this);
@@ -598,11 +584,11 @@ public abstract class func {
 
     public abstract void vars0(Set<variable> vars);
 
-    public func substitude(variable v, func f) {
-        return signf(substitude0(v, f));
+    public func substitute(variable v, func f) {
+        return signf(substitute0(v, f));
     }
 
-    public abstract func substitude0(variable v, func p);
+    public abstract func substitute0(variable v, func p);
 
     //center,terms
     public taylor taylor(double at, int n) {

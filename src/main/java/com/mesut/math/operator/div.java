@@ -45,21 +45,21 @@ public class div extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        return signf(a.get(v, c).div(b.get(v, c)));
+    public func get0(variable[] vars, cons[] vals) {
+        return signf(a.get(vars, vals).div(b.get(vars, vals)));
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
+    public double eval(variable[] v, double[] vals) {
         // TODO: Implement this method
 
-        return sign * a.eval(v, d) / b.eval(v, d);
+        return sign * a.eval(v, vals) / b.eval(v, vals);
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
+    public cons evalc(variable[] vars, double[] vals) {
         // TODO: Implement this method
-        return new cons(eval(v, d));
+        return new cons(eval(vars, vals));
     }
 
     @Override
@@ -233,8 +233,8 @@ public class div extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
-        return a.substitude(v, p).div(b.substitude(v, p));
+    public func substitute0(variable v, func p) {
+        return a.substitute(v, p).div(b.substitute(v, p));
     }
 
 

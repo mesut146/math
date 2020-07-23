@@ -48,19 +48,19 @@ public class atan extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        a.get0(v, c);
+    public func get0(variable[] vars, cons[] vals) {
+        a.get0(vars, vals);
         return this;
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
-        return sign * Math.atan(a.eval(v, d));
+    public double eval(variable[] v, double[] vals) {
+        return sign * Math.atan(a.eval(v, vals));
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
-        return new cons(sign * Math.atan(a.evalc(v, d).decimal().doubleValue()));
+    public cons evalc(variable[] vars, double[] vals) {
+        return new cons(sign * Math.atan(a.evalc(vars, vals).decimal().doubleValue()));
     }
 
     @Override
@@ -92,8 +92,8 @@ public class atan extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
-        a.substitude(v, p);
+    public func substitute0(variable v, func p) {
+        a.substitute(v, p);
         return this;
     }
 

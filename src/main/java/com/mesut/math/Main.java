@@ -15,16 +15,6 @@ public class Main {
         }
     }
 
-    static void javacc() {
-        String s = "gamma(x)";
-        MathParser parser = new MathParser(new StringReader(s));
-        try {
-            func f = parser.line();
-            System.out.println("f=" + f.eval("x=5") + " cls=" + f.getClass() + " arr=" + f.f);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     static void matrix() {
         matrix m1 = new matrix("(1,2,3),(4,9,7)");

@@ -51,15 +51,15 @@ public class fac extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        a = a.get0(v, c);
+    public func get0(variable[] vars, cons[] vals) {
+        a = a.get0(vars, vals);
         return this;
         //return new fac(a.get(v, c)).sign(sign);
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
-        double aval = a.eval(v, d);
+    public double eval(variable[] v, double[] vals) {
+        double aval = a.eval(v, vals);
         if (!cons.isInteger(aval)) {
             System.out.println("can't compute factorial of a real number use gamma function instead");
         }
@@ -67,9 +67,9 @@ public class fac extends func {
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
+    public cons evalc(variable[] vars, double[] vals) {
         BigDecimal bd = new BigDecimal(1);
-        for (int i = 2; i <= a.evalc(v, d).decimal().intValue(); i++) {
+        for (int i = 2; i <= a.evalc(vars, vals).decimal().intValue(); i++) {
             bd = bd.multiply(new BigDecimal(i));
         }
         return sc(new cons(bd));
@@ -107,8 +107,8 @@ public class fac extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
-        return sign(new fac(a.substitude0(v, p)));
+    public func substitute0(variable v, func p) {
+        return sign(new fac(a.substitute0(v, p)));
     }
 
     @Override

@@ -36,19 +36,19 @@ public class zeta extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        s = s.get(v, c);
+    public func get0(variable[] vars, cons[] vals) {
+        s = s.get(vars, vals);
         return this;
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
+    public double eval(variable[] v, double[] vals) {
         // TODO: Implement this method
-        return sign * sum.eval(v, d);
+        return sign * sum.eval(v, vals);
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
+    public cons evalc(variable[] vars, double[] vals) {
         // TODO: Implement this method
         return null;
     }
@@ -90,7 +90,7 @@ public class zeta extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
+    public func substitute0(variable v, func p) {
         // TODO: Implement this method
         return null;
     }

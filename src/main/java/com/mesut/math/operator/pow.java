@@ -63,9 +63,9 @@ public class pow extends func {
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        func p = a.get(v, c);
-        func q = b.get(v, c);
+    public func get0(variable[] vars, cons[] vals) {
+        func p = a.get(vars, vals);
+        func q = b.get(vars, vals);
         /*if(p.isConstant()&&q.isConstant()){
          //System.out.println("getif "+new Constant(Math.pow(p.eval(),q.eval())).s(sign));
          //System.out.println("s="+sign);
@@ -76,15 +76,15 @@ public class pow extends func {
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
+    public double eval(variable[] v, double[] vals) {
         //System.out.println("eval");
-        return sign * Math.pow(a.eval(v, d), b.eval(v, d));
+        return sign * Math.pow(a.eval(v, vals), b.eval(v, vals));
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
+    public cons evalc(variable[] vars, double[] vals) {
         //System.out.println("evalc="+s(a.evalc(v,d).pow(b.evalc(v,d))));
-        return sc(a.evalc(v, d).pow(b.evalc(v, d)));
+        return sc(a.evalc(vars, vals).pow(b.evalc(vars, vals)));
     }
 
     @Override
@@ -127,7 +127,7 @@ public class pow extends func {
             func du = a.derivative(v);//dx
             variable u = new variable("u");
             //System.out.println("du="+du);
-            return u.pow(b).div(du).integrate(u).substitude0(u, a);
+            return u.pow(b).div(du).integrate(u).substitute0(u, a);
         }
         return new Integral(this);
     }
@@ -223,8 +223,8 @@ public class pow extends func {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
-        return a.substitude(v, p).pow(b.substitude(v, p));
+    public func substitute0(variable v, func p) {
+        return a.substitute(v, p).pow(b.substitute(v, p));
     }
 
     @Override

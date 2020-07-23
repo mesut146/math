@@ -33,16 +33,16 @@ public class gamma extends Integral {
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
+    public double eval(variable[] v, double[] vals) {
         /*if(d.length==1&&cons.isInteger(d[0])){
             return fac.compute((int) d[0]);
         }*/
-        return super.eval(v, d);
+        return super.eval(v, vals);
     }
 
     @Override
-    public func get0(variable[] v, cons[] c) {
-        a = a.get0(v, c);
+    public func get0(variable[] vars, cons[] vals) {
+        a = a.get0(vars, vals);
         return this;
     }
 
@@ -70,8 +70,8 @@ public class gamma extends Integral {
     }
 
     @Override
-    public func substitude0(variable v, func p) {
-        a = a.substitude(v, p);
+    public func substitute0(variable v, func p) {
+        a = a.substitute(v, p);
         return this;
     }
 }

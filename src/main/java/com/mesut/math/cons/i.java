@@ -60,19 +60,19 @@ public class i extends cons {
 	}*/
 
     @Override
-    public func get0(variable[] v, cons[] c) {
+    public func get0(variable[] vars, cons[] vals) {
         return this;
     }
 
     @Override
-    public double eval(variable[] v, double[] d) {
+    public double eval(variable[] v, double[] vals) {
         //System.out.println("error: tried to eval i");
         throw new RuntimeException("error: tried to eval i");
         //return 0;
     }
 
     @Override
-    public cons evalc(variable[] v, double[] d) {
+    public cons evalc(variable[] vars, double[] vals) {
         return this;
     }
 
