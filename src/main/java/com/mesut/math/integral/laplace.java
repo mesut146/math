@@ -4,12 +4,12 @@ import com.mesut.math.Util;
 import com.mesut.math.core.Integral;
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 import com.mesut.math.funcs.exp;
 
 public class laplace extends Integral {
-    var dv;//integration variable
-    var s;//output variable
+    variable dv;//integration variable
+    variable s;//output variable
     func p;//function to laplace
 
     /*
@@ -30,8 +30,8 @@ public class laplace extends Integral {
     public laplace(func f, func ov, func os) {
         //u(t)*e^(-t*s) dt s==1/s
         p = f;
-        dv = (var) ov;
-        s = (var) os;
+        dv = (variable) ov;
+        s = (variable) os;
         a = p.mul(new exp(dv.mul(s).negate()));
 
         lower = cons.ZERO;

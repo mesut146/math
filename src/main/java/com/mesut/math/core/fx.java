@@ -3,7 +3,7 @@ package com.mesut.math.core;
 import java.util.*;
 
 //placeholder for user defined functions
-public class fx extends var {
+public class fx extends variable {
     public static List<fx> ins = new ArrayList<>();//previously created funcs
     public static Map<func, func> table = new HashMap<>();
     String name;
@@ -13,7 +13,7 @@ public class fx extends var {
     }
 
     public fx(String name) {
-        this(name, var.x);
+        this(name, variable.x);
     }
 
     public fx(String name, func content) {
@@ -51,7 +51,7 @@ public class fx extends var {
     }
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         a = a.get0(v, c);
         if (a.isConstant()) {
             return new cons(this);
@@ -60,19 +60,19 @@ public class fx extends var {
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         //illegal
         return 0;
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         //illegal
         return cons.ZERO;
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         // TODO: Implement this method
         if (a.eq(v)) {
             String nm = name + "'";
@@ -82,7 +82,7 @@ public class fx extends var {
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         // TODO: Implement this method
         return null;
     }
@@ -114,7 +114,7 @@ public class fx extends var {
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         a = a.substitude(v, p);
         return this;
     }

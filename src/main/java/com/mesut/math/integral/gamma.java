@@ -4,7 +4,7 @@ import com.mesut.math.Util;
 import com.mesut.math.core.Integral;
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 import com.mesut.math.funcs.exp;
 
 import java.util.List;
@@ -22,18 +22,18 @@ public class gamma extends Integral {
         //e^-t*t^v
         v = f;
 
-        List<var> l = vars();
-        if (l.contains(var.t)) {
-            dv = new var("t1");
+        List<variable> l = vars();
+        if (l.contains(variable.t)) {
+            dv = new variable("t1");
         }
         else {
-            dv = var.t;
+            dv = variable.t;
         }
         a = new exp(dv.negate()).mul(dv.pow(v));
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         /*if(d.length==1&&cons.isInteger(d[0])){
             return fac.compute((int) d[0]);
         }*/
@@ -41,19 +41,19 @@ public class gamma extends Integral {
     }
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         a = a.get0(v, c);
         return this;
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         a = a.derivative(v);
         return this;
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         a = a.integrate(v);
         return this;
     }
@@ -70,7 +70,7 @@ public class gamma extends Integral {
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         a = a.substitude(v, p);
         return this;
     }

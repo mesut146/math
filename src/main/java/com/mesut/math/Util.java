@@ -2,13 +2,13 @@ package com.mesut.math;
 
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 
 public class Util {
     public static func cast(Object obj) {
         //start from subtype
-        if (obj instanceof var) {
-            return (var) obj;
+        if (obj instanceof variable) {
+            return (variable) obj;
         }
         else if (obj instanceof String) {
             return func.parse((String) obj);
@@ -24,15 +24,15 @@ public class Util {
         }
     }
 
-    public static var var(Object obj) {
-        if (obj instanceof var) {
-            return (var) obj;
+    public static variable var(Object obj) {
+        if (obj instanceof variable) {
+            return (variable) obj;
         }
         else if (obj instanceof String) {
-            return new var((String) obj);
+            return new variable((String) obj);
         }
         else if (obj instanceof func) {
-            return (var) obj;
+            return (variable) obj;
         }
         else {
             throw new RuntimeException("unexpected type: " + obj.getClass() + " , " + obj);

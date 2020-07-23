@@ -3,7 +3,7 @@ package com.mesut.math.operator;
 import com.mesut.math.core.Integral;
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 
 import java.util.List;
 import java.util.Set;
@@ -39,25 +39,25 @@ public class div extends func {
 
 
     @Override
-    public void vars0(Set<var> vars) {
+    public void vars0(Set<variable> vars) {
         a.vars0(vars);
         b.vars0(vars);
     }
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         return signf(a.get(v, c).div(b.get(v, c)));
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         // TODO: Implement this method
 
         return sign * a.eval(v, d) / b.eval(v, d);
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         // TODO: Implement this method
         return new cons(eval(v, d));
     }
@@ -76,14 +76,14 @@ public class div extends func {
 
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         func l = a.derivative(v).mul(b);
         func r = a.mul(b.derivative(v));
         return sign(a.derivative(v).mul(b).sub(a.mul(b.derivative(v))).div(b.pow(2)));
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         if (b.isConstant()) {
             return a.integrate(v).div(b);
         }
@@ -233,7 +233,7 @@ public class div extends func {
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         return a.substitude(v, p).div(b.substitude(v, p));
     }
 

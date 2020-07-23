@@ -13,8 +13,8 @@ public class zeta extends func {
     func s;
     public zeta(Object o) {
         s = Util.cast(o);
-        sum = new sigma(var.n.pow(s.negate()), var.n, 1, cons.INF);
-        i = new Integral(var.u.pow(s.sub(1)).div(cons.E.pow(var.u).sub(1)), var.u, cons.ZERO, cons.INF);
+        sum = new sigma(variable.n.pow(s.negate()), variable.n, 1, cons.INF);
+        i = new Integral(variable.u.pow(s.sub(1)).div(cons.E.pow(variable.u).sub(1)), variable.u, cons.ZERO, cons.INF);
         g = new gamma(s);
     }
 
@@ -31,24 +31,24 @@ public class zeta extends func {
     }
 
     @Override
-    public void vars0(Set<var> vars) {
+    public void vars0(Set<variable> vars) {
         s.vars0(vars);
     }
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         s = s.get(v, c);
         return this;
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         // TODO: Implement this method
         return sign * sum.eval(v, d);
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         // TODO: Implement this method
         return null;
     }
@@ -60,13 +60,13 @@ public class zeta extends func {
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         sum = (sigma) sum.derivative(v);
         return this;
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         // TODO: Implement this method
         return null;
     }
@@ -90,7 +90,7 @@ public class zeta extends func {
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         // TODO: Implement this method
         return null;
     }

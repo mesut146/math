@@ -13,7 +13,7 @@ import java.util.Set;
 public class Integral extends func {
 
     public func func;
-    public var dv;
+    public variable dv;
     public func lower, upper;
 
     //f(x),dv
@@ -75,7 +75,7 @@ public class Integral extends func {
     }
 
     @Override
-    public void vars0(Set<var> vars) {
+    public void vars0(Set<variable> vars) {
         if (func != null) {
             func.vars0(vars);
         }
@@ -91,8 +91,8 @@ public class Integral extends func {
     }
 
     //f=f(x) v=preferred var
-    public void setDummy(func f, var v) {
-        List<var> vars = f.vars();
+    public void setDummy(func f, variable v) {
+        List<variable> vars = f.vars();
         if (vars.contains(v)) {
             dv = makeDummy(vars);
         }
@@ -101,34 +101,34 @@ public class Integral extends func {
         }
     }
 
-    public var makeDummy(List<var> vars) {
+    public variable makeDummy(List<variable> vars) {
         List<String> pref = Arrays.asList("x", "t", "u", "y", "u", "w");
         List<String> str = new ArrayList<>();
-        for (var v : vars) {
+        for (variable v : vars) {
             str.add(v.name);
         }
 
         if (str.containsAll(pref)) {
             for (char i = 'a'; i <= 'z'; i++) {
                 if (i != 'd' && !str.contains(String.valueOf(i))) {
-                    return new var(i);
+                    return new variable(i);
                 }
             }
-            return new var("x0");
+            return new variable("x0");
         }
         else {
             for (String sv : pref) {
                 if (!str.contains(sv)) {
-                    return new var(sv);
+                    return new variable(sv);
                 }
             }
         }
-        return var.x;
+        return variable.x;
     }
 
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         Integral res = (Integral) copy();
         if (hasLimits()) {
             res.lower = res.lower.get0(v, c);
@@ -146,14 +146,14 @@ public class Integral extends func {
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         a = a.get(v, d);
         System.out.println("int=" + a + " dv=" + dv);
         return eval();
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         return new cons(eval(v, d));
     }
 
@@ -163,7 +163,7 @@ public class Integral extends func {
         boolean isUp = upper.asCons().isInf();
         if (isLow) {
             if (isUp) {//both
-                var nv = var.t;
+                variable nv = variable.t;
                 func tsq = nv.pow(2);
                 func ext = cons.ONE.add(tsq).div(cons.ONE.sub(tsq).pow(2));
                 func np = nv.div(cons.ONE.sub(tsq));
@@ -173,7 +173,7 @@ public class Integral extends func {
                 this.upper = cons.ONE;
             }
             else {//low only
-                var nv = var.t;
+                variable nv = variable.t;
                 func ext = nv.pow(-2);
                 func np = upper.sub(cons.ONE.sub(nv).div(nv));
                 this.func = func.substitude(dv, np).mul(ext);
@@ -183,7 +183,7 @@ public class Integral extends func {
             }
         }
         else if (isUp) {//up only
-            var nv = var.t;
+            variable nv = variable.t;
             func ext = cons.ONE.div(cons.ONE.sub(nv).pow(2));
             func np = lower.add(nv.div(cons.ONE.sub(nv)));
             this.func = func.substitude(dv, np).mul(ext);
@@ -258,7 +258,7 @@ public class Integral extends func {
         double b = upper.eval();
 
         double total = (b - a) / n;
-        var sigVar = var.t;
+        variable sigVar = variable.t;
         func newFunc = new cons(a).add(sigVar.mul(total));
 
         sigma sigma = new sigma(this.func.substitude(dv, newFunc), sigVar, 1, n - 1);
@@ -267,14 +267,14 @@ public class Integral extends func {
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         if (dv.eq(v) && !hasLimits()) {//not always
             return signf(func);
         }
         if (hasLimits()) {
-            List<var> l1 = lower.vars();
-            List<var> l2 = upper.vars();
-            List<var> l3 = func.vars();
+            List<variable> l1 = lower.vars();
+            List<variable> l2 = upper.vars();
+            List<variable> l3 = func.vars();
             boolean b1 = l1.contains(v);
             boolean b2 = l2.contains(v);
             if (b1 || b2) {
@@ -299,7 +299,7 @@ public class Integral extends func {
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         if (!this.dv.eq(v)) {
             if (hasLimits()) {
                 return new Integral(func.integrate(v), this.dv, lower, upper);
@@ -341,7 +341,7 @@ public class Integral extends func {
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         func = func.substitude(v, p);
         lower = lower.substitude(v, p);
         upper = upper.substitude(v, p);

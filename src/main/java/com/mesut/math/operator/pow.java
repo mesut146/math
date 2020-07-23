@@ -4,7 +4,7 @@ import com.mesut.math.Config;
 import com.mesut.math.core.Integral;
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 import com.mesut.math.funcs.exp;
 import com.mesut.math.funcs.ln;
 import com.mesut.math.trigonometry.cos;
@@ -57,13 +57,13 @@ public class pow extends func {
     }
 
     @Override
-    public void vars0(Set<var> vars) {
+    public void vars0(Set<variable> vars) {
         a.vars0(vars);
         b.vars0(vars);
     }
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         func p = a.get(v, c);
         func q = b.get(v, c);
         /*if(p.isConstant()&&q.isConstant()){
@@ -76,19 +76,19 @@ public class pow extends func {
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         //System.out.println("eval");
         return sign * Math.pow(a.eval(v, d), b.eval(v, d));
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         //System.out.println("evalc="+s(a.evalc(v,d).pow(b.evalc(v,d))));
         return sc(a.evalc(v, d).pow(b.evalc(v, d)));
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         /*if(a.isVariable()&&a.eq2(v)&&b.isConstant()){
          //x^n
          return b.mul(a.pow(b.sub(Constant.ONE)));
@@ -112,7 +112,7 @@ public class pow extends func {
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         if (a.eq(v) && b.isConstant()) {
             //x^n
             func t = b.add(1);
@@ -125,7 +125,7 @@ public class pow extends func {
         //f^g
         if (b.isConstant()) {
             func du = a.derivative(v);//dx
-            var u = new var("u");
+            variable u = new variable("u");
             //System.out.println("du="+du);
             return u.pow(b).div(du).integrate(u).substitude0(u, a);
         }
@@ -223,7 +223,7 @@ public class pow extends func {
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         return a.substitude(v, p).pow(b.substitude(v, p));
     }
 

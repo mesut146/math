@@ -3,7 +3,7 @@ package com.mesut.math.trigonometry;
 import com.mesut.math.core.Integral;
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 
 import java.util.Set;
 
@@ -48,7 +48,7 @@ public class cos extends func {
     }
 
     @Override
-    public void vars0(Set<var> vars) {
+    public void vars0(Set<variable> vars) {
         a.vars0(vars);
     }
 
@@ -72,17 +72,17 @@ public class cos extends func {
     }
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         return new cos(a.get0(v, c), sign).simplify();
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         return sign * Math.cos(a.eval(v, d));
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         return new cons(sign * Math.cos(a.evalc(v, d).decimal().doubleValue()));
     }
 
@@ -97,12 +97,12 @@ public class cos extends func {
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         return new sin(a, -sign).mul(a.derivative(v));
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         if (a.eq(v)) {
             return new sin(a);
         }
@@ -110,7 +110,7 @@ public class cos extends func {
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         return new cos(a.substitude0(v, p)).simplify();
     }
 

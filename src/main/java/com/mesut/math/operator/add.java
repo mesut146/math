@@ -2,7 +2,7 @@ package com.mesut.math.operator;
 
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 
 import java.util.Collections;
 import java.util.List;
@@ -69,7 +69,7 @@ public class add extends func {
     }
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         func res = cons.ZERO;
         for (func term : f) {
             res = res.add(term.get(v, c));
@@ -78,7 +78,7 @@ public class add extends func {
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         double sum = 0;
         for (func f1 : f) {
             sum += f1.eval(v, d);
@@ -87,7 +87,7 @@ public class add extends func {
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         cons sum = cons.ZERO;
         for (func term : f) {
             sum = (cons) sum.add(term.evalc(v, d));
@@ -96,7 +96,7 @@ public class add extends func {
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         func res = cons.ZERO;
         //add res = new add(cons.ZERO);
         for (func term : f) {
@@ -107,7 +107,7 @@ public class add extends func {
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         func res = cons.ZERO;
         for (func term : f) {
             res = res.add(term.integrate(v));
@@ -234,7 +234,7 @@ public class add extends func {
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         List<func> arr = getFree();
         for (func term : f) {
             arr.add(term.substitude0(v, p));
@@ -286,7 +286,7 @@ public class add extends func {
 
 
     @Override
-    public void vars0(Set<var> vars) {
+    public void vars0(Set<variable> vars) {
         for (func term : f) {
             term.vars0(vars);
         }

@@ -2,7 +2,7 @@ package com.mesut.math.trigonometry;
 
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 import com.mesut.math.funcs.ln;
 
 import java.util.Set;
@@ -43,35 +43,35 @@ public class atan extends func {
     }
 
     @Override
-    public void vars0(Set<var> vars) {
+    public void vars0(Set<variable> vars) {
         a.vars0(vars);
     }
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         a.get0(v, c);
         return this;
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         return sign * Math.atan(a.eval(v, d));
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         return new cons(sign * Math.atan(a.evalc(v, d).decimal().doubleValue()));
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         //f=atany tanf=y sinf/cosf=y
         //cos^2(f)+sin^2(f)/cos^2(f)=1/cos^2(f)=y'
         return a.derivative(v).div(cons.ONE.add(a.pow(2)));
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         // TODO: Implement this method
         return null;
     }
@@ -92,7 +92,7 @@ public class atan extends func {
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         a.substitude(v, p);
         return this;
     }

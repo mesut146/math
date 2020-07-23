@@ -2,7 +2,7 @@ package com.mesut.math.integral;
 
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 
 import java.util.Set;
 
@@ -13,13 +13,13 @@ public class step extends func {
     }
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         a = a.get(v, c);
         return this;
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         double av = a.eval(v, d);
         if (av >= 0) {
             return 1;
@@ -28,7 +28,7 @@ public class step extends func {
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         return new cons(eval(v, d));
     }
 
@@ -50,12 +50,12 @@ public class step extends func {
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         return null;
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         return null;
     }
 
@@ -75,12 +75,12 @@ public class step extends func {
     }
 
     @Override
-    public void vars0(Set<var> vars) {
+    public void vars0(Set<variable> vars) {
         a.vars0(vars);
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         a = a.substitude(v, p);
         return this;
     }

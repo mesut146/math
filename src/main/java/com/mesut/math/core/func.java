@@ -7,8 +7,8 @@ import com.mesut.math.funcs.fac;
 import com.mesut.math.funcs.inv;
 import com.mesut.math.funcs.sqrt;
 import com.mesut.math.operator.*;
-import com.mesut.math.parser2.MathParser;
-import com.mesut.math.parser2.ParseException;
+import com.mesut.math.parser.MathParser;
+import com.mesut.math.parser.ParseException;
 import com.mesut.math.taylor;
 import com.mesut.math.taylorsym;
 import com.mesut.math.trigonometry.atan;
@@ -127,20 +127,20 @@ public abstract class func {
 
     public final func get(cons c) {
         //System.out.println("fget(c)="+c);
-        return get(var.x, c);
+        return get(variable.x, c);
     }
 
     public final func get(double d) {
         //System.out.println("fget(d)="+d);
-        return get(var.x, new cons(d));
+        return get(variable.x, new cons(d));
     }
 
-    public final func get(var v, double d) {
+    public final func get(variable v, double d) {
         //System.out.println("fget(v,d)="+v+","+d);
         return get(v, new cons(d));
     }
 
-    public final func get(var[] v, double[] d) {
+    public final func get(variable[] v, double[] d) {
         cons[] c = new cons[d.length];
         for (int i = 0; i < c.length; i++) {
             c[i] = new cons(d[i]);
@@ -148,52 +148,52 @@ public abstract class func {
         return get0(v, c);
     }
 
-    public final func get(var[] v, cons[] c) {
+    public final func get(variable[] v, cons[] c) {
         func f = sign(get0(v, c));
         return f.simplify();
     }
 
     public final func get(String s) {
         String[] sp = s.split(",");
-        var[] va = new var[sp.length];
+        variable[] va = new variable[sp.length];
         cons[] ca = new cons[sp.length];
         int i = 0;
         for (String eq : sp) {
             String[] lr = eq.split("=");
-            va[i] = new var(lr[0]);
+            va[i] = new variable(lr[0]);
             ca[i] = new cons(Double.parseDouble(lr[1]));
             i++;
         }
         return get0(va, ca);
     }
 
-    public func get(var v, cons c) {
-        return get0(new var[]{v}, new cons[]{c});
+    public func get(variable v, cons c) {
+        return get0(new variable[]{v}, new cons[]{c});
     }
 
     public double eval() {
-        return eval(var.x, 0);
+        return eval(variable.x, 0);
     }
 
     public final double eval(String s, double... d) {
         if (d.length == 0) {
             Pattern p = Pattern.compile("(\\w)+=(\\d+(\\.\\d+)?)");
             Matcher m = p.matcher(s);
-            List<var> vl = new ArrayList<>();
+            List<variable> vl = new ArrayList<>();
             List<Double> dl = new ArrayList<>();
             while (m.find()) {
-                vl.add(new var(m.group(1)));
+                vl.add(new variable(m.group(1)));
                 dl.add(Double.parseDouble(m.group(2)));
                 //System.out.println(m.group(1));
                 //System.out.println(m.group(2));
 
             }
-            return eval(vl.toArray(new var[0]), cast(dl));
+            return eval(vl.toArray(new variable[0]), cast(dl));
         }
-        var[] v = new var[d.length];
+        variable[] v = new variable[d.length];
         String[] sp = s.split(",");
         for (int i = 0; i < d.length; i++) {
-            v[i] = new var(sp[i]);
+            v[i] = new variable(sp[i]);
         }
         return eval(v, d);
     }
@@ -207,25 +207,25 @@ public abstract class func {
         return r;
     }
 
-    public abstract func get0(var[] v, cons[] c);
+    public abstract func get0(variable[] v, cons[] c);
 
-    public abstract double eval(var[] v, double[] d);
+    public abstract double eval(variable[] v, double[] d);
 
-    public abstract cons evalc(var[] v, double[] d);
+    public abstract cons evalc(variable[] v, double[] d);
 
     public cons evalc() {
-        return evalc(new var[]{}, new double[]{});
+        return evalc(new variable[]{}, new double[]{});
     }
 
-    public double eval(var v, double d) {
-        return eval(new var[]{v}, new double[]{d});
+    public double eval(variable v, double d) {
+        return eval(new variable[]{v}, new double[]{d});
     }
 
     public double eval(double d) {
-        List<var> vars = vars();
+        List<variable> vars = vars();
 
-        if (vars.size() == 0 || vars.contains(var.x)) {
-            return eval(var.x, d);
+        if (vars.size() == 0 || vars.contains(variable.x)) {
+            return eval(variable.x, d);
         }
         return eval(vars.get(0), d);
     }
@@ -278,7 +278,7 @@ public abstract class func {
     }
 
     public final func derivative() {
-        List<var> set = vars();
+        List<variable> set = vars();
         if (set.isEmpty()) {
             //no var means we are cons
             return cons.ZERO;
@@ -286,18 +286,18 @@ public abstract class func {
         return derivative(set.get(0));
     }
 
-    public abstract func derivative(var v);
+    public abstract func derivative(variable v);
 
     public final func derivative(String varStr) {
-        return derivative(new var(varStr));
+        return derivative(new variable(varStr));
     }
 
     public func derivative(int n) {
-        return derivative(n, var.x);
+        return derivative(n, variable.x);
     }
 
     public func derivative(int n, Object ov) {
-        var v = Util.var(ov);
+        variable v = Util.var(ov);
         if (n < 1) {
             return this;
         }
@@ -309,16 +309,16 @@ public abstract class func {
     }
 
     public final func integrate() {
-        return integrate(var.x);
+        return integrate(variable.x);
     }
 
-    public abstract func integrate(var v);
+    public abstract func integrate(variable v);
 
     public double integrate(Object lower, Object upper, Object var) {
         return new Integral(this, var, lower, upper).eval();
     }
 
-    public double integrate(double a, double b, var v) {
+    public double integrate(double a, double b, variable v) {
         return new Integral(this, v, new cons(a), new cons(b)).eval();
     }
 
@@ -332,7 +332,7 @@ public abstract class func {
      }*/
 
     public double integrate(double a, double b) {
-        return integrate(a, b, var.x);
+        return integrate(a, b, variable.x);
     }
 
     public func simplify() {
@@ -590,19 +590,19 @@ public abstract class func {
 
     public abstract boolean eq2(func f);
 
-    public List<var> vars() {
-        Set<var> set = new HashSet<>();
+    public List<variable> vars() {
+        Set<variable> set = new HashSet<>();
         vars0(set);
         return new ArrayList<>(set);
     }
 
-    public abstract void vars0(Set<var> vars);
+    public abstract void vars0(Set<variable> vars);
 
-    public func substitude(var v, func f) {
+    public func substitude(variable v, func f) {
         return signf(substitude0(v, f));
     }
 
-    public abstract func substitude0(var v, func p);
+    public abstract func substitude0(variable v, func p);
 
     //center,terms
     public taylor taylor(double at, int n) {

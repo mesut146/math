@@ -2,7 +2,7 @@ package com.mesut.math;
 
 import com.mesut.math.core.*;
 import com.mesut.math.funcs.zeta;
-import com.mesut.math.parser2.MathParser;
+import com.mesut.math.parser.MathParser;
 
 import java.io.StringReader;
 import java.util.Random;
@@ -76,7 +76,7 @@ public class Main {
         //f.substitude();
         System.out.println(f);
         for (int i = 1; i < 10; i++) {
-            System.out.println("y#" + (i + 2) + "=" + f.derivative(i, var.x));
+            System.out.println("y#" + (i + 2) + "=" + f.derivative(i, variable.x));
         }
     }
 
@@ -108,7 +108,7 @@ public class Main {
 
     static func getVar() {
         int c = new Random().nextInt('z' - 'a');
-        return new var((char) ('a' + c));
+        return new variable((char) ('a' + c));
     }
 
     static func getCons() {
@@ -125,7 +125,7 @@ public class Main {
         //System.out.println(li.eval("x=5"));
 
         f = func.parse("ln(1-x)/x");
-        System.out.println(f.integrate(0, 1, var.x));
+        System.out.println(f.integrate(0, 1, variable.x));
 
         //f=func.parse("ln(sin(x))");
         //System.out.println(f.integrate(0,Math.PI,var.x));

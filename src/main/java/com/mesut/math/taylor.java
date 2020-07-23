@@ -2,7 +2,7 @@ package com.mesut.math;
 
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 import com.mesut.math.funcs.fac;
 import com.mesut.math.operator.add;
 import com.mesut.math.operator.mul;
@@ -13,7 +13,7 @@ public class taylor extends add {
     public func func;
     public double at;
     public func center;//var-at
-    public var var;
+    public variable var;
 
     public taylor(func func, double at) {
         this.func = func;

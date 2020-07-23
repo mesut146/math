@@ -3,7 +3,7 @@ package com.mesut.math.funcs;
 import com.mesut.math.core.Integral;
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 import com.mesut.math.operator.pow;
 
 //e^x
@@ -16,12 +16,12 @@ public class exp extends pow {
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         return signf(mul(pow.derivative(v)));
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         if (pow.eq(v)) {
             return this;
         }

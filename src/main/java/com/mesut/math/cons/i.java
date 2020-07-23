@@ -2,7 +2,7 @@ package com.mesut.math.cons;
 
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 
 public class i extends cons {
 
@@ -60,19 +60,19 @@ public class i extends cons {
 	}*/
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         return this;
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         //System.out.println("error: tried to eval i");
         throw new RuntimeException("error: tried to eval i");
         //return 0;
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         return this;
     }
 

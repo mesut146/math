@@ -3,7 +3,7 @@ package com.mesut.math.integral;
 import com.mesut.math.core.Integral;
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 
 import java.util.Set;
 
@@ -12,17 +12,17 @@ public class ramp extends func {
     public ramp(func f) {
         a = f;
         alter.add(f.mul(new step(f)));
-        alter.add(new Integral(new step(var.t), var.t, cons.MINF, f));
+        alter.add(new Integral(new step(variable.t), variable.t, cons.MINF, f));
         //laplace(ramp(t))=1/s^2
     }
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         return new ramp(a.get(v, c));
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         double x;
         if ((x = a.eval(v, d)) >= 0) {
             return x;
@@ -31,7 +31,7 @@ public class ramp extends func {
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         return new cons(eval(v, d));
     }
 
@@ -54,12 +54,12 @@ public class ramp extends func {
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         return new step(a).mul(a.derivative(v));
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         // TODO: Implement this method
         return null;
     }
@@ -83,13 +83,13 @@ public class ramp extends func {
     }
 
     @Override
-    public void vars0(Set<var> vars) {
+    public void vars0(Set<variable> vars) {
         // TODO: Implement this method
         a.vars0(vars);
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         // TODO: Implement this method
         a = a.substitude(v, p);
         return this;

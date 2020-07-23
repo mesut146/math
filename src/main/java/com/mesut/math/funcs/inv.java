@@ -2,7 +2,7 @@ package com.mesut.math.funcs;
 
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 import com.mesut.math.taylor;
 import com.mesut.math.taylorsym;
 
@@ -21,19 +21,19 @@ public class inv extends func {
     }
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         a = a.get0(v, c);
         return this;
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         // TODO: Implement this method
         return 0;
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         // TODO: Implement this method
         return new cons(eval(v, d));
     }
@@ -56,12 +56,12 @@ public class inv extends func {
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         return cons.ONE.div(a.derivative(v));
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         // TODO: Implement this method
         return null;
     }
@@ -84,12 +84,12 @@ public class inv extends func {
     }
 
     @Override
-    public void vars0(Set<var> vars) {
+    public void vars0(Set<variable> vars) {
         a.vars0(vars);
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         a = a.substitude(v, p);
         return this;
     }
@@ -97,7 +97,7 @@ public class inv extends func {
     @Override
     public taylor taylor(double at, int n) {
         func df = a.derivative();
-        func d = var.x;
+        func d = variable.x;
         //centered f(at)
         taylor.var = a.vars().get(0);
         func center = taylor.var.sub(a.eval(at));

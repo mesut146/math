@@ -10,7 +10,7 @@ public class sigma extends func {
 
     public func fx;
     func start, end;//var or cons
-    var var;
+    variable var;
 
     public sigma(Object func, Object var, Object start, Object end) {
         this.fx = Util.cast(func);
@@ -20,14 +20,14 @@ public class sigma extends func {
     }
 
     @Override
-    public void vars0(Set<var> vars) {
+    public void vars0(Set<variable> vars) {
         fx.vars0(vars);
         start.vars0(vars);
         end.vars0(vars);
     }
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         /*if(this.var.eq2(v)){
 
          }*/
@@ -35,7 +35,7 @@ public class sigma extends func {
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         func s = start.get(v, d);
         func e = end.get(v, d);
         //sigma(x^n/n^2,n=1 to k) get(x=2,k=33)
@@ -65,18 +65,18 @@ public class sigma extends func {
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         // TODO: Implement this method
         return new cons(eval(v, d));
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         return new sigma(fx.derivative(v), this.var, start, end);
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         return new sigma(fx.integrate(v), var, start, end);
     }
 
@@ -107,7 +107,7 @@ public class sigma extends func {
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         fx = fx.substitude(v, p);
         return this;
     }

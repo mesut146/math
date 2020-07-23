@@ -2,7 +2,7 @@ package com.mesut.math.solver;
 
 import com.mesut.math.Util;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class lineq {
     func c;
     int a, b;
-    var x = var.x, y = var.y;
+    variable x = variable.x, y = variable.y;
     linl xs, ys;
 
 
@@ -45,7 +45,7 @@ public class lineq {
         return this;
     }
 
-    var next(var v) {
+    variable next(variable v) {
         String s = v.toString();
         Pattern p = Pattern.compile("(\\w+)(\\d*)");
         Matcher m = p.matcher(s);

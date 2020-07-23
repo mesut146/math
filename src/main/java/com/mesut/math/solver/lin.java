@@ -1,11 +1,11 @@
 package com.mesut.math.solver;
 
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 
 public class lin {
     func a, b;
-    var v;
+    variable v;
 
     public lin() {
 

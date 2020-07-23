@@ -2,7 +2,7 @@ package com.mesut.math.funcs;
 
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 import com.mesut.math.integral.gamma;
 
 import java.math.BigDecimal;
@@ -46,19 +46,19 @@ public class fac extends func {
     }
 
     @Override
-    public void vars0(Set<var> vars) {
+    public void vars0(Set<variable> vars) {
         a.vars0(vars);
     }
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         a = a.get0(v, c);
         return this;
         //return new fac(a.get(v, c)).sign(sign);
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         double aval = a.eval(v, d);
         if (!cons.isInteger(aval)) {
             System.out.println("can't compute factorial of a real number use gamma function instead");
@@ -67,7 +67,7 @@ public class fac extends func {
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         BigDecimal bd = new BigDecimal(1);
         for (int i = 2; i <= a.evalc(v, d).decimal().intValue(); i++) {
             bd = bd.multiply(new BigDecimal(i));
@@ -76,7 +76,7 @@ public class fac extends func {
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         if (a.isConstant()) {
             return cons.ZERO;
         }
@@ -84,7 +84,7 @@ public class fac extends func {
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         if (a.isConstant()) {
             return mul(v);
         }
@@ -107,7 +107,7 @@ public class fac extends func {
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         return sign(new fac(a.substitude0(v, p)));
     }
 

@@ -1,11 +1,11 @@
 package com.mesut.math.solver;
 
 import com.mesut.math.Util;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 
 public class linl {
     //v=a*n+b
-    var v;
+    variable v;
     lin l;
 
     public linl() {
@@ -13,7 +13,7 @@ public class linl {
     }
 
     public linl(Object vo, lin lo) {
-        v = (var) Util.cast(vo);
+        v = (variable) Util.cast(vo);
         l = lo;
     }
 

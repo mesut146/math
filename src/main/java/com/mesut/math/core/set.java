@@ -77,7 +77,7 @@ public class set extends func {
     }
 
     @Override
-    public void vars0(Set<var> vars) {
+    public void vars0(Set<variable> vars) {
         for (func term : list) {
             term.vars0(vars);
         }
@@ -226,18 +226,18 @@ public class set extends func {
     }
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         a = a.get(v, c);
         return this;
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         throw new RuntimeException("can' eval set");
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         throw new RuntimeException("can' eval set");
     }
 
@@ -248,7 +248,7 @@ public class set extends func {
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         set res = (set) copy();
         res.list.clear();
 
@@ -259,7 +259,7 @@ public class set extends func {
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         set res = (set) copy();
         res.list.clear();
 
@@ -322,7 +322,7 @@ public class set extends func {
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         for (int i = 0; i < list.size(); i++) {
             list.set(i, list.get(i).substitude(v, p));
         }

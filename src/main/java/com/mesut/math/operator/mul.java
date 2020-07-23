@@ -3,7 +3,7 @@ package com.mesut.math.operator;
 import com.mesut.math.Config;
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 import com.mesut.math.funcs.ln;
 
 import java.util.Collections;
@@ -53,14 +53,14 @@ public class mul extends func {
     }
 
     @Override
-    public void vars0(Set<var> vars) {
+    public void vars0(Set<variable> vars) {
         for (func term : f) {
             term.vars0(vars);
         }
     }
 
     @Override
-    public func get0(var[] v, cons[] c) {
+    public func get0(variable[] v, cons[] c) {
         mul res = new mul();
         for (func term : f) {
             res.f.add(term.get(v, c));
@@ -69,7 +69,7 @@ public class mul extends func {
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         double res = 1;
         for (func term : f) {
             res *= term.eval(v, d);
@@ -78,7 +78,7 @@ public class mul extends func {
     }
 
     @Override
-    public cons evalc(var[] v, double[] d) {
+    public cons evalc(variable[] v, double[] d) {
         func m = cons.ONE;
         for (func term : f) {
             m = m.mul(term.evalc(v, d));
@@ -87,7 +87,7 @@ public class mul extends func {
     }
 
     @Override
-    public func derivative(var v) {
+    public func derivative(variable v) {
         //a*b ==> a'*b+a*b'
         func p = left();
         func q = right();
@@ -96,7 +96,7 @@ public class mul extends func {
     }
 
     @Override
-    public func integrate(var v) {
+    public func integrate(variable v) {
         return this;
         /*int index = find(types.constant);
         if (index != -1) {
@@ -440,7 +440,7 @@ public class mul extends func {
     }
 
     @Override
-    public func substitude0(var v, func p) {
+    public func substitude0(variable v, func p) {
         List<func> l = getFree();
         for (func u : f) {
             l.add(u.substitude(v, p));

@@ -2,7 +2,7 @@ package com.mesut.math.cons;
 
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 
 //golden ratio
 public class phi extends cons {
@@ -13,7 +13,7 @@ public class phi extends cons {
     }
 
     @Override
-    public double eval(var[] v, double[] d) {
+    public double eval(variable[] v, double[] d) {
         return val;
     }
 

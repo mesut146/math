@@ -7,7 +7,7 @@ options
 
 PARSER_BEGIN(MathParser)
 
-package com.mesut.math.parser2;
+package com.mesut.math.parser;
 
 import com.mesut.math.core.*;
 import com.mesut.math.operator.*;

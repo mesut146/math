@@ -1,7 +1,7 @@
 package com.mesut.math.operator;
 
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -42,7 +42,7 @@ public class poly extends add {
         else if (p.isMul()) {
             func pw = p.f.get(1);
 
-            if (pw.eq(var.x)) {
+            if (pw.eq(variable.x)) {
                 return 1;
             }
             return (int) pw.b.eval();

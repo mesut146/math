@@ -2,14 +2,14 @@ package com.mesut.math.solver;
 
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.var;
+import com.mesut.math.core.variable;
 
 public class Sequence {
     //a(n)=b(n)*a(n-1)+c(n)
     public static void solve1(func bn, func cn) {
         //a(2)=b(2)*a(1)+c(2);
         func ax = cons.ONE;//a0=1
-        var vn = new var("n");
+        variable vn = new variable("n");
         for (int n = 2; n < 10; n++) {
             ax = bn.get(vn, n).mul(ax).add(cn.get(vn, n));
             System.out.println(ax);
@@ -23,8 +23,8 @@ public class Sequence {
     //a(n)f(n)+b(n)f(n-1)=c(n)
     public static void solve(func an, func bn, func cn, int f0) {
         //f(n)=[c(n)-b(n)*f(n-1)]/a(n)
-        func fx = var.y;//f0=1
-        var vn = new var("n");
+        func fx = variable.y;//f0=1
+        variable vn = new variable("n");
         func f = func.parse("x-x-1");
         System.out.println(f);
         for (int n = 1; n < 10; n++) {
