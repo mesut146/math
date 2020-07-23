@@ -10,8 +10,8 @@ public class sqrt extends pow {
         super(f, cons.ONE.div(2));
     }
 
-    public sqrt(double d) {
-        this(new cons(d));
+    public sqrt(double val) {
+        this(new cons(val));
     }
 
     @Override

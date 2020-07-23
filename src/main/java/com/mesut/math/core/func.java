@@ -165,6 +165,21 @@ public abstract class func {
         return eval(varArr, values);
     }
 
+    //@see get(String)
+    public final double eval(String s) {
+        String[] sp = s.split(",");
+        variable[] vars = new variable[sp.length];
+        double[] vals = new double[sp.length];
+        int i = 0;
+        for (String eq : sp) {
+            String[] lr = eq.split("=");
+            vars[i] = new variable(lr[0]);
+            vals[i] = Double.parseDouble(lr[1]);
+            i++;
+        }
+        return eval(vars, vals);
+    }
+
     public double eval(variable v, double d) {
         return eval(new variable[]{v}, new double[]{d});
     }
@@ -281,14 +296,6 @@ public abstract class func {
         return new Integral(this, v, new cons(a), new cons(b)).eval();
     }
 
-    //public func(){}
-
-	/*public static func sign(func f, int s)
-     {
-     func z=f.copy();
-     z.sign *= s;
-     return z;
-     }*/
 
     public double integrate(double a, double b) {
         return integrate(a, b, variable.x);
