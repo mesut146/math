@@ -15,6 +15,7 @@ public class Config {
     public static int numericDerivativePrecision = 5;
     public static int maxIteration = 100000;//sigma
     public static int digits = 5;//sigma
+    public static boolean lnFullImaginary = true;
 
     public static void init() {
         register("exp", exp.class);

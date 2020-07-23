@@ -34,7 +34,7 @@ public class pow extends func {
         func ci = ln.getImaginary();
         func l = new exp(br.mul(cr).sub(bi.mul(ci))).simplify();
         func r = new cos(br.mul(ci).add(bi.mul(cr))).simplify();
-        return sign(l.mul(r));
+        return signOther(l.mul(r));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class pow extends func {
         func ci = ln.getImaginary();
         func l = new exp(br.mul(cr).sub(bi.mul(ci))).simplify();
         func r = new sin(br.mul(ci).add(bi.mul(cr))).simplify();
-        return sign(l.mul(r));
+        return signOther(l.mul(r));
     }
 
 
@@ -71,7 +71,7 @@ public class pow extends func {
          //System.out.println("s="+sign);
          return new Constant(Math.pow(p.eval(),q.eval())).s(sign);
          }*/
-        return sign(p.pow(q));
+        return signOther(p.pow(q));
         //return p.pow(q).s(sign);
     }
 
@@ -97,10 +97,10 @@ public class pow extends func {
          return mul(new ln(a).simplify());
          }*/
         if (a.isConstant()) {//a^f=a^f*ln(a)*f'
-            return sign(a.pow(b).mul(new ln(a).simplify()).mul(b.derivative(v)));
+            return signOther(a.pow(b).mul(new ln(a).simplify()).mul(b.derivative(v)));
         }
         if (b.isConstant()) {//f^b=b*f^(b-1)*f'
-            return sign(b.mul(a.pow(b.sub(1))).mul(a.derivative(v)));
+            return signOther(b.mul(a.pow(b.sub(1))).mul(a.derivative(v)));
         }
         //f^g
         //System.out.println("a="+a.isConsfunc()+" b="+b+" ,"+new ln(a).simplify());
@@ -108,7 +108,7 @@ public class pow extends func {
          func f=func.parse(String.format("%s*ln(%s)*%s^%s+%s*%s^(%s-1)*%s",b.derivative(),a,a,b,b,a,b,a.derivative()));
          System.out.println("f="+new ln(a).simplify());
          */
-        return sign(b.derivative(v).mul(new ln(a).simplify()).mul(this).add(b.mul(a.derivative(v)).mul(a.pow(b.sub(1)))));
+        return signOther(b.derivative(v).mul(new ln(a).simplify()).mul(this).add(b.mul(a.derivative(v)).mul(a.pow(b.sub(1)))));
     }
 
     @Override
@@ -199,7 +199,7 @@ public class pow extends func {
             /*func p=a.b.mul(b);
             func o=a.a.pow(p);
             func u=b.mul(a.b);*/
-            return sign(a.a.pow(a.b.mul(b)));
+            return signOther(a.a.pow(a.b.mul(b)));
         }
         if (a.sign == -1 && b.isConstant()) {
             if (b.eval() % 2 == 0) {
@@ -215,7 +215,7 @@ public class pow extends func {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         if (a.eq(f.a) && b.eq(f.b)) {
             return true;
         }

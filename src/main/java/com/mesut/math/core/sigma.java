@@ -102,7 +102,7 @@ public class sigma extends func {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         return false;
     }
 
@@ -120,12 +120,12 @@ public class sigma extends func {
     @Override
     public func getReal() {
         sigma s = new sigma(fx.getReal(), var, start, end);
-        return sign(s);
+        return signOther(s);
     }
 
     @Override
     public func getImaginary() {
         sigma s = new sigma(fx.getImaginary(), var, start, end);
-        return sign(s);
+        return signOther(s);
     }
 }

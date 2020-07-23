@@ -102,13 +102,13 @@ public class fac extends func {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         return a.eq(f);
     }
 
     @Override
     public func substitute0(variable v, func p) {
-        return sign(new fac(a.substitute0(v, p)));
+        return signOther(new fac(a.substitute0(v, p)));
     }
 
     @Override

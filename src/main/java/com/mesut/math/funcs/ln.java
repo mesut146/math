@@ -1,5 +1,6 @@
 package com.mesut.math.funcs;
 
+import com.mesut.math.Config;
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
 import com.mesut.math.core.variable;
@@ -20,15 +21,23 @@ public class ln extends func {
 
     @Override
     public func getReal() {
-        func r = a.getReal().pow(2).add(a.getImaginary().pow(2));
-        return sign(new ln(r.sqrt().simplify())).simplify();
+        func re = a.getReal();
+        func im = a.getImaginary();
+        func r = re.pow(2).add(im.pow(2));
+        return signOther(new ln(r).div(2)).simplify();
     }
 
     @Override
     public func getImaginary() {
-        func re = a.getReal().simplify();
-        func im = a.getImaginary().simplify().div(re).simplify();
-        return sign(new atan(im)).simplify();
+        func re = a.getReal();
+        func im = a.getImaginary();
+        if (Config.lnFullImaginary) {
+            return signOther(new atan(im.div(re)).add(func.parse("2*pi*n"))).simplify();
+        }
+        else {
+            return signOther(new atan(im.div(re))).simplify();
+        }
+
     }
 
     @Override
@@ -43,7 +52,7 @@ public class ln extends func {
 
     @Override
     public func get0(variable[] vars, cons[] vals) {
-        return sign(new ln(a.get(vars, vals)));
+        return signOther(new ln(a.get(vars, vals)));
     }
 
     @Override
@@ -82,7 +91,7 @@ public class ln extends func {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         return a.eq(f.a);
     }
 

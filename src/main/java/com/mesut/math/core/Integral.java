@@ -47,21 +47,21 @@ public class Integral extends func {
     public func getReal() {
         if (hasLimits()) {
             if (lower.isReal() && upper.isReal()) {
-                return sign(new Integral(func.getReal(), dv, lower, upper));
+                return signOther(new Integral(func.getReal(), dv, lower, upper));
             }
         }
-        return sign(new Integral(func.getReal(), dv));
+        return signOther(new Integral(func.getReal(), dv));
     }
 
     @Override
     public func getImaginary() {
         if (hasLimits()) {
             if (lower.isReal() && upper.isReal()) {
-                return sign(new Integral(func.getImaginary(), dv, lower, upper));
+                return signOther(new Integral(func.getImaginary(), dv, lower, upper));
             }
 
         }
-        return sign(new Integral(func.getImaginary(), dv));
+        return signOther(new Integral(func.getImaginary(), dv));
     }
 
     @Override
@@ -326,7 +326,7 @@ public class Integral extends func {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         Integral other = (Integral) f;
         boolean eqNolimit = func.eq(other.func) && dv.eq(other.dv);
         if (hasLimits() == other.hasLimits()) {

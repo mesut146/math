@@ -1,5 +1,6 @@
 package com.mesut.math.operator;
 
+import com.mesut.math.Util;
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
 import com.mesut.math.core.variable;
@@ -41,7 +42,7 @@ public class add extends func {
         holder o1 = rm((mul) f1);
         holder o2 = rm((mul) f2);
 
-        if (isEq(o1.l, o2.l)) {
+        if (Util.isEq(o1.l, o2.l)) {
             return new holder(new mul(o1.l), o1.d + o2.d - 1, null, true);
         }
 
@@ -74,7 +75,7 @@ public class add extends func {
         for (func term : f) {
             res = res.add(term.get(vars, vals));
         }
-        return sign(res);
+        return signOther(res);
     }
 
     @Override
@@ -103,7 +104,7 @@ public class add extends func {
             res = res.add(term.derivative(v));
             //res.f.add(term.derivative(v));
         }
-        return sign(res);
+        return signOther(res);
     }
 
     @Override
@@ -112,7 +113,7 @@ public class add extends func {
         for (func term : f) {
             res = res.add(term.integrate(v));
         }
-        return sign(res);
+        return signOther(res);
     }
 
     @Override
@@ -229,8 +230,8 @@ public class add extends func {
     }
 
     @Override
-    public boolean eq2(func f1) {
-        return isEq(f, f1.f);
+    public boolean eq0(func f1) {
+        return Util.isEq(f, f1.f);
     }
 
     @Override

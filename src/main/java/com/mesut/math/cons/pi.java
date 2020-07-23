@@ -39,7 +39,7 @@ public class pi extends cons {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         return f.getClass() == pi.class;
     }
 

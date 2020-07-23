@@ -1,5 +1,7 @@
 package com.mesut.math.core;
 
+import com.mesut.math.Util;
+
 import java.util.*;
 
 //a finite set with elements of type cons
@@ -317,8 +319,8 @@ public class set extends func {
     }
 
     @Override
-    public boolean eq2(func other) {
-        return isEq(list, ((set) other).list);
+    public boolean eq0(func other) {
+        return Util.isEq(list, ((set) other).list);
     }
 
     @Override

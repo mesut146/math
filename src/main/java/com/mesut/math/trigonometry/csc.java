@@ -52,7 +52,7 @@ public class csc extends func {
 
     @Override
     public func derivative(variable v) {
-        return sign(alter.get(0).derivative(v));
+        return signOther(alter.get(0).derivative(v));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class csc extends func {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         return a.eq(f.a);
     }
 

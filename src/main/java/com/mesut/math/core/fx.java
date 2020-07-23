@@ -109,7 +109,7 @@ public class fx extends variable {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         return name.equals(((fx) f).name) && a.eq(f.a);
     }
 

@@ -54,7 +54,7 @@ public class DefaultFunc extends func {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         return false;
     }
 

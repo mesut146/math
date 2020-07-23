@@ -15,7 +15,7 @@ public class log10 extends loga_b {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         return a.eq(f.a);
     }
 

@@ -55,10 +55,10 @@ public class variable extends func {
     @Override
     public func get0(variable[] vars, cons[] vals) {
         for (int i = 0; i < vars.length; i++) {
-            if (eq2(vars[i])) {
+            if (eq0(vars[i])) {
                 //TODO: mutable or not?
                 //return new Constant(c[i]).s(sign);
-                return vals[i].sign(sign);
+                return vals[i].signOther(sign);
             }
         }
 
@@ -68,7 +68,7 @@ public class variable extends func {
     @Override
     public double eval(variable[] v, double[] vals) {
         for (int i = 0; i < v.length; i++) {
-            if (eq2(v[i])) {
+            if (eq0(v[i])) {
                 return vals[i] * sign;
             }
         }
@@ -78,7 +78,7 @@ public class variable extends func {
     @Override
     public cons evalc(variable[] vars, double[] vals) {
         for (int i = 0; i < vars.length; i++) {
-            if (eq2(vars[i])) {
+            if (eq0(vars[i])) {
                 return new cons(BigDecimal.valueOf(sign * vals[i]));
             }
         }
@@ -87,7 +87,7 @@ public class variable extends func {
 
     @Override
     public func derivative(variable v) {
-        if (eq2(v)) {
+        if (eq0(v)) {
             return cons.ONE;
         }
         return cons.ZERO;
@@ -95,7 +95,7 @@ public class variable extends func {
 
     @Override
     public func integrate(variable v) {
-        if (eq2(v)) {
+        if (eq0(v)) {
             return this.pow(2).div(2);
         }
         return mul(v);
@@ -112,13 +112,13 @@ public class variable extends func {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         return name.equals(((variable) f).name);
     }
 
     @Override
     public func substitute0(variable v, func p) {
-        return eq2(v) ? p : this;
+        return eq0(v) ? p : this;
     }
 
     @Override

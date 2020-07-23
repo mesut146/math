@@ -74,7 +74,7 @@ public class floor extends func {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         // TODO: Implement this method
         return a.eq(f.a);
     }

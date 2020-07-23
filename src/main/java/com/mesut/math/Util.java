@@ -4,6 +4,8 @@ import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
 import com.mesut.math.core.variable;
 
+import java.util.List;
+
 public class Util {
     public static func cast(Object obj) {
         //start from subtype
@@ -31,11 +33,31 @@ public class Util {
         else if (obj instanceof String) {
             return new variable((String) obj);
         }
-        else if (obj instanceof func) {
-            return (variable) obj;
-        }
         else {
             throw new RuntimeException("unexpected type: " + obj.getClass() + " , " + obj);
         }
+    }
+
+    public static boolean isEq(List<func> l1, List<func> l2) {
+        int len = l1.size();
+        if (len != l2.size()) {
+            return false;
+        }
+        boolean[] b = new boolean[len];//processed flags for l2
+        boolean matchedAny = false;//flag for an element is not matched
+
+        for (func first : l1) {
+            for (int j = 0; j < len; j++) {
+                if (!b[j] && first.eq(l2.get(j))) {
+                    b[j] = true;
+                    matchedAny = true;
+                    break;
+                }
+            }
+            if (!matchedAny) {
+                return false;
+            }
+        }
+        return true;
     }
 }

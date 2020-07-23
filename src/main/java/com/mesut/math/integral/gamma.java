@@ -64,7 +64,7 @@ public class gamma extends Integral {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         gamma g = (gamma) f;
         return v.eq(g.v);
     }

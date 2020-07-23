@@ -29,7 +29,7 @@ public class exp extends pow {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         return b.eq(f.b);
     }
 

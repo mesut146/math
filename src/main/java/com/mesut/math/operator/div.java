@@ -26,7 +26,7 @@ public class div extends func {
         func cd = b.getReal().pow(2).add(b.getImaginary().pow(2));
         func ac = a.getReal().mul(b.getReal());
         func bd = a.getImaginary().mul(b.getImaginary());
-        return sign(ac.add(bd).div(cd));
+        return signOther(ac.add(bd).div(cd));
     }
 
     @Override
@@ -34,7 +34,7 @@ public class div extends func {
         func cd = b.getReal().pow(2).add(b.getImaginary().pow(2));
         func ad = a.getReal().mul(b.getImaginary());
         func bc = a.getImaginary().mul(b.getReal());
-        return sign(bc.sub(ad).div(cd));
+        return signOther(bc.sub(ad).div(cd));
     }
 
 
@@ -79,7 +79,7 @@ public class div extends func {
     public func derivative(variable v) {
         func l = a.derivative(v).mul(b);
         func r = a.mul(b.derivative(v));
-        return sign(a.derivative(v).mul(b).sub(a.mul(b.derivative(v))).div(b.pow(2)));
+        return signOther(a.derivative(v).mul(b).sub(a.mul(b.derivative(v))).div(b.pow(2)));
     }
 
     @Override
@@ -119,10 +119,10 @@ public class div extends func {
             return evalc();
         }*/
         if (a.isDiv()) {// (a/b)/c=a/(b*c)
-            return sign(a.a.div(a.b.mul(b)));
+            return signOther(a.a.div(a.b.mul(b)));
         }
         if (b.isDiv()) {// a/(b/c)=a*c/b
-            return sign(a.mul(b.b).div(b.a));
+            return signOther(a.mul(b.b).div(b.a));
         }
         if (a.sign == -1) {
             sign *= -1;
@@ -225,7 +225,7 @@ public class div extends func {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         if (a.eq(f.a) && b.eq(f.b)) {
             return true;
         }

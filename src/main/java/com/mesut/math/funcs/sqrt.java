@@ -30,24 +30,26 @@ public class sqrt extends pow {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         return a.eq(f.a);
     }
 
-    /*@Override
+    @Override
     public func simplify() {
         //sqrt(a^2b)=a^b
-        if(a.isPow()&&a.b.isConstant()&&a.b.eval()%2==0){
-            a.b=a.b.div(2);
+        if (a.isPow() && a.b.isConstant() && a.b.eval() % 2 == 0) {
+            a.b = a.b.div(2);
+            a = a.simplify();
             return this.simplify();
         }
-        if(a.isCons0()&&a.cons().isInteger()){
-            cons d=evalc();
-            if(d.isInteger()){
+        //eval if both are integer
+        if (a.isCons0() && a.asCons().isInteger()) {
+            cons d = evalc();
+            if (d.isInteger()) {
                 return d;
             }
         }
-        
+
         return this;
-    }*/
+    }
 }

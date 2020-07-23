@@ -4,8 +4,9 @@ import com.mesut.math.core.func;
 import com.mesut.math.operator.div;
 
 public class loga_b extends div {
-    public loga_b(func p1, func p2) {
-        super(new ln(p2), new ln(p1));
+
+    public loga_b(func a, func b) {
+        super(new ln(b), new ln(a));
     }
 
     @Override

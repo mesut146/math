@@ -1,6 +1,7 @@
 package com.mesut.math.operator;
 
 import com.mesut.math.Config;
+import com.mesut.math.Util;
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
 import com.mesut.math.core.variable;
@@ -65,7 +66,7 @@ public class mul extends func {
         for (func term : f) {
             res.f.add(term.get(vars, vals));
         }
-        return sign(res.simplify());
+        return signOther(res.simplify());
     }
 
     @Override
@@ -92,7 +93,7 @@ public class mul extends func {
         func p = left();
         func q = right();
         func o = p.derivative(v).mul(q).add(p.mul(q.derivative(v)));
-        return sign(o);
+        return signOther(o);
     }
 
     @Override
@@ -147,7 +148,7 @@ public class mul extends func {
         func q = right();
         func ac = p.getReal().mul(q.getReal());
         func bd = p.getImaginary().mul(q.getImaginary());
-        return sign(ac.sub(bd));
+        return signOther(ac.sub(bd));
     }
 
     @Override
@@ -157,7 +158,7 @@ public class mul extends func {
         func ad = p.getReal().mul(q.getImaginary());
         func bc = p.getImaginary().mul(q.getReal());//
 
-        return sign(ad.add(bc));
+        return signOther(ad.add(bc));
     }
 
     func left() {
@@ -435,8 +436,8 @@ public class mul extends func {
     }
 
     @Override
-    public boolean eq2(func f1) {
-        return isEq(f, f1.f);
+    public boolean eq0(func f1) {
+        return Util.isEq(f, f1.f);
     }
 
     @Override

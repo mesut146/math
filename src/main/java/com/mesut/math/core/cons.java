@@ -150,7 +150,7 @@ public class cons extends func {
     public func get0(variable[] vars, cons[] vals) {
         if (functional) {
             if (ff == null) {
-                return new cons(val).sign(sign);
+                return new cons(val).signOther(sign);
             }
             //System.out.println("ff="+ff);
             //return ff.get(v, c).s(sign);
@@ -287,7 +287,7 @@ public class cons extends func {
     }
 
     @Override
-    public boolean eq2(func f) {
+    public boolean eq0(func f) {
         cons c = (cons) f;
         if (inf && c.inf) {
             return true;

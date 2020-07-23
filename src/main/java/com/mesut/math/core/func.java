@@ -27,7 +27,6 @@ public abstract class func {
         Config.init();
     }
 
-    //public types type = types.func;
     public int sign = 1;//positive by default
     public boolean fx = false;
     public func a = null, b = null;//left - right for div and others
@@ -35,30 +34,29 @@ public abstract class func {
     public List<func> alter = new ArrayList<>();//alternative representations
 
     //TODO make args Object autocast
+    @SuppressWarnings("unchecked")
     public static func makeFunc(String name, List<func> args) {
-        Class<func> c;
-        Constructor<func> co;
+        Class<func> clazz;
+        Constructor<func> cons;
         func res = null;
         if (map.containsKey(name)) {
             try {
-                c = (Class<func>) map.get(name);
+                clazz = (Class<func>) map.get(name);
                 if (args.size() == 1) {
-                    co = c.getDeclaredConstructor(func.class);
-                    res = co.newInstance(args.get(0));
+                    cons = clazz.getDeclaredConstructor(func.class);
+                    res = cons.newInstance(args.get(0));
                 }
                 else {
-                    //System.out.println("args="+args);
                     Class<?>[] arr = new Class<?>[args.size()];
                     for (int i = 0; i < args.size(); i++) {
                         arr[i] = func.class;
                     }
-                    co = c.getDeclaredConstructor(arr);
-                    res = co.newInstance(args.toArray(new func[args.size()]));
+                    cons = clazz.getDeclaredConstructor(arr);
+                    res = cons.newInstance(args.toArray(new func[0]));
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
-                //System.out.println(this);
             }
         }
         else {
@@ -66,14 +64,14 @@ public abstract class func {
                 res = com.mesut.math.core.fx.getFx(name);
             }
             else {
-                res = new fx(name, args.toArray(new func[args.size()]));
+                res = new fx(name, args.toArray(new func[0]));
             }
         }
         return res;
     }
 
     //register func name and its class ex. (sin,math.trigo.sin)
-    public static void register(String fname, Class<? extends func> cls) {
+    public static <T extends func> void register(String fname, Class<T> cls) {
         map.put(fname, cls);
     }
 
@@ -81,32 +79,9 @@ public abstract class func {
         return new ArrayList<>();
     }
 
-    public static boolean isEq(List<func> l1, List<func> l2) {
-        int len = l1.size();
-        if (len != l2.size()) {
-            return false;
-        }
-        boolean[] b = new boolean[len];//processed flags for l2
-        boolean matchedAny = false;//flag for an element is not matched
-
-        for (func first : l1) {
-            for (int j = 0; j < len; j++) {
-                if (!b[j] && first.eq(l2.get(j))) {
-                    b[j] = true;
-                    matchedAny = true;
-                    break;
-                }
-            }
-            if (!matchedAny) {
-                return false;
-            }
-        }
-        return false;
-    }
-
     public static func parse(String expr) {
         try {
-            return new MathParser(new StringReader(expr)).expr();
+            return new MathParser(new StringReader(expr)).expr().simplify();
         } catch (ParseException e) {
             e.printStackTrace();
             throw new Error(expr);
@@ -114,7 +89,7 @@ public abstract class func {
     }
 
     public func sqrt() {
-        return new sqrt(this);
+        return new sqrt(this).simplify();
     }
 
     public void set(List<func> l) {
@@ -145,7 +120,7 @@ public abstract class func {
     }
 
     public final func get(variable[] v, cons[] c) {
-        func f = sign(get0(v, c));
+        func f = signOther(get0(v, c));
         return f.simplify();
     }
 
@@ -225,13 +200,11 @@ public abstract class func {
         return new inv(this);
     }
 
-    //a
     public abstract func getReal();
 
-    //b
     public abstract func getImaginary();
 
-    //a+b*i
+    //re()+i*im()
     public func getComplex() {
         return getReal().add(cons.i.mul(getImaginary()));
     }
@@ -325,13 +298,13 @@ public abstract class func {
         return this;
     }
 
-    public func sign(int s) {
+    public func signOther(int s) {
         sign *= s;
         return this;
     }
 
-    //sign other function form this
-    public func sign(func other) {
+    //sign other function from this
+    public func signOther(func other) {
         other.sign *= sign;
         return other;
     }
@@ -344,7 +317,7 @@ public abstract class func {
     }
 
     public cons sc(func o) {
-        return (cons) o.sign(sign);
+        return (cons) o.signOther(sign);
     }
 
     //if both are cons the result should be boxed
@@ -560,7 +533,7 @@ public abstract class func {
 
     public boolean eq(func other) {
         if (other != null && getClass() == other.getClass()) {
-            return sign == other.sign && eq2(other);
+            return sign == other.sign && eq0(other);
         }
         return false;
     }
@@ -569,12 +542,12 @@ public abstract class func {
     public boolean eqws(func other) {
 
         if (other != null && getClass() == other.getClass()) {
-            return eq2(other);
+            return eq0(other);
         }
         return false;
     }
 
-    public abstract boolean eq2(func f);
+    public abstract boolean eq0(func f);
 
     public List<variable> vars() {
         Set<variable> set = new HashSet<>();
