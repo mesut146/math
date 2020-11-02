@@ -13,7 +13,6 @@ public class div extends func {
     public div(func f1, func f2) {
         a = f1;
         b = f2;
-        //type = types.div;
     }
 
     @Override
@@ -106,18 +105,17 @@ public class div extends func {
             sb.append(b);
         }
         else {
-            sb.append("(" + b + ")");
+            sb.append("(").append(b).append(")");
         }
         return sb.toString();
     }
 
     public func simplify() {
+        a = a.simplify();
+        b = b.simplify();
         if (a.is(0)) {
             return cons.ZERO;
         }
-        /*if(a.isCons0()&&b.isCons0()){
-            return evalc();
-        }*/
         if (a.isDiv()) {// (a/b)/c=a/(b*c)
             return signOther(a.a.div(a.b.mul(b)));
         }
@@ -144,47 +142,6 @@ public class div extends func {
             return signf(cons.ONE);
         }
         return this;
-        /*List<func> p=getFree();
-		List<func> q=getFree();
-		List<func> m=getFree();
-		List<func> n=getFree();
-		if(a.isMul()){
-			p.addAll(a.f);
-		}else{
-			p.add(a);
-		}
-		if(b.isMul()){
-			q.addAll(b.f);
-		}else{
-			q.add(b);
-		}
-		boolean b[]=new boolean[q.size()];
-		//(x^2)/(x^3)
-		boolean simp=false;
-		for(int i=0;i<p.size();i++){
-			func v=p.get(i);
-			func pow=v.isPow()?v.b:Constant.ONE;
-			v=v.isPow()?v.a:v;
-			for(int j=0;j<q.size();j++){
-				if(!b[j]){
-					t o;
-					if((o=mul.e3(v,q.get(j))).b){
-						b[j]=true;
-						pow=pow.sub(o.f);
-						simp=true;
-					}
-				}
-			}
-			m.add(v.pow(pow));
-		}
-		for(int j=0;j<q.size();j++){
-			if(!b[j]){
-				n.add(q.get(j));
-			}
-		}
-        if(simp) return new div(new mul(m).simplify(),new mul(n).simplify()).simplify();
-		
-		return this;*/
     }
 
     public void group() {

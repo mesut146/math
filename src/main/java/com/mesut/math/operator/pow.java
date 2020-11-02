@@ -32,9 +32,9 @@ public class pow extends func {
         func bi = b.getImaginary();
         func cr = ln.getReal();
         func ci = ln.getImaginary();
-        func l = new exp(br.mul(cr).sub(bi.mul(ci))).simplify();
+        func l = exp.make(br.mul(cr).sub(bi.mul(ci))).simplify();
         func r = new cos(br.mul(ci).add(bi.mul(cr))).simplify();
-        return signOther(l.mul(r));
+        return signOther(l.mul(r)).simplify();
     }
 
     @Override
@@ -44,11 +44,10 @@ public class pow extends func {
         func bi = b.getImaginary();
         func cr = ln.getReal();
         func ci = ln.getImaginary();
-        func l = new exp(br.mul(cr).sub(bi.mul(ci))).simplify();
+        func l = exp.make(br.mul(cr).sub(bi.mul(ci))).simplify();
         func r = new sin(br.mul(ci).add(bi.mul(cr))).simplify();
-        return signOther(l.mul(r));
+        return signOther(l.mul(r)).simplify();
     }
-
 
     @Override
     public String toLatex() {
@@ -66,48 +65,30 @@ public class pow extends func {
     public func get0(variable[] vars, cons[] vals) {
         func p = a.get(vars, vals);
         func q = b.get(vars, vals);
-        /*if(p.isConstant()&&q.isConstant()){
-         //System.out.println("getif "+new Constant(Math.pow(p.eval(),q.eval())).s(sign));
-         //System.out.println("s="+sign);
-         return new Constant(Math.pow(p.eval(),q.eval())).s(sign);
-         }*/
         return signOther(p.pow(q));
-        //return p.pow(q).s(sign);
     }
 
     @Override
     public double eval(variable[] v, double[] vals) {
-        //System.out.println("eval");
         return sign * Math.pow(a.eval(v, vals), b.eval(v, vals));
     }
 
     @Override
     public cons evalc(variable[] vars, double[] vals) {
-        //System.out.println("evalc="+s(a.evalc(v,d).pow(b.evalc(v,d))));
         return sc(a.evalc(vars, vals).pow(b.evalc(vars, vals)));
     }
 
     @Override
     public func derivative(variable v) {
-        /*if(a.isVariable()&&a.eq2(v)&&b.isConstant()){
-         //x^n
-         return b.mul(a.pow(b.sub(Constant.ONE)));
-         }else if (a.isConstant()&&b.isVariable()&&b.eq2(v)){
-         //n^x
-         return mul(new ln(a).simplify());
-         }*/
-        if (a.isConstant()) {//a^f=a^f*ln(a)*f'
+        //a^f=a^f*ln(a)*f'
+        if (a.isConstant()) {
             return signOther(a.pow(b).mul(new ln(a).simplify()).mul(b.derivative(v)));
         }
-        if (b.isConstant()) {//f^b=b*f^(b-1)*f'
+        //f^b=b*f^(b-1)*f'
+        if (b.isConstant()) {
             return signOther(b.mul(a.pow(b.sub(1))).mul(a.derivative(v)));
         }
         //f^g
-        //System.out.println("a="+a.isConsfunc()+" b="+b+" ,"+new ln(a).simplify());
-        /*
-         func f=func.parse(String.format("%s*ln(%s)*%s^%s+%s*%s^(%s-1)*%s",b.derivative(),a,a,b,b,a,b,a.derivative()));
-         System.out.println("f="+new ln(a).simplify());
-         */
         return signOther(b.derivative(v).mul(new ln(a).simplify()).mul(this).add(b.mul(a.derivative(v)).mul(a.pow(b.sub(1)))));
     }
 
@@ -154,16 +135,15 @@ public class pow extends func {
     }
 
     public func simplify() {
-        //System.out.println("simp of pow="+this);
         if (!Config.pow.simplify) {
             return this;
         }
+        a = a.simplify();
+        b = b.simplify();
         if (a.is(0)) {
             return cons.ZERO;
         }
-        //System.out.println("a="+a+" b="+b);
         if (b.is(0) || a.is(1)) {
-            //System.out.println("y");
             return signf(cons.ONE);
         }
         //e^ln(x)=x
@@ -216,10 +196,7 @@ public class pow extends func {
 
     @Override
     public boolean eq0(func f) {
-        if (a.eq(f.a) && b.eq(f.b)) {
-            return true;
-        }
-        return false;
+        return a.eq(f.a) && b.eq(f.b);
     }
 
     @Override

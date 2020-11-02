@@ -7,9 +7,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+//ax^n+bx^(n-1)+..c
 public class poly extends add {
+
     public poly(String s) {
-        func p = func.parse(s);
+        add p = (add) func.parse(s);
         f = p.f;
     }
 
@@ -67,6 +69,5 @@ public class poly extends add {
         //System.out.println("f2="+f);
         return this;
     }
-
 
 }

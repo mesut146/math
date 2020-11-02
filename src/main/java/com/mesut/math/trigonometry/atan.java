@@ -99,6 +99,7 @@ public class atan extends func {
 
     @Override
     public func simplify() {
+        a = a.simplify();
         if (a.is(0)) {
             return cons.ZERO;
         }
@@ -111,10 +112,12 @@ public class atan extends func {
         else if (a.eq(cons.INF)) {
             return cons.PI.div(2);
         }
+        else if (a.eq(cons.MINF)) {
+            return cons.PI.div(-2);
+        }
         else if (a.eq(cons.INF.negate())) {
             return cons.PI.div(2);
         }
-
         return this;
     }
 

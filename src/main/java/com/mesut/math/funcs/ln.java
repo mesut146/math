@@ -1,10 +1,10 @@
 package com.mesut.math.funcs;
 
 import com.mesut.math.Config;
+import com.mesut.math.core.Integral;
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
 import com.mesut.math.core.variable;
-import com.mesut.math.operator.mul;
 import com.mesut.math.trigonometry.atan;
 
 import java.util.Set;
@@ -37,7 +37,6 @@ public class ln extends func {
         else {
             return signOther(new atan(im.div(re))).simplify();
         }
-
     }
 
     @Override
@@ -80,9 +79,7 @@ public class ln extends func {
         if (a.eq(v)) {
             return mul(v).sub(v);
         }
-
-        return new mul(this, cons.ONE).byParts();
-        //return new Anti(this);
+        return new Integral(this, v);
     }
 
     @Override
@@ -102,12 +99,7 @@ public class ln extends func {
 
     @Override
     public func simplify() {
-		/*if(a.isConstant()){
-			if(a.eq(Constant.E)){
-				return Constant.ONE;
-			}
-			return new Constant(this);
-		}*/
+        a = a.simplify();
         if (a.isPow() && a.a.eq(cons.E)) {
             return signf(a.b);
         }
@@ -117,16 +109,6 @@ public class ln extends func {
         if (a.is(1)) {
             return cons.ZERO;
         }
-		/*for(func r:rules.keySet()){
-			if(r.getClass()==getClass()){
-				if(this.eq(r)){
-                    //matcher?
-					func g=rules.eval(r).simplify();
-					//System.out.println("g="+g);
-					return r.name().equals("fx")?g.b:g;
-				}
-			}
-		}*/
         return this;
     }
 

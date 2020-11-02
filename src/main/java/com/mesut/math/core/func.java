@@ -232,7 +232,7 @@ public abstract class func {
         func im = getImaginary();
         func abs = r.pow(2).add(im.pow(2)).sqrt();
         func arg = new atan(im.div(r));
-        return abs.mul(new exp(cons.i.mul(arg)));
+        return abs.mul(exp.make(cons.i.mul(arg)));
     }// |r|
 
     public func getAbs() {
@@ -372,12 +372,8 @@ public abstract class func {
         else if (f.is(0)) {
             return cons.ZERO;
         }
-        func x = new mul(this, f);
-        if (Config.mul.simplify) {
-            x = x.simplify();
-        }
+        func x = new mul(this, f).simplify();
         return makeCons(x, f);
-        //return new mul(this, f).simplify();
     }
 
     public func mul(double d) {

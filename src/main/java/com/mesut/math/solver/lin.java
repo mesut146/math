@@ -1,26 +1,41 @@
 package com.mesut.math.solver;
 
+import com.mesut.math.core.DefaultFunc;
 import com.mesut.math.core.func;
 import com.mesut.math.core.variable;
 
-public class lin {
-    func a, b;
-    variable v;
+import java.util.List;
 
-    public lin() {
+public class lin extends DefaultFunc {
+    double val;
+    boolean hasVal;
+    func f;
 
+    public lin(func f, double val) {
+        this.f = f;
+        this.val = val;
+        this.hasVal = true;
     }
 
-    public lin(int a0, String v0, int b0) {
-        //a=a0;
-        //b=b0;
+    public lin(func f) {
+        this.f = f;
+        this.hasVal = false;
     }
 
     @Override
     public String toString() {
-        // TODO: Implement this method
-        return super.toString();
+        if (hasVal) {
+            return f + "=" + val;
+        }
+        return f.toString();
     }
 
+    func getF() {
+        return f;
+    }
 
+    @Override
+    public List<variable> vars() {
+        return f.vars();
+    }
 }

@@ -15,6 +15,10 @@ public class exp extends pow {
         pow = f;
     }
 
+    public static pow make(func f) {
+        return new pow(cons.E, f);
+    }
+
     @Override
     public func derivative(variable v) {
         return signf(mul(pow.derivative(v)));

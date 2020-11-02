@@ -3,7 +3,7 @@ package com.mesut.math.core;
 import java.math.BigDecimal;
 import java.util.Set;
 
-public class variable extends func {
+public class variable extends func implements Comparable<variable> {
 
     public static final variable
             x = new variable("x"),
@@ -124,5 +124,10 @@ public class variable extends func {
     @Override
     public func copy0() {
         return new variable(name);
+    }
+
+    @Override
+    public int compareTo(variable variable) {
+        return name.compareTo(variable.name);
     }
 }

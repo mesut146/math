@@ -16,12 +16,13 @@ public class DerivativeTest {
         Config.numericDerivativePrecision = 5;
 
         func f = func.parse("e^(x)");
-        System.out.println(f.derivative().eval(1));
-        System.out.println(f.numericDerivative(1));
+        TestUtil.assertEqual(f.derivative().eval(1), f.eval(1));
+        TestUtil.assertEqual(f.numericDerivative(1), f.eval(1));
 
-        f = func.parse("sin(x^2+cos(x))");
-        System.out.println(f.derivative().eval(1));
-        System.out.println(f.numericDerivative(1));
+        func g = func.parse("sin(x^2+cos(x))");
+        func gder = func.parse("cos(x^2+cos(x))*(2*x-sin(x))");
+        TestUtil.assertEqual(g.derivative().eval(1), gder.eval(1));
+        TestUtil.assertEqual(g.numericDerivative(1), gder.eval(1));
     }
 
 }
