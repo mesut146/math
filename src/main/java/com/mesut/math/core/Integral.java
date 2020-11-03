@@ -111,7 +111,7 @@ public class Integral extends func {
         if (str.containsAll(pref)) {
             for (char i = 'a'; i <= 'z'; i++) {
                 if (i != 'd' && !str.contains(String.valueOf(i))) {
-                    return new variable(i);
+                    return new variable(String.valueOf(i));
                 }
             }
             return new variable("x0");

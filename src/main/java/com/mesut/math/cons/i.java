@@ -66,9 +66,7 @@ public class i extends cons {
 
     @Override
     public double eval(variable[] v, double[] vals) {
-        //System.out.println("error: tried to eval i");
         throw new RuntimeException("error: tried to eval i");
-        //return 0;
     }
 
     @Override

@@ -19,10 +19,6 @@ public class variable extends func implements Comparable<variable> {
         this.name = name;
     }
 
-    public variable(char c) {
-        this(String.valueOf(c));
-    }
-
     public static variable from(String s) {
         return new variable(s);
     }

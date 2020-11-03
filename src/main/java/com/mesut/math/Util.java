@@ -4,6 +4,7 @@ import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
 import com.mesut.math.core.variable;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class Util {
@@ -71,5 +72,16 @@ public class Util {
             }
         }
         return true;
+    }
+
+    public static String join(List list, String sep) {
+        StringBuilder sb = new StringBuilder();
+        for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
+            sb.append(iterator.next());
+            if (iterator.hasNext()) {
+                sb.append(sep);
+            }
+        }
+        return sb.toString();
     }
 }

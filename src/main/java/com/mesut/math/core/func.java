@@ -20,7 +20,7 @@ import java.util.*;
 //base class for all expressions
 public abstract class func {
 
-    //used ny parser
+    //used by parser
     public static Map<String, Class<?>> map = new HashMap<>();//name to function class
 
     static {
@@ -30,7 +30,7 @@ public abstract class func {
     public int sign = 1;//positive by default
     public boolean fx = false;
     public func a = null, b = null;//left - right for div and others
-    public List<func> f = new ArrayList<>();//list of internal functions
+    public List<func> f = new ArrayList<>();//list of internal functions(args)
     public List<func> alter = new ArrayList<>();//alternative representations
 
     //TODO make args Object autocast

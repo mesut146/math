@@ -2,9 +2,7 @@ package com.mesut.math;
 
 import com.mesut.math.core.*;
 import com.mesut.math.funcs.zeta;
-import com.mesut.math.parser.MathParser;
 
-import java.io.StringReader;
 import java.util.Random;
 
 public class Main {
@@ -60,16 +58,6 @@ public class Main {
         }
     }
 
-    static void der() {
-        func f = func.parse("e^x*y(x)");
-        fx.table.put(func.parse("y''(x)"), func.parse("e^x*y(x)"));
-        //f.substitude();
-        System.out.println(f);
-        for (int i = 1; i < 10; i++) {
-            System.out.println("y#" + (i + 2) + "=" + f.derivative(i, variable.x));
-        }
-    }
-
     static func random(int max) {
         Random random = new Random();
         int type = random.nextInt(5);
@@ -98,7 +86,7 @@ public class Main {
 
     static func getVar() {
         int c = new Random().nextInt('z' - 'a');
-        return new variable((char) ('a' + c));
+        return new variable(String.valueOf((char) ('a' + c)));
     }
 
     static func getCons() {

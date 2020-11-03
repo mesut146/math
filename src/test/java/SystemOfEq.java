@@ -31,4 +31,9 @@ public class SystemOfEq {
         }
 
     }
+
+    @Test
+    public void test3() {
+        int limit = 5;
+    }
 }

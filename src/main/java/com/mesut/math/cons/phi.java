@@ -6,10 +6,12 @@ import com.mesut.math.core.variable;
 
 //golden ratio
 public class phi extends cons {
+
     public phi() {
         functional = true;
-        val = 1.61803398875;
-        //TODO a=parse("(1+sqrt(5))/2");
+        //val = 1.61803398875;
+        val = (Math.sqrt(5) + 1) / 2;
+        //a=parse("(1+sqrt(5))/2");
     }
 
     @Override

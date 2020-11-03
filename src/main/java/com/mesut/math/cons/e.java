@@ -5,6 +5,7 @@ import com.mesut.math.core.func;
 import com.mesut.math.core.variable;
 
 public class e extends cons {
+
     public e() {
         functional = true;
         val = Math.E;

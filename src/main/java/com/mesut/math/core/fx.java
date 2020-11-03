@@ -1,12 +1,15 @@
 package com.mesut.math.core;
 
+import com.mesut.math.Util;
+
 import java.util.*;
 
-//placeholder for user defined functions
+//class for user defined function
 public class fx extends variable {
     public static List<fx> ins = new ArrayList<>();//previously created funcs
-    public static Map<func, func> table = new HashMap<>();
     String name;
+    func value;
+    int derivativeLevel = 0;
 
     public fx() {
         this("f");
@@ -16,20 +19,30 @@ public class fx extends variable {
         this(name, variable.x);
     }
 
-    public fx(String name, func content) {
+    public fx(String name, func... args) {
         super("var_fx_" + name);
         this.name = name;
-        a = content;
-        //type=types.fx;
+        Collections.addAll(super.f, args);
         ins.add(this);
     }
 
-    public fx(String name, func... f) {
+    public fx(String name, List<func> args) {
         super("var_fx_" + name);
         this.name = name;
-        Collections.addAll(this.f, f);
-        //type=types.fx;
+        f.addAll(args);
         ins.add(this);
+    }
+
+    public func getValue() {
+        return value;
+    }
+
+    public List<func> args() {
+        return f;
+    }
+
+    public func arg() {
+        return args().get(0);
     }
 
     public static boolean has(String name) {
@@ -52,33 +65,36 @@ public class fx extends variable {
 
     @Override
     public func get0(variable[] vars, cons[] vals) {
-        a = a.get0(vars, vals);
-        if (a.isConstant()) {
-            return new cons(this);
+        for (ListIterator<func> it = args().listIterator(); it.hasNext(); ) {
+            it.set(it.next().get(vars, vals));
         }
         return this;
     }
 
     @Override
-    public double eval(variable[] v, double[] vals) {
-        //illegal
-        return 0;
+    public double eval(variable[] vars, double[] vals) {
+        if (value == null) {
+            //illegal
+            throw new RuntimeException("cant evaluate undefined function " + this);
+        }
+        return value.eval(vars, vals);
     }
 
     @Override
     public cons evalc(variable[] vars, double[] vals) {
-        //illegal
-        return cons.ZERO;
+        if (value == null) {
+            //illegal
+            throw new RuntimeException("cant evaluate undefined function " + this);
+        }
+        return value.evalc(vars, vals);
     }
 
     @Override
     public func derivative(variable v) {
-        // TODO: Implement this method
-        if (a.eq(v)) {
-            String nm = name + "'";
-            return new fx(nm, a);
+        if (vars().contains(v)) {
+            return new derivative(this, v);
         }
-        return mul(a.derivative(v));
+        return cons.ZERO;
     }
 
     @Override
@@ -89,23 +105,24 @@ public class fx extends variable {
 
     @Override
     public func copy0() {
-        // TODO: Implement this method
-        //System.out.println("copied="+this);
-        //return new fx(name,a);
-        return this;
+        return new fx(name, args());
     }
 
     @Override
     public String toString2() {
-        // TODO: Implement this method
-        return String.format("%s(%s)", name, a);
-        //return name+"("+a+")="+b;
+        return String.format("%s(%s)", name, Util.join(args(), ","));
     }
 
     @Override
     public String toLatex() {
-        // TODO: Implement this method
         return toString();
+    }
+
+    @Override
+    public void vars0(Set<variable> vars) {
+        for (func arg : args()) {
+            arg.vars0(vars);
+        }
     }
 
     @Override
@@ -121,10 +138,6 @@ public class fx extends variable {
 
     @Override
     public func simplify() {
-        if (ins.indexOf(this) != -1) {
-
-        }
-        //System.out.println("in simp="+this);
         return this;
     }
 

@@ -13,18 +13,13 @@ public class pi extends cons {
     }
 
     @Override
-    public String toLatex() {
-        return "\\pi";
-    }
-
-    @Override
     public func get0(variable[] vars, cons[] vals) {
         return this;
     }
 
     @Override
     public double eval(variable[] v, double[] vals) {
-        return val;
+        return sign * val;
     }
 
     @Override
@@ -39,8 +34,16 @@ public class pi extends cons {
     }
 
     @Override
+    public String toLatex() {
+        if (sign == -1) {
+            return "-\\pi";
+        }
+        return "\\pi";
+    }
+
+    @Override
     public boolean eq0(func f) {
-        return f.getClass() == pi.class;
+        return f.getClass() == getClass();
     }
 
     @Override

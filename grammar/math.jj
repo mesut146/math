@@ -83,6 +83,12 @@ func line():
   {return f;}
 }
 
+func equation():
+{}
+{
+  expr() "=" expr()
+}
+
 func expr():
 {
   func a,b;
