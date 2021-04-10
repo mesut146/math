@@ -58,17 +58,14 @@ public class cons extends func {
         else {
             big = new BigDecimal(val);
         }
-        //type = types.constant;
     }
 
     public cons(func f) {
         ff = f;
         functional = true;
-        //type = types.constant;
     }
 
     public cons(BigDecimal b) {
-        //type = types.constant;
         if (b.signum() == -1) {
             b = b.negate();
             sign = -1;
@@ -79,6 +76,14 @@ public class cons extends func {
 
     public cons() {
         //type = types.constant;
+    }
+
+    public static func of(double a) {
+        return new cons(a);
+    }
+
+    public cons from(double d) {
+        return new cons(d);
     }
 
     private static cons makeInf() {
@@ -96,6 +101,21 @@ public class cons extends func {
 
     public static boolean isInteger(double value) {
         return value == (double) (int) value;
+    }
+
+    public boolean isInteger() {
+        if (!functional) {
+            return isInteger(val);
+        }
+        return false;
+    }
+
+    public boolean isEven() {
+        return isInteger() && val % 2 == 0;
+    }
+
+    public boolean isOdd() {
+        return isInteger() && val % 2 == 1;
     }
 
     @Override
@@ -159,7 +179,7 @@ public class cons extends func {
     }
 
     @Override
-    public void vars0(Set<variable> vars) {
+    public void vars(Set<variable> vars) {
 
     }
 
@@ -171,45 +191,6 @@ public class cons extends func {
         }
         return sign * val;
     }
-
-    /*@Override
-    public func add(func f)
-    {
-        if(f.isCons0()&&Config.useBigDecimal){
-            BigDecimal bd=decimal().add(f.cons().decimal(),mc);
-            return new cons(bd);
-        }
-        return super.add(f);
-    }*/
-
-    /*@Override
-    public func mul(func f)
-    {
-        //(6+x)*4567
-        if(isCons0()&&f.isCons0()){
-            if(Config.useBigDecimal){
-                BigDecimal bd=decimal().multiply(f.cons().decimal(),mc);
-                return new cons(bd);
-            }else{
-                return new cons(eval()*f.eval());
-            }
-            
-        }
-        return super.mul(f);
-    }*/
-
-    /*@Override
-    public func pow(func f)
-    {
-        if(f.isCons0()&&Config.useBigDecimal){
-            
-            BigDecimal bd=decimal().pow(f.cons().decimal().intValue(),mc);
-            //System.out.println("in cpow="+this+" f="+f);
-            //System.out.println("bd="+new Constant(bd));
-            return new cons(bd);
-        }
-        return super.pow(f);
-    }*/
 
     @Override
     public cons evalc(variable[] vars, double[] vals) {
@@ -225,13 +206,6 @@ public class cons extends func {
             return big.negate();
         }
         return big;
-    }
-
-    public boolean isInteger() {
-        if (!functional) {
-            return val == (int) val;
-        }
-        return false;
     }
 
     public boolean isMinf() {
@@ -280,10 +254,6 @@ public class cons extends func {
             //return String.format("%." + Config.printDecimals + "f", val);
         }
         return Double.toString(val);
-    }
-
-    public cons from(double d) {
-        return new cons(d);
     }
 
     @Override

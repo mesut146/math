@@ -84,9 +84,14 @@ func line():
 }
 
 func equation():
-{}
 {
-  expr() "=" expr()
+  func left, right;
+}
+{
+  left = expr() ("=" right = expr(){return new Equation(left,right);})?
+  {
+    return left;
+  }
 }
 
 func expr():
@@ -126,32 +131,34 @@ func element():
   func a;
 }
 {
-  a=num(){return a;}
-  |a=cons(){return a;}
-  |a=funcCall(){return a;}
-  |a=var(){return a;}
-  |"(" a=expr() ")" {return a;}
+    a = num(){return a;}
+  | a = cons(){return a;}
+  | a = funcCall(){return a;}
+  | (a = var() [a = callTail(a)]){return a;}
+  | "(" a = expr() ")"[a = callTail(a)] {return a;}
+}
+
+func callTail(func scope):
+{
+ func call;
+ Token name;
+ List<func> arg = new ArrayList<>();
+}
+{
+  "." name = <IDENT> "(" args(arg) ")"{return new FuncCall(scope,name.image,arg);}
 }
 
 func funcCall():
 {
   Token name;
   List<func> arg=new ArrayList<>();
+  //todo scope
 }
 {
   name=<IDENT> "(" args(arg) ")"
   {return func.makeFunc(name.toString(),arg);}
 }
 
-/*Node call():
-{
-  String name;
-  List<func> arg=new ArrayList<>();
-}
-{
-  name=fname() "(" args(arg) ")"
-  {return func.makeCall(name.toString(),arg);}
-}*/
 
 String fname():
 {
@@ -187,7 +194,7 @@ func var():
   Token token;
 }
 {
-  token=<IDENT>{return new var(token.toString());}
+  token=<IDENT>{return new variable(token.toString());}
 }
 
 func num():

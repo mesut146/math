@@ -3,7 +3,6 @@ package com.mesut.math.prime;
 import com.mesut.math.Util;
 import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
-import com.mesut.math.core.fx;
 import com.mesut.math.core.variable;
 
 import java.util.Set;
@@ -47,14 +46,6 @@ public class prime extends func {
     }
 
     @Override
-    public func derivative(variable v) {
-        if (a.vars().contains(v)) {
-            return a.derivative(v).mul(new fx("p(n)'"));
-        }
-        return cons.ZERO;
-    }
-
-    @Override
     public func integrate(variable v) {
         return null;
     }
@@ -75,8 +66,8 @@ public class prime extends func {
     }
 
     @Override
-    public void vars0(Set<variable> vars) {
-        a.vars0(vars);
+    public void vars(Set<variable> vars) {
+        a.vars(vars);
     }
 
     @Override

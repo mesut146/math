@@ -75,14 +75,14 @@ public class Integral extends func {
     }
 
     @Override
-    public void vars0(Set<variable> vars) {
+    public void vars(Set<variable> vars) {
         if (func != null) {
-            func.vars0(vars);
+            func.vars(vars);
         }
         if (hasLimits()) {//if improper then remove dummy var
             vars.remove(dv);
-            lower.vars0(vars);
-            upper.vars0(vars);
+            lower.vars(vars);
+            upper.vars(vars);
         }
     }
 

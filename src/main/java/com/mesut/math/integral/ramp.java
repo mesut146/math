@@ -83,9 +83,9 @@ public class ramp extends func {
     }
 
     @Override
-    public void vars0(Set<variable> vars) {
+    public void vars(Set<variable> vars) {
         // TODO: Implement this method
-        a.vars0(vars);
+        a.vars(vars);
     }
 
     @Override

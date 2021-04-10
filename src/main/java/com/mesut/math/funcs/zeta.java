@@ -31,8 +31,8 @@ public class zeta extends func {
     }
 
     @Override
-    public void vars0(Set<variable> vars) {
-        s.vars0(vars);
+    public void vars(Set<variable> vars) {
+        s.vars(vars);
     }
 
     @Override

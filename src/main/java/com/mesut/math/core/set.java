@@ -79,9 +79,9 @@ public class set extends func {
     }
 
     @Override
-    public void vars0(Set<variable> vars) {
+    public void vars(Set<variable> vars) {
         for (func term : list) {
-            term.vars0(vars);
+            term.vars(vars);
         }
     }
 

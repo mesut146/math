@@ -1,12 +1,17 @@
 package com.mesut.math;
 
+import com.mesut.math.core.variable;
+
 //a*n+b
 public class Linear {
+    public static variable defaultVar = variable.n;
     public int a, b;
+    public variable v;
 
     public Linear(int a, int b) {
         this.a = a;
         this.b = b;
+        this.v = defaultVar;
     }
 
     public boolean isEven() {
@@ -31,16 +36,17 @@ public class Linear {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        if (a != 1) {
-            if (a == -1) {
-                sb.append("-");
-            }
-            else {
-                sb.append(a);
-            }
+        if (v == null) {
+            v = defaultVar;
         }
-        sb.append("*n");
+        StringBuilder sb = new StringBuilder();
+        if (a == -1) {
+            sb.append("-");
+        }
+        else if (a != 1) {
+            sb.append(a);
+        }
+        sb.append(v);
         if (b > 0) {
             sb.append("+");
         }

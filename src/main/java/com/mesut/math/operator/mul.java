@@ -32,9 +32,9 @@ public class mul extends func {
     }
 
     @Override
-    public void vars0(Set<variable> vars) {
+    public void vars(Set<variable> vars) {
         for (func term : f) {
-            term.vars0(vars);
+            term.vars(vars);
         }
     }
 

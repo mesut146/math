@@ -14,6 +14,13 @@
         <maven.compiler.target>1.7</maven.compiler.target>
         <mainClass>com.mesut.math.Main</mainClass>
     </properties>
+    
+    <licenses>
+      <license>
+        <name>The Apache License, Version 2.0</name>
+        <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      </license>
+    </licenses>
 
     <build>
         <plugins>
@@ -56,10 +63,4 @@
         </dependency>
     </dependencies>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <url>http://localhost:8081/nexus/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>

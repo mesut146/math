@@ -1,12 +1,12 @@
 package com.mesut.math.solver;
 
-import com.mesut.math.core.DefaultFunc;
 import com.mesut.math.core.func;
 import com.mesut.math.core.variable;
 
 import java.util.List;
 
-public class lin extends DefaultFunc {
+//f=val
+public class lin extends func {
     double val;
     boolean hasVal;
     func f;

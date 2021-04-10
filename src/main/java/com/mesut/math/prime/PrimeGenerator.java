@@ -33,7 +33,7 @@ public class PrimeGenerator {
         primes.set(2, limit, true);
         for (int i = 0; i * i < limit; i++) {
             if (primes.get(i)) {
-                System.out.println(i);
+                //System.out.println(i);
                 for (int j = i * i; j < limit; j += i) {
                     primes.clear(j);
                 }
@@ -95,7 +95,6 @@ public class PrimeGenerator {
         for (int i = 0; i < plen; i++) {
             primes[i] = dis.readInt();
         }
-        //System.out.println("read " + plen + " primes to cache");
     }
 
     public static void readFrom(InputStream is) throws IOException {

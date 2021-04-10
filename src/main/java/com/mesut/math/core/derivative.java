@@ -2,6 +2,7 @@ package com.mesut.math.core;
 
 import java.util.Set;
 
+//derivative of a expr without actually differentiating
 public class derivative extends func {
 
     func func;
@@ -15,26 +16,6 @@ public class derivative extends func {
     @Override
     public func get0(variable[] vars, cons[] vals) {
         return new derivative(func.get(vars, vals), v);
-    }
-
-    @Override
-    public double eval(variable[] vars, double[] vals) {
-        return 0;
-    }
-
-    @Override
-    public cons evalc(variable[] vars, double[] vals) {
-        return null;
-    }
-
-    @Override
-    public func getReal() {
-        return null;
-    }
-
-    @Override
-    public func getImaginary() {
-        return null;
     }
 
     @Override
@@ -61,18 +42,13 @@ public class derivative extends func {
     }
 
     @Override
-    public String toLatex() {
-        return toString();
-    }
-
-    @Override
     public boolean eq0(func f) {
         return func.eq(f);
     }
 
     @Override
-    public void vars0(Set<variable> vars) {
-        func.vars0(vars);
+    public void vars(Set<variable> vars) {
+        func.vars(vars);
     }
 
     @Override

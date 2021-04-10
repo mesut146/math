@@ -56,9 +56,9 @@ public class pow extends func {
     }
 
     @Override
-    public void vars0(Set<variable> vars) {
-        a.vars0(vars);
-        b.vars0(vars);
+    public void vars(Set<variable> vars) {
+        a.vars(vars);
+        b.vars(vars);
     }
 
     @Override

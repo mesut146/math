@@ -39,7 +39,7 @@ public class variable extends func implements Comparable<variable> {
     }
 
     @Override
-    public void vars0(Set<variable> vars) {
+    public void vars(Set<variable> vars) {
         vars.add(this);
     }
 

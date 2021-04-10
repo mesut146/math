@@ -3,6 +3,7 @@ package com.mesut.math.prime;
 import com.mesut.math.core.cons;
 import com.mesut.math.core.set;
 
+//prime set up to n
 public class pset extends set {
 
     static int[] primeArray;//prime cache

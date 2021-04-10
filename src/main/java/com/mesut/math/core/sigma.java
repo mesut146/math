@@ -20,10 +20,10 @@ public class sigma extends func {
     }
 
     @Override
-    public void vars0(Set<variable> vars) {
-        fx.vars0(vars);
-        start.vars0(vars);
-        end.vars0(vars);
+    public void vars(Set<variable> vars) {
+        fx.vars(vars);
+        start.vars(vars);
+        end.vars(vars);
     }
 
     @Override

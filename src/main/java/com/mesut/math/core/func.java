@@ -54,18 +54,13 @@ public abstract class func {
                     cons = clazz.getDeclaredConstructor(arr);
                     res = cons.newInstance(args.toArray(new func[0]));
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         else {
-            if (com.mesut.math.core.fx.has(name)) {
-                res = com.mesut.math.core.fx.getFx(name);
-            }
-            else {
-                res = new fx(name, args.toArray(new func[0]));
-            }
+            //user defined
+            return new FuncCall(null, name, args);
         }
         return res;
     }
@@ -145,7 +140,9 @@ public abstract class func {
     }
 
     //substitute vals with vars
-    public abstract func get0(variable[] vars, cons[] vals);
+    public func get0(variable[] vars, cons[] vals) {
+        return this;
+    }
 
     //eval----------------------------------
     public double eval() {
@@ -198,9 +195,13 @@ public abstract class func {
         return eval(vars.get(0), val);
     }
 
-    public abstract double eval(variable[] vars, double[] vals);
+    public double eval(variable[] vars, double[] vals) {
+        return 0;
+    }
 
-    public abstract cons evalc(variable[] vars, double[] vals);
+    public cons evalc(variable[] vars, double[] vals) {
+        return null;
+    }
 
     public cons evalc() {
         return evalc(new variable[]{}, new double[]{});
@@ -217,9 +218,13 @@ public abstract class func {
         return new inv(this);
     }
 
-    public abstract func getReal();
+    public func getReal() {
+        return null;
+    }
 
-    public abstract func getImaginary();
+    public func getImaginary() {
+        return null;
+    }
 
     //re()+i*im()
     public func getComplex() {
@@ -262,7 +267,9 @@ public abstract class func {
         return derivative(set.get(0));
     }
 
-    public abstract func derivative(variable v);
+    public func derivative(variable v) {
+        throw new RuntimeException("not defined");
+    }
 
     public final func derivative(String varStr) {
         return derivative(new variable(varStr));
@@ -288,7 +295,9 @@ public abstract class func {
         return integrate(variable.x);
     }
 
-    public abstract func integrate(variable v);
+    public func integrate(variable v) {
+        throw new RuntimeException("integate not defined");
+    }
 
     public double integrate(Object lower, Object upper, Object var) {
         return new Integral(this, var, lower, upper).eval();
@@ -408,23 +417,13 @@ public abstract class func {
         return new fac(this);
     }
 
-    /*public String getType() {
-        return type.toString();
-    }*/
 
     public cons asCons() {
         return (cons) this;
     }
 
     public boolean is(double d) {
-        //System.out.println(cons().functional);
         return isConstant() && !asCons().functional && eval() == d;
-    }
-
-    //negate without copy
-    public func negate0() {
-        sign = -sign;
-        return this;
     }
 
     //negate with copy
@@ -440,7 +439,9 @@ public abstract class func {
         return res;
     }
 
-    public abstract func copy0();//internal
+    public func copy0() {
+        return this;
+    }
 
     @Override
     public String toString() {
@@ -451,9 +452,13 @@ public abstract class func {
         return str;
     }
 
-    public abstract String toString2();
+    public String toString2() {
+        throw new RuntimeException("not printable");
+    }
 
-    public abstract String toLatex();
+    public String toLatex() {
+        return toString();
+    }
 
     //print with parenthesis
     public String top() {
@@ -461,16 +466,6 @@ public abstract class func {
             return toString();
         }
         return "(" + toString() + ")";
-    }
-
-    //get index of that type
-    public int find(Class<func> type) {
-        for (int i = 0; i < f.size(); i++) {
-            if (f.get(i).getClass() == type) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     public boolean isNumber() {
@@ -509,31 +504,10 @@ public abstract class func {
         return false;
     }
 
-    public boolean isOperator() {
-        return isAdd() || isMul() || isDiv() || isPow();
-    }
-
-    //var^cons
-    public boolean isPolynom() {
-        return isPow() && a.isVariable() && b.isConstant();
-    }
-
-    //cons^var
-    public boolean isPower() {
-        return isPow() && b.isVariable() && a.isConstant();
-    }
-
-    public String name() {
-        String res = getClass().getName();
-        return res.substring(res.lastIndexOf(".") + 1);
-    }
-
     @Override
     public boolean equals(Object other) {
-        if ((other instanceof func)) {
-            return eq((func) other);
-        }
-        return false;
+        if (!(other instanceof func)) return false;
+        return eq((func) other);
     }
 
     public boolean eq(func other) {
@@ -545,22 +519,24 @@ public abstract class func {
 
     //equal without sign
     public boolean eqws(func other) {
-
         if (other != null && getClass() == other.getClass()) {
             return eq0(other);
         }
         return false;
     }
 
-    public abstract boolean eq0(func f);
+    public boolean eq0(func f) {
+        throw new RuntimeException("eq not defined");
+    }
 
     public List<variable> vars() {
         Set<variable> set = new HashSet<>();
-        vars0(set);
+        vars(set);
         return new ArrayList<>(set);
     }
 
-    public abstract void vars0(Set<variable> vars);
+    public void vars(Set<variable> vars) {
+    }
 
     public final func substitute(variable v, func f) {
         return signf(substitute0(v, f));
@@ -582,7 +558,9 @@ public abstract class func {
         return res;
     }
 
-    public abstract func substitute0(variable v, func p);
+    public func substitute0(variable v, func p) {
+        throw new RuntimeException("substitute not defined");
+    }
 
     //center,terms
     public taylor taylor(double at, int n) {
