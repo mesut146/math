@@ -43,6 +43,17 @@ public class Interpreter {
         return new Visitor() {
             @Override
             public func visit(FuncCall call) {
+                if (call.getName().equals("derivative")) {
+                    if (call.getArgs().isEmpty()) {
+                        return call.getScope().derivative();
+                    }
+                    else {
+                        return call.getScope().derivative((variable) call.getArgs().get(0));
+                    }
+                }
+                else if (call.getName().equals("simplify")) {
+                    return call.getScope().simplify();
+                }
                 variable v = variable.from(call.getName());
                 func val = checkVal(v);
                 if (call.getArgs().isEmpty()) {

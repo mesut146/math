@@ -24,16 +24,8 @@ public class FuncCall extends func {
         return args;
     }
 
-    public func call(func f) {
-        if (name.equals("derivative")) {
-            if (args.isEmpty()) {
-                return scope.derivative();
-            }
-            else {
-                return scope.derivative((variable) args.get(0));
-            }
-        }
-        return this;
+    public func getScope() {
+        return scope;
     }
 
     @Override
