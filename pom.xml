@@ -4,7 +4,7 @@
     <groupId>com.mesut</groupId>
     <artifactId>math</artifactId>
     <packaging>jar</packaging>
-    <version>1.1</version>
+    <version>1.2</version>
     <name>math</name>
     <description>a small math library(computer algebra system) for java</description>
     <url>https://github.com/mesut146/math</url>

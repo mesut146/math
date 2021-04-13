@@ -15,6 +15,7 @@ public class ImaginaryTest {
     @Test
     public void log() {
         func f = func.parse("ln(a+b*i)");
+        Config.lnFullImaginary = true;
         Assert.assertEquals(f.getReal(), func.parse("ln(a^2+b^2)/2"));
         Assert.assertEquals(f.getImaginary(), func.parse("atan(b/a)+pi*n*2"));
     }
