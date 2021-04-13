@@ -17,10 +17,14 @@ public class InterpreterTest {
     @Test
     public void interpret() throws ParseException {
         Interpreter interpreter = new Interpreter();
-        interpreter.execute("a = sin(x)");
-        interpreter.execute("a = a + cos(y)");
-        interpreter.execute("a");
-        interpreter.execute("b = a.derivative() + cos(x^2)");
-        interpreter.execute("b(3)");
+        interpreter.execute("a = x^2");
+        interpreter.execute("1 + a(2)");
+    }
+
+    @Test
+    public void multiVar() throws ParseException {
+        Interpreter interpreter = new Interpreter();
+        interpreter.execute("a = x + y ^ 2");
+        interpreter.execute("a(x=1,y=3)");
     }
 }

@@ -39,8 +39,6 @@ public class cons extends func {
     public func ff;
     public double val = 0;
     public BigDecimal big;
-    //public static MathContext mc = new MathContext(Config.precision);
-    //public static final Constant PI2,PI3,PI4,PI5,PI6;
     boolean nan = false, inf = false;
 
     public cons(double d) {
@@ -140,7 +138,6 @@ public class cons extends func {
         return this;
     }
 
-    //i will override this
     @Override
     public func getImaginary() {
         return ZERO;
@@ -172,21 +169,13 @@ public class cons extends func {
             if (ff == null) {
                 return new cons(val).signOther(sign);
             }
-            //System.out.println("ff="+ff);
-            //return ff.get(v, c).s(sign);
         }
         return this;
     }
 
     @Override
-    public void vars(Set<variable> vars) {
-
-    }
-
-    @Override
     public double eval(variable[] v, double[] vals) {
         if (functional) {
-            //System.out.println("ff="+ff);
             return sign * ff.eval(v, vals);
         }
         return sign * val;
@@ -195,7 +184,6 @@ public class cons extends func {
     @Override
     public cons evalc(variable[] vars, double[] vals) {
         if (functional) {
-            //System.out.println("ff="+ff);
             return (cons) signf(ff.evalc(vars, vals));
         }
         return this;
@@ -265,10 +253,7 @@ public class cons extends func {
         if (nan && c.nan) {
             return true;
         }
-        //System.out.println("this="+this+" that="+f);
         if (functional || ((cons) f).functional) {
-            //return ff.eq(((Constant)f).ff);
-            //System.out.println(getClass()==f.getClass());
             return getClass() == f.getClass();
         }
         if (val == f.eval()) {
@@ -276,11 +261,5 @@ public class cons extends func {
         }
         return false;
     }
-
-    @Override
-    public func substitute0(variable v, func p) {
-        return this;
-    }
-
 
 }

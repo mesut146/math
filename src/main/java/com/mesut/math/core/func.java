@@ -559,7 +559,7 @@ public abstract class func {
     }
 
     public func substitute0(variable v, func p) {
-        throw new RuntimeException("substitute not defined");
+        return this;
     }
 
     //center,terms

@@ -148,7 +148,6 @@ public class Integral extends func {
     @Override
     public double eval(variable[] v, double[] vals) {
         a = a.get(v, vals);
-        System.out.println("int=" + a + " dv=" + dv);
         return eval();
     }
 
@@ -157,7 +156,7 @@ public class Integral extends func {
         return new cons(eval(vars, vals));
     }
 
-    //transform infinite bounds to 0,1 range
+    //scale infinite bounds to 0,1 range
     public void makeFinite() {
         boolean isLow = lower.asCons().isInf();
         boolean isUp = upper.asCons().isInf();
@@ -348,11 +347,5 @@ public class Integral extends func {
         return this;
         //return new Integral(a.substitude0(v,p),this.v);
     }
-
-    @Override
-    public func simplify() {
-        return this;
-    }
-
 
 }

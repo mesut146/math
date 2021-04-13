@@ -148,25 +148,15 @@ func callTail(func scope):
   "." name = <IDENT> "(" args(arg) ")"{return new FuncCall(scope,name.image,arg);}
 }
 
+//user defined,or predefined functions
 func funcCall():
 {
   Token name;
   List<func> arg=new ArrayList<>();
-  //todo scope
 }
 {
   name=<IDENT> "(" args(arg) ")"
   {return func.makeFunc(name.toString(),arg);}
-}
-
-
-String fname():
-{
-  Token token;
-}
-{
-  (token="print" | token="plot")
-  {return token.toString();}
 }
 
 void args(List<func> arg):
@@ -174,7 +164,7 @@ void args(List<func> arg):
   func a;
 }
 {
-  [a=expr(){arg.add(a);}] ("," a=expr(){arg.add(a);})*
+  [a = equation() {arg.add(a);}] ("," a = equation() {arg.add(a);})*
 }
 
 func cons():

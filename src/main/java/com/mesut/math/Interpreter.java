@@ -34,29 +34,45 @@ public class Interpreter {
             e.setRight(normalize(e.getRight()));
             return e;
         }
+        f = normalizeVars(f);
+        f = normalizeCalls(f);
+        return f;
+    }
+
+    func normalizeCalls(func f) {
+        return new Visitor() {
+            @Override
+            public func visit(FuncCall call) {
+                variable v = variable.from(call.getName());
+                func val = checkVal(v);
+                if (call.getArgs().isEmpty()) {
+                    return val;
+                }
+                else {
+                    if (call.getArgs().size() == 1) {
+                        func arg = call.getArgs().get(0);
+                        return val.substitute(val.vars().get(0), arg);
+                    }
+                    else {
+                        for (func arg : call.getArgs()) {
+                            Equation e = (Equation) arg;
+                            val = val.substitute(e.leftAsVar(), e.getRight());
+                        }
+                        return val;
+                    }
+                }
+            }
+        }.visit(f);
+    }
+
+    func normalizeVars(func f) {
         for (variable v : f.vars()) {
             //if v is defined just replace
             func val = getValue(v);
             if (val != null) {
                 f = f.substitute(v, getValue(v));
-                f = normalize(f);
-                break;
             }
         }
-        //invoke calls
-        f = new Visitor() {
-            @Override
-            public func visit(FuncCall call) {
-                func val = getValue(variable.from(call.getName()));
-                if (val != null) {
-                    if (call.getArgs().size() == 1) {
-
-                    }
-                    val.eval();
-                }
-                return call.call(val);
-            }
-        }.visit(f);
         return f;
     }
 
@@ -71,15 +87,20 @@ public class Interpreter {
         equations.add(e);
     }
 
+    func checkVal(variable v) {
+        func val = getValue(v);
+        if (val == null) {
+            throw new RuntimeException(v + " is not defined");
+        }
+        return val;
+    }
+
     public void execute(String line) throws ParseException {
         MathParser parser = new MathParser(new StringReader(line));
         func f = parser.equation();
 
         if (f.isVariable()) {
-            func val = getValue((variable) f);
-            if (val == null) {
-                throw new RuntimeException(f + " is not defined");
-            }
+            func val = checkVal((variable) f);
             print(val);
         }
         else {
@@ -89,12 +110,7 @@ public class Interpreter {
                 add(equation);
             }
             else {
-                if (f instanceof FuncCall) {
-                    //todo
-                }
-                else {
-                    print(f);
-                }
+                print(f);
             }
         }
     }
@@ -103,7 +119,22 @@ public class Interpreter {
         if (f == null) {
             throw new RuntimeException("can't print a null value");
         }
-        System.out.println(f);
+        if (f instanceof func) {
+            func ff = (func) f;
+            if (ff.vars().isEmpty()) {
+                System.out.println(ff.eval());
+            }
+            else {
+                System.out.println(f);
+            }
+        }
+        else {
+            System.out.println(f);
+        }
+    }
+
+    public void clear() {
+        equations.clear();
     }
 
     static class Visitor {

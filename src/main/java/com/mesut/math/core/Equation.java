@@ -3,7 +3,7 @@ package com.mesut.math.core;
 import java.util.Set;
 
 public class Equation extends func {
-    func left;//variable or fx
+    func left;
     func right;
 
     public Equation(func left, func right) {
@@ -17,6 +17,10 @@ public class Equation extends func {
 
     public void setLeft(func left) {
         this.left = left;
+    }
+
+    public variable leftAsVar() {
+        return (variable) left;
     }
 
     public func getRight() {

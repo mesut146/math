@@ -58,4 +58,9 @@ public class FuncCall extends func {
         }
         return scope.top() + "." + name + "(" + Util.join(args, ", ") + ")";
     }
+
+    @Override
+    public boolean eq0(func f) {
+        return false;
+    }
 }
