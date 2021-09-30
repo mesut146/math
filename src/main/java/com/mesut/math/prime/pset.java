@@ -7,23 +7,21 @@ import com.mesut.math.core.set;
 public class pset extends set {
 
     static int[] primeArray;//prime cache
-    int n;
-    //static int plen;
+    int start;
+    int end;
 
     //up to n
-    public pset(int n) {
-        if (n % 2 == 0) {
-            n = n - 1;
-        }
-        this.n = n;
-        start = 1;
-        name = "p";
-        fill();
-        end = list.size();
+    public pset(int end) {
+        this(2, end);
     }
 
-    public pset() {
-
+    public pset(int start, int end) {
+        if (start % 2 == 0) start++;
+        if (end % 2 == 0) end--;
+        this.start = start;
+        this.end = end;
+        name = "p";
+        fill();
     }
 
     //return i th prime
@@ -39,8 +37,11 @@ public class pset extends set {
         PrimeGenerator.init();
         primeArray = PrimeGenerator.primes;
         for (int value : primeArray) {
-            if (value <= n) {
-                list.add(new cons(value));
+            if (value < start) {
+                continue;
+            }
+            if (value <= end) {
+                elements.add(new cons(value));
             }
             else {
                 break;

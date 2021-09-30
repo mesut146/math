@@ -1,6 +1,5 @@
 package com.mesut.math.prime;
 
-import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
 import com.mesut.math.core.set;
 
@@ -8,36 +7,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 //factorization of an integer
-public class factor extends cons {
+public class factor {
 
     List<Integer> base = new ArrayList<>();
     List<Integer> pow = new ArrayList<>();
 
-    public factor(int val) {
-        this.val = val;
-    }
-
     //factorize elements of set
     public static List<factor> factorize(set set) {
         List<factor> list = new ArrayList<>();
-        for (func term : set.getList()) {
+        for (func term : set.getElements()) {
             list.add(factorize((int) term.eval()));
         }
         return list;
     }
 
-    public static factor factorize(int x) {
-        factor res = new factor(x);
-        return res.factorize();
+    public int eval() {
+        int res = 1;
+        for (int i = 0; i < base.size(); i++) {
+            res *= Math.pow(base.get(i), pow.get(i));
+        }
+        return res;
     }
 
-    public factor factorize() {
-        int x = (int) val;
-        x = single(x, 2);
-        for (int i = 3; i <= x; i += 2) {
-            x = single(x, i);
+    public static factor factorize(int x) {
+        factor res=new factor();
+        x = res.single(x, 2);
+        for (int i = 3; i <= Math.sqrt(x); i += 2) {
+            if (x % i == 0)
+                x = res.single(x, i);
         }
-        return this;
+        if (x > 1) {
+            res.base.add(x);
+            res.pow.add(1);
+        }
+        return res;
     }
 
     //factorize x by @prime
@@ -58,7 +61,6 @@ public class factor extends cons {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-
         for (int i = 0; i < base.size(); i++) {
             sb.append(base.get(i));
             if (pow.get(i) > 1) {

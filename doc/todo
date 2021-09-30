@@ -1,0 +1,34 @@
+a = x^2+y^2
+
+plot a
+ ...
+
+plot x^3
+ ...
+
+derivative ln(x)
+
+derivative a,x
+ 2*x+y^2
+
+derivative a,y
+ x^2+2*y
+
+factor 100
+ 2^2*5^2
+
+pset(100)
+ 2,3,5,7,11,...,97
+
+pset(10,100)
+ 11,13,...,97
+
+factor [1..100]
+
+set(1,100)
+
+ 1,2,3,2^2,5,2*3...
+
+prime(5)
+ 11
+

@@ -24,4 +24,9 @@ public class InterpreterTest {
         interpreter.execute("a = x + y ^ 2");
         interpreter.execute("a(x=1,y=3)");
     }
+
+    @Test
+    public void factor() {
+
+    }
 }

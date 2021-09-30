@@ -11,13 +11,14 @@ import com.mesut.math.parser.ParseException;
 
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
 public class Interpreter {
 
+    static List<String> commands = Arrays.asList("der", "derivative", "integral", "integrate", "plot", "factor");
     List<Equation> equations = new ArrayList<>();
-
 
     public func getValue(variable v) {
         for (Equation e : equations) {
@@ -107,6 +108,22 @@ public class Interpreter {
     }
 
     public void execute(String line) throws ParseException {
+        int i = line.indexOf(' ');
+        if (i != -1) {
+            String cmd = line.substring(0, i);
+            if (commands.contains(cmd)) {
+                String rest = line.substring(i + 1);
+                switch (cmd) {
+                    case "plot":
+                    case "factor":
+                    case "der":
+                    case "derivative":
+                    case "int":
+                    case "integral":
+                    case "integrate":
+                }
+            }
+        }
         MathParser parser = new MathParser(new StringReader(line));
         func f = parser.equation();
 
