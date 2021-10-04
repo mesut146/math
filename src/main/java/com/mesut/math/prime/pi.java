@@ -24,7 +24,7 @@ public class pi extends func {
     public double eval(variable[] v, double[] vals) {
         int x = (int) a.eval(v, vals);
         int i = 0;
-        while (pset.primeArray[i] <= x) {
+        while (PrimeGenerator.primes[i] <= x) {
             i++;
         }
         return i;

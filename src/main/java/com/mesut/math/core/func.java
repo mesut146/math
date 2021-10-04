@@ -52,7 +52,7 @@ public abstract class func {
                         arr[i] = func.class;
                     }
                     cons = clazz.getDeclaredConstructor(arr);
-                    res = cons.newInstance(args.toArray(new func[0]));
+                    res = cons.newInstance((Object[]) args.toArray(new func[0]));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -60,7 +60,7 @@ public abstract class func {
         }
         else {
             //user defined
-            return new FuncCall(null, name, args);
+            return new FuncCall(name, args);
         }
         return res;
     }
@@ -296,7 +296,7 @@ public abstract class func {
     }
 
     public func integrate(variable v) {
-        throw new RuntimeException("integate not defined");
+        throw new RuntimeException("integrate not defined");
     }
 
     public double integrate(Object lower, Object upper, Object var) {
@@ -306,7 +306,6 @@ public abstract class func {
     public double integrate(double a, double b, variable v) {
         return new Integral(this, v, new cons(a), new cons(b)).eval();
     }
-
 
     public double integrate(double a, double b) {
         return integrate(a, b, variable.x);
@@ -585,5 +584,8 @@ public abstract class func {
         return (eval(at + h) - eval(at)) / h;
     }
 
+    public variable asVar() {
+        return (variable) this;
+    }
 }
 

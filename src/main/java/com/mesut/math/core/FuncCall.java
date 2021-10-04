@@ -6,12 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 public class FuncCall extends func {
-    func scope;
     String name;
     List<func> args;
 
-    public FuncCall(func scope, String name, List<func> args) {
-        this.scope = scope;
+    public FuncCall(String name, List<func> args) {
         this.name = name;
         this.args = args;
     }
@@ -24,20 +22,20 @@ public class FuncCall extends func {
         return args;
     }
 
-    public func getScope() {
-        return scope;
+    public func getArg(int i) {
+        return args.get(i);
     }
 
     @Override
     public func substitute0(variable v, func p) {
-        if (scope != null) scope = scope.substitute(v, p);
-        //args
+        for (int i = 0; i < args.size(); i++) {
+            args.set(i, args.get(i).substitute(v, p));
+        }
         return this;
     }
 
     @Override
     public void vars(Set<variable> vars) {
-        if (scope != null) scope.vars(vars);
         for (func a : args) {
             a.vars(vars);
         }
@@ -45,10 +43,7 @@ public class FuncCall extends func {
 
     @Override
     public String toString2() {
-        if (scope == null) {
-            return name + "(" + Util.join(args, ", ") + ")";
-        }
-        return scope.top() + "." + name + "(" + Util.join(args, ", ") + ")";
+        return name + "(" + Util.join(args, ", ") + ")";
     }
 
     @Override

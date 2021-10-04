@@ -25,6 +25,7 @@ public class PrimeGenerator {
         }
     }
 
+    //primes up to limit
     //https://stackoverflow.com/a/1043247/4579125
     public static BitSet computePrimes(int limit) {
         final BitSet primes = new BitSet();
@@ -100,5 +101,4 @@ public class PrimeGenerator {
     public static void readFrom(InputStream is) throws IOException {
         readFrom(is, Integer.MAX_VALUE);
     }
-
 }

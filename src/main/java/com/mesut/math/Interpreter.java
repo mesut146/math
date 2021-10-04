@@ -1,13 +1,11 @@
 package com.mesut.math;
 
-import com.mesut.math.core.Equation;
-import com.mesut.math.core.FuncCall;
-import com.mesut.math.core.func;
-import com.mesut.math.core.variable;
+import com.mesut.math.core.*;
 import com.mesut.math.operator.add;
 import com.mesut.math.operator.mul;
 import com.mesut.math.parser.MathParser;
 import com.mesut.math.parser.ParseException;
+import com.mesut.math.prime.factor;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -19,15 +17,6 @@ public class Interpreter {
 
     static List<String> commands = Arrays.asList("der", "derivative", "integral", "integrate", "plot", "factor");
     List<Equation> equations = new ArrayList<>();
-
-    public func getValue(variable v) {
-        for (Equation e : equations) {
-            if (e.getLeft().eq(v)) {
-                return e.getRight();
-            }
-        }
-        return null;
-    }
 
     public func normalize(func f) {
         if (f instanceof Equation) {
@@ -44,62 +33,131 @@ public class Interpreter {
         return new Visitor() {
             @Override
             public func visit(FuncCall call) {
-                if (call.getName().equals("derivative")) {
-                    if (call.getArgs().isEmpty()) {
-                        return call.getScope().derivative();
+                switch (call.getName()) {
+                    case "derivative":
+                    case "der":
+                        if (call.getArgs().isEmpty()) {
+                            throw new RuntimeException("missing args");
+                        }
+                        if (call.getArgs().size() == 1) {
+                            return call.getArg(0).derivative();
+                        }
+                        else {
+                            func res = call.getArg(0);
+                            for (int i = 1; i < call.getArgs().size(); i++) {
+                                res = res.derivative((variable) call.getArg(i));
+                            }
+                            return res;
+                        }
+                    case "simplify":
+                        return call.getArg(0).simplify();
+                    case "int":
+                    case "integral":
+                    case "integrate":
+                        //first arg is func
+                        //second arg is var
+                        //last two are interval(optional)
+                        Integral integral = new Integral(call.getArg(0), call.getArg(1));
+                        if (call.getArgs().size() > 2) {
+                            integral.lower = call.getArg(2);
+                            integral.upper = call.getArg(3);
+                        }
+                        return integral;
+                    case "factor":
+                    case "factorize":
+                    case "factorise": {
+                        if (call.getArg(0) instanceof set) {
+                            return factor.factorize(((set) call.getArg(0)));
+                        }
+                        else {
+                            int x = (int) call.getArg(0).asCons().val;
+                            return factor.factorize(x);
+                        }
                     }
-                    else {
-                        return call.getScope().derivative((variable) call.getArgs().get(0));
+                    case "plot":
+                    case "graph": {
+                        //todo
+                        throw new RuntimeException("not implemented yet");
+                    }
+                    case "pset": {
                     }
                 }
-                else if (call.getName().equals("simplify")) {
-                    return call.getScope().simplify();
-                }
-                variable v = variable.from(call.getName());
-                func val = checkVal(v);
+                //todo more
+                //custom func
+                func rhs = checkVal(call.getName());
                 if (call.getArgs().isEmpty()) {
-                    return val;
+                    return rhs;
                 }
                 else {
+                    if (call.getArgs().isEmpty()) {
+                        //eval
+                        //return call.eval();
+                    }
                     if (call.getArgs().size() == 1) {
-                        func arg = call.getArgs().get(0);
-                        return val.substitute(val.vars().get(0), arg);
+                        func arg = call.getArg(0);
+                        return rhs.substitute(rhs.vars().get(0), arg);
                     }
                     else {
+                        //named args
+                        //f(x=1,y=2)
+                        //todo predefined order preserved
+                        //f(x,y) = x+y
+                        //f(1,2) = f(x=1,y=2)
                         for (func arg : call.getArgs()) {
+                            if (!(arg instanceof Equation)) {
+                                throw new RuntimeException("named arg is expected");
+                            }
                             Equation e = (Equation) arg;
-                            val = val.substitute(e.leftAsVar(), e.getRight());
+                            rhs = rhs.substitute(e.leftAsVar(), e.getRight());
                         }
-                        return val;
+                        return rhs;
                     }
                 }
             }
         }.visit(f);
     }
 
+    private func getValue(String name) {
+        for (Equation e : equations) {
+            if (e.getLeft().isVariable()) {
+                variable v = e.getLeft().asVar();
+                if (v.getName().equals(name)) {
+                    return e.getRight();
+                }
+            }
+            else {
+                FuncCall call = ((FuncCall) e.getLeft());
+                if (call.getName().equals(name)) {
+                    return e.getRight();
+                }
+            }
+        }
+        return null;
+    }
+
     func normalizeVars(func f) {
         for (variable v : f.vars()) {
             //if v is defined just replace
-            func val = getValue(v);
+            func val = getValue(v.getName());
             if (val != null) {
-                f = f.substitute(v, getValue(v));
+                f = f.substitute(v, getValue(v.getName()));
             }
         }
         return f;
     }
 
     void add(Equation e) {
-        for (Equation ee : equations) {
-            if (ee.getLeft().eq(e.getLeft())) {
+        for (Equation prev : equations) {
+            if (prev.getLeft().eq(e.getLeft())) {
                 //already defined
-                ee.setRight(e.getRight());
+                prev.setRight(e.getRight());
                 return;
             }
         }
         equations.add(e);
     }
 
-    func checkVal(variable v) {
+    func checkVal(String v) {
         func val = getValue(v);
         if (val == null) {
             throw new RuntimeException(v + " is not defined");
@@ -125,11 +183,12 @@ public class Interpreter {
             }
         }
         MathParser parser = new MathParser(new StringReader(line));
-        func f = parser.equation();
+        func f = parser.line();
 
         if (f.isVariable()) {
-            func val = checkVal((variable) f);
-            print(val);
+            func val = checkVal(((variable) f).getName());
+            System.out.println(val.eval());
+            //print(val);
         }
         else {
             f = normalize(f);
@@ -147,7 +206,13 @@ public class Interpreter {
         if (f == null) {
             throw new RuntimeException("can't print a null value");
         }
-        if (f instanceof func) {
+        if (f instanceof factor) {
+            System.out.println(f);
+        }
+        else if (f instanceof set) {
+            System.out.println(f);
+        }
+        else if (f instanceof func) {
             func ff = (func) f;
             if (ff.vars().isEmpty()) {
                 System.out.println(ff.eval());

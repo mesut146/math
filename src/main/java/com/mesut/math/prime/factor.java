@@ -2,35 +2,33 @@ package com.mesut.math.prime;
 
 import com.mesut.math.core.func;
 import com.mesut.math.core.set;
+import com.mesut.math.core.variable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //factorization of an integer
-public class factor {
+public class factor extends func {
 
     List<Integer> base = new ArrayList<>();
     List<Integer> pow = new ArrayList<>();
 
     //factorize elements of set
-    public static List<factor> factorize(set set) {
-        List<factor> list = new ArrayList<>();
+    public static set factorize(set set) {
+        set res = new set();
         for (func term : set.getElements()) {
-            list.add(factorize((int) term.eval()));
-        }
-        return list;
-    }
-
-    public int eval() {
-        int res = 1;
-        for (int i = 0; i < base.size(); i++) {
-            res *= Math.pow(base.get(i), pow.get(i));
+            res.put(factorize((int) term.eval()));
         }
         return res;
     }
 
     public static factor factorize(int x) {
-        factor res=new factor();
+        factor res = new factor();
+        if (x == 1) {
+            res.base.add(1);
+            res.pow.add(1);
+            return res;
+        }
         x = res.single(x, 2);
         for (int i = 3; i <= Math.sqrt(x); i += 2) {
             if (x % i == 0)
@@ -41,6 +39,19 @@ public class factor {
             res.pow.add(1);
         }
         return res;
+    }
+
+    public double eval() {
+        int res = 1;
+        for (int i = 0; i < base.size(); i++) {
+            res *= Math.pow(base.get(i), pow.get(i));
+        }
+        return res;
+    }
+
+    @Override
+    public double eval(variable[] vars, double[] vals) {
+        return eval();
     }
 
     //factorize x by @prime
@@ -73,6 +84,4 @@ public class factor {
         }
         return sb.toString();
     }
-
-
 }

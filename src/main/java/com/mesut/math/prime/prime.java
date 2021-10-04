@@ -10,7 +10,7 @@ import java.util.Set;
 //n th prime p(n)
 public class prime extends func {
 
-    public prime(Object n) {
+    public prime(func n) {
         a = Util.cast(n);
     }
 
@@ -32,7 +32,8 @@ public class prime extends func {
 
     @Override
     public double eval(variable[] v, double[] vals) {
-        return pset.get((int) a.eval(v, vals));
+        int n = (int) a.eval(v, vals);
+        return pset.get(n);
     }
 
     @Override

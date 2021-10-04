@@ -8,6 +8,8 @@ plot x^3
 
 derivative ln(x)
 
+der(ln(x),x)
+
 derivative a,x
  2*x+y^2
 

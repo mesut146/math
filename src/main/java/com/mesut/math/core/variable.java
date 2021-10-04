@@ -97,6 +97,10 @@ public class variable extends func implements Comparable<variable> {
         return mul(v);
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String toString2() {
         return name;
@@ -110,6 +114,11 @@ public class variable extends func implements Comparable<variable> {
     @Override
     public boolean eq0(func f) {
         return name.equals(((variable) f).name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode() * 31 + sign;
     }
 
     @Override

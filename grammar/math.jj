@@ -62,12 +62,6 @@ TOKEN: /* must be before <IDENT>*/
   |<INF: "inf"|"INF"|"Inf">
 }
 
-TOKEN: /*built in functions */
-{
-  <PRINT: "print">
-| <PLOT: "plot">
-}
-
 TOKEN:
 {
   <IDENT: <CHAR> (<CHAR> | <DIGIT>)*>
@@ -79,7 +73,7 @@ func line():
   func f;
 }
 {
-  f=expr() <EOF>
+  f= arg() <EOF>
   {return f;}
 }
 
@@ -88,10 +82,17 @@ func equation():
   func left, right;
 }
 {
-  left = expr() ("=" right = expr(){return new Equation(left,right);})?
+  left = lhs() "=" right = expr(){return new Equation(left,right);}
   {
     return left;
   }
+}
+
+func lhs():{
+ func res;
+}
+{
+  res = funcCall(){return res;} | res = var(){return res;}
 }
 
 func expr():
@@ -99,21 +100,28 @@ func expr():
   func a,b;
 }
 {
-  a=term()
-  ("+" b=expr(){a=new add(a,b);}
-  |"-" b=expr(){a=new add(a,b.negate());})*
+  a=mul()
+  ("+" b=mul(){a=a.add(b);}
+  |"-" b=mul(){a=a.add(b.negate());})*
   { return a; }
 }
 
-func term():
+func mul():
 {
  func a,b;
 }
 {
-  a=unary()
-  ("*" b=term(){a=new mul(a,b);}
-  |"/" b=term(){a=new div(a,b);}
-  |"^" b=term(){a=new pow(a,b);})*
+  a=pow()
+  ("*" b=pow(){a=a.mul(b);}
+  |"/" b=pow(){a=a.div(b);})*
+  {return a;}
+}
+
+func pow():{
+ func a,b;
+}
+{
+  a=unary() ("^" b=unary(){a=a.pow(b);})*
   {return a;}
 }
 
@@ -132,31 +140,27 @@ func element():
 }
 {
     a = num(){return a;}
-  | a = cons(){return a;}
   | a = funcCall(){return a;}
-  | (a = var() [a = callTail(a)]){return a;}
-  | "(" a = expr() ")"[a = callTail(a)] {return a;}
-}
-
-func callTail(func scope):
-{
- func call;
- Token name;
- List<func> arg = new ArrayList<>();
-}
-{
-  "." name = <IDENT> "(" args(arg) ")"{return new FuncCall(scope,name.image,arg);}
+  | a = cons(){return a;}
+  | a = var(){return a;}
+  | "(" a = expr() ")" {return a;}
 }
 
 //user defined,or predefined functions
 func funcCall():
 {
-  Token name;
+  String name;
   List<func> arg=new ArrayList<>();
 }
 {
-  name=<IDENT> "(" args(arg) ")"
-  {return func.makeFunc(name.toString(),arg);}
+  name = name() "(" (args(arg))? ")"
+  {return func.makeFunc(name,arg);}
+}
+
+String name():{
+ Token t;
+}{
+   (t=<IDENT> | t=<PI>){return t.image;}
 }
 
 void args(List<func> arg):
@@ -164,7 +168,15 @@ void args(List<func> arg):
   func a;
 }
 {
-  [a = equation() {arg.add(a);}] ("," a = equation() {arg.add(a);})*
+  a = arg() {arg.add(a);} ("," a = arg() {arg.add(a);})*
+}
+
+func arg():
+{
+  func res;
+}
+{
+  LOOKAHEAD(lhs() "=") res = equation(){return res;} | res = expr(){return res;}
 }
 
 func cons():

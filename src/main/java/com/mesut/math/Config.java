@@ -1,9 +1,12 @@
 package com.mesut.math;
 
+import com.mesut.math.core.set;
 import com.mesut.math.funcs.*;
 import com.mesut.math.integral.*;
+import com.mesut.math.prime.countPrimes;
 import com.mesut.math.prime.pi;
 import com.mesut.math.prime.prime;
+import com.mesut.math.prime.pset;
 import com.mesut.math.trigonometry.*;
 
 import static com.mesut.math.core.func.register;
@@ -55,6 +58,10 @@ public class Config {
         register("PrimePi", pi.class);
         register("prime", prime.class);
         register("p", prime.class);
+        register("pset", pset.class);
+        register("countPrime", countPrimes.class);
+        register("countPrimes", countPrimes.class);
+        register("set", set.class);
 
         register("ramp", ramp.class);
         register("step", step.class);

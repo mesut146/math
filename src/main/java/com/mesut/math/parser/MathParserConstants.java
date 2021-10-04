@@ -55,13 +55,9 @@ public interface MathParserConstants {
   /** RegularExpression Id. */
   int INF = 26;
   /** RegularExpression Id. */
-  int PRINT = 27;
+  int IDENT = 27;
   /** RegularExpression Id. */
-  int PLOT = 28;
-  /** RegularExpression Id. */
-  int IDENT = 29;
-  /** RegularExpression Id. */
-  int CHAR = 30;
+  int CHAR = 28;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -95,8 +91,6 @@ public interface MathParserConstants {
     "<PHI>",
     "<I>",
     "<INF>",
-    "\"print\"",
-    "\"plot\"",
     "<IDENT>",
     "<CHAR>",
     "\"^\"",
