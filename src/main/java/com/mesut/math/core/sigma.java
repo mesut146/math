@@ -27,21 +27,15 @@ public class sigma extends func {
     }
 
     @Override
-    public func get0(variable[] vars, cons[] vals) {
-        /*if(this.var.eq2(v)){
-
-         }*/
-        return this;
-    }
-
-    @Override
     public double eval(variable[] v, double[] vals) {
         func s = start.get(v, vals);
         func e = end.get(v, vals);
-        //sigma(x^n/n^2,n=1 to k) get(x=2,k=33)
 
         if (!isInt(s)) {
             throw new RuntimeException("starting index must be an integer");
+        }
+        if (e.isConstant() && e.asCons().inf) {
+            return evalInfinite(fx.get(v, vals), s);
         }
         if (!isInt(e)) {
             throw new RuntimeException("ending index must be an integer");
@@ -49,24 +43,29 @@ public class sigma extends func {
         int si = (int) s.eval();
         int ei = (int) e.eval();
 
-        func fx2 = fx.get(v, vals);
-        double precision = Math.pow(10, -Config.digits);
-        double sum = fx2.eval(var, si), last = 0;
+        func f = fx.get(v, vals);
+        double sum = 0;
 
-        for (int i = si + 1; i <= ei; i++) {
-            sum += fx2.eval(var, i);
-            if (i == Config.maxIteration) {
-
-                return sum;
-            }
-            last = sum;
+        for (int i = si; i <= ei; i++) {
+            sum += f.eval(var, i);
         }
         return sum;
     }
 
+    private double evalInfinite(func f, func s) {
+        int si = (int) s.eval();
+        double res = 0;
+        for (int i = si; ; i++) {
+            res = res + f.eval(i);
+            if (i == Config.maxIteration) {
+                break;
+            }
+        }
+        return res;
+    }
+
     @Override
     public cons evalc(variable[] vars, double[] vals) {
-        // TODO: Implement this method
         return new cons(eval(vars, vals));
     }
 
@@ -83,7 +82,7 @@ public class sigma extends func {
     boolean isInt(func f) {
         if (f.isConstant()) {
             if (f.eq(cons.INF)) {
-                return true;
+                return false;
             }
             double d = f.eval();
             return d == (long) d;

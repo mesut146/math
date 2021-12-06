@@ -7,13 +7,11 @@ import com.mesut.math.funcs.fac;
 import com.mesut.math.funcs.inv;
 import com.mesut.math.funcs.sqrt;
 import com.mesut.math.operator.*;
-import com.mesut.math.parser.MathParser;
-import com.mesut.math.parser.ParseException;
+import com.mesut.math.parser2.AstBuilder2;
 import com.mesut.math.taylor;
 import com.mesut.math.taylorsym;
 import com.mesut.math.trigonometry.atan;
 
-import java.io.StringReader;
 import java.lang.reflect.Constructor;
 import java.util.*;
 
@@ -76,8 +74,9 @@ public abstract class func {
 
     public static func parse(String expr) {
         try {
-            return new MathParser(new StringReader(expr)).expr().simplify();
-        } catch (ParseException e) {
+            return AstBuilder2.make(expr).simplify();
+            //return new MathParser(new StringReader(expr)).expr().simplify();
+        } catch (Exception e) {
             e.printStackTrace();
             throw new Error(expr);
         }

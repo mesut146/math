@@ -6,6 +6,7 @@ import com.mesut.math.core.variable;
 
 public class i extends cons {
 
+
     public i() {
         functional = true;
         ff = this;

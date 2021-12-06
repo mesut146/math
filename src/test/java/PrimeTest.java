@@ -34,7 +34,7 @@ public class PrimeTest {
     public void factor() {
         for (int i = 1000; i < 10000; i++) {
             factor f = factor.factorize(i);
-            Assert.assertEquals(i, f.eval());
+            Assert.assertEquals(i, f.eval(), 0);
         }
     }
 }

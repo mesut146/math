@@ -6,6 +6,10 @@ import com.mesut.math.core.variable;
 
 public class e extends cons {
 
+    static {
+        cons.E = new e();
+    }
+
     public e() {
         functional = true;
         val = Math.E;

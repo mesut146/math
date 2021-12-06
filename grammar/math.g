@@ -1,6 +1,5 @@
 token{
-  NUM: [0-9] ("." [0-9])?;
-  IDENT: [a-zA-z] [a-zA-Z0-9_]*;
+  NUM: [0-9]+ ("." [0-9]+)?;
   LP: "(";
   RP: ")";
   LB: "[";
@@ -19,21 +18,34 @@ token{
   E: "e" | "E";
   I: "i";
   INF: "inf" | "INF" | "Inf";
+  IDENT: [a-zA-Z] [a-zA-Z0-9_]*;
 }
 
 skip{
   WS: " " | "\n" | "\r" | "\t";
 }
 
-eq: lhs "=" expr | expr;
-lhs: var | funcCall;
+%start: line;
 
-expr: term rest=(("+" | "-") expr)*;
-term: pow rest=(("*" | "/") term)*;
-pow: unary rest=("^" pow)*;
-unary: "-" elem | elem "!";
+line: expr ("=" expr)?;
+
+
+expr: mul rest=(("+" | "-") mul)*;
+mul: unary rest=(("*" | "/") unary)*;
+unary: "-" unary | pow;
+pow: bang rest=("^" unaryOrBang)?;
+unaryOrBang: "-" unary | bang;
+bang: elem "!"?;
 elem: cons | var | funcCall | "(" expr ")";
-funcCall: IDENT "(" args? ")";
-args: expr rest=("," expr)*;
+
+funcCall: name "(" args? ")";
+name: IDENT | PI;
+args: line rest=("," line)*;
+
+fx: name "(" fxargs? ")";
+fxargs: fxarg ("," fxarg)*;
+//fxarg: expr | name "=" expr;
+fxarg: var;
+
 cons: E | PI | PHI | I | INF | NUM;
 var: IDENT;

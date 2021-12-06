@@ -39,18 +39,6 @@ public class Util {
         }
     }
 
-    /*public static variable[] vars(Object obj) {
-        if (obj instanceof variable) {
-            return (variable) obj;
-        }
-        else if (obj instanceof String) {
-            return new variable((String) obj);
-        }
-        else {
-            throw new RuntimeException("unexpected type: " + obj.getClass() + " , " + obj);
-        }
-    }*/
-
     public static boolean isEq(List<func> l1, List<func> l2) {
         int len = l1.size();
         if (len != l2.size()) {
@@ -74,9 +62,9 @@ public class Util {
         return true;
     }
 
-    public static String join(List list, String sep) {
+    public static String join(List<?> list, String sep) {
         StringBuilder sb = new StringBuilder();
-        for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
+        for (Iterator<?> iterator = list.iterator(); iterator.hasNext(); ) {
             sb.append(iterator.next());
             if (iterator.hasNext()) {
                 sb.append(sep);

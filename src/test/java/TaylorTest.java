@@ -29,7 +29,6 @@ public class TaylorTest {
         taylorsym taylor = new taylorsym(f, 0);
         taylor.calc(10, true);
         System.out.println(taylor);
-        System.out.println(taylor.derivative("x"));
-
+        //System.out.println(taylor.derivative("x"));
     }
 }

@@ -50,26 +50,21 @@ public class div extends func {
 
     @Override
     public double eval(variable[] v, double[] vals) {
-        // TODO: Implement this method
-
         return sign * a.eval(v, vals) / b.eval(v, vals);
     }
 
     @Override
     public cons evalc(variable[] vars, double[] vals) {
-        // TODO: Implement this method
         return new cons(eval(vars, vals));
     }
 
     @Override
     public String toLatex() {
-        // TODO: Implement this method
         return String.format("\\frac{%s,%s}", a, b);
     }
 
     @Override
     public func copy0() {
-        // TODO: Implement this method
         return new div(a, b);
     }
 
@@ -86,8 +81,6 @@ public class div extends func {
         if (b.isConstant()) {
             return a.integrate(v).div(b);
         }
-        // 1/lnx  
-        // 
         return new Integral(this, v);
     }
 
@@ -114,6 +107,15 @@ public class div extends func {
         a = a.simplify();
         b = b.simplify();
         if (a.is(0)) {
+            if (b.is(0)) {
+                return cons.NaN;
+            }
+            return cons.ZERO;
+        }
+        if (a.eq(cons.INF)) {
+            return cons.INF;
+        }
+        if (b.eq(cons.INF)) {
             return cons.ZERO;
         }
         if (a.isDiv()) {// (a/b)/c=a/(b*c)

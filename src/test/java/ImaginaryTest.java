@@ -37,8 +37,10 @@ public class ImaginaryTest {
 
     @Test
     public void test2() {
-        func f = func.parse("ln(1-t*e^(i*x*n))");
+        func f = func.parse("ln(1-t*e^(i*x))");
         System.out.println(f.getReal());
         System.out.println(f.getImaginary());
+        System.out.println(f.getReal().eval("t=1,x=2"));
+        System.out.println(f.get("t=1,x=2").getReal());
     }
 }

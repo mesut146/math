@@ -8,31 +8,22 @@ import com.mesut.math.cons.pi;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.Set;
 
 public class cons extends func {
 
-    public static final cons ZERO = new cons(0),
-            ONE = new cons(1),
-            TWO = new cons(2);
+    public static final cons ZERO = new cons(0);
+    public static final cons ONE = new cons(1);
+    public static final cons TWO = new cons(2);
     public static final cons NaN, INF, MINF;
-    public static final cons E = new e();
-    public static final cons PI = new pi();
-    public static final cons i = new i();
-    public static final cons PHI = new phi();
-    //public static final func PID2 = PI.div(2), PID3 = PI.div(3);
+    public static cons PI;
+    public static cons i;
+    public static cons PHI;
+    public static cons E;
 
     static {
         NaN = makeNan();
-        INF = makeInf();
-        MINF = makeInf();
-        MINF.sign = -1;
-		/*PI2=(Constant)PI.div(2);
-		PI3=(Constant)PI.div(3);
-		PI4=(Constant)PI.div(4);
-		PI5=(Constant)PI.div(5);
-		PI6=(Constant)PI.div(6);
-		*/
+        INF = new cons(Double.POSITIVE_INFINITY);
+        MINF = new cons(Double.NEGATIVE_INFINITY);
     }
 
     public boolean functional = false;
@@ -42,19 +33,29 @@ public class cons extends func {
     boolean nan = false, inf = false;
 
     public cons(double d) {
-        if (d < 0) {
-            sign = -1;
-            d = -d;
-        }
-        val = d;
-        if (Double.isInfinite(val)) {
+        if (d == Double.POSITIVE_INFINITY) {
+            val = d;
             inf = true;
         }
-        else if (Double.isNaN(val)) {
-            nan = true;
+        else if (d == Double.NEGATIVE_INFINITY) {
+            val = -d;
+            sign = -1;
+            inf = true;
         }
         else {
-            big = new BigDecimal(val);
+            if (Double.isNaN(d)) {
+                nan = true;
+            }
+            else {
+                if (d < 0) {
+                    sign = -1;
+                    val = -d;
+                }
+                else {
+                    val = d;
+                }
+                big = new BigDecimal(val);
+            }
         }
     }
 
@@ -73,15 +74,17 @@ public class cons extends func {
     }
 
     public cons() {
-        //type = types.constant;
+    }
+
+    public static void init() {
+        E = new e();
+        PI = new pi();
+        PHI = new phi();
+        i = new i();
     }
 
     public static func of(double a) {
         return new cons(a);
-    }
-
-    public cons from(double d) {
-        return new cons(d);
     }
 
     private static cons makeInf() {
@@ -99,6 +102,10 @@ public class cons extends func {
 
     public static boolean isInteger(double value) {
         return value == (double) (int) value;
+    }
+
+    public cons from(double d) {
+        return new cons(d);
     }
 
     public boolean isInteger() {
@@ -202,10 +209,6 @@ public class cons extends func {
 
     public boolean isInf() {
         return inf;
-    }
-
-    public boolean isBig() {
-        return big != null;
     }
 
     @Override

@@ -3,19 +3,15 @@ package com.mesut.math;
 import com.mesut.math.core.*;
 import com.mesut.math.operator.add;
 import com.mesut.math.operator.mul;
-import com.mesut.math.parser.MathParser;
-import com.mesut.math.parser.ParseException;
 import com.mesut.math.prime.factor;
 
-import java.io.StringReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
 public class Interpreter {
 
-    static List<String> commands = Arrays.asList("der", "derivative", "integral", "integrate", "plot", "factor");
     List<Equation> equations = new ArrayList<>();
 
     public func normalize(func f) {
@@ -79,7 +75,13 @@ public class Interpreter {
                         //todo
                         throw new RuntimeException("not implemented yet");
                     }
-                    case "pset": {
+                    case "im":
+                    case "imaginary": {
+                        return call.getArg(0).getImaginary();
+                    }
+                    case "real":
+                    case "re": {
+                        return call.getArg(0).getReal();
                     }
                 }
                 //todo more
@@ -149,7 +151,7 @@ public class Interpreter {
     void add(Equation e) {
         for (Equation prev : equations) {
             if (prev.getLeft().eq(e.getLeft())) {
-                //already defined
+                //already defined so just replace
                 prev.setRight(e.getRight());
                 return;
             }
@@ -165,69 +167,79 @@ public class Interpreter {
         return val;
     }
 
-    public void execute(String line) throws ParseException {
-        int i = line.indexOf(' ');
-        if (i != -1) {
-            String cmd = line.substring(0, i);
-            if (commands.contains(cmd)) {
-                String rest = line.substring(i + 1);
-                switch (cmd) {
-                    case "plot":
-                    case "factor":
-                    case "der":
-                    case "derivative":
-                    case "int":
-                    case "integral":
-                    case "integrate":
-                }
-            }
-        }
-        MathParser parser = new MathParser(new StringReader(line));
-        func f = parser.line();
+    public Output exec(String line) throws IOException {
+        return execute(line);
+    }
+
+    public Output execute(String line) throws IOException {
+        func f = func.parse(line);
 
         if (f.isVariable()) {
-            func val = checkVal(((variable) f).getName());
-            System.out.println(val.eval());
-            //print(val);
+            func val = checkVal(f.asVar().getName());
+            return print(val);
         }
         else {
             f = normalize(f);
             if (f instanceof Equation) {
                 Equation equation = (Equation) f;
                 add(equation);
+                return null;
             }
             else {
-                print(f);
+                return print(f);
             }
         }
     }
 
-    void print(Object f) {
+    Output print(func f) {
         if (f == null) {
             throw new RuntimeException("can't print a null value");
         }
         if (f instanceof factor) {
-            System.out.println(f);
+            return new Output(f.toString());
         }
         else if (f instanceof set) {
-            System.out.println(f);
-        }
-        else if (f instanceof func) {
-            func ff = (func) f;
-            if (ff.vars().isEmpty()) {
-                System.out.println(ff.eval());
-            }
-            else {
-                System.out.println(f);
-            }
+            return new Output(f.toString());
         }
         else {
-            System.out.println(f);
+            if (f.vars().isEmpty()) {
+                double val = f.eval();
+                if ((int) val == val) {
+                    return new Output("" + (int) val);
+                }
+                else {
+                    return new Output("" + val);
+                }
+            }
+            else {
+                return new Output(f.toString());
+            }
         }
     }
 
     public void clear() {
         equations.clear();
+    }
+
+    public static class Output {
+        public String text;
+        List<Point> points = new ArrayList<>();
+        //or graph data
+
+
+        public Output(String text) {
+            this.text = text;
+        }
+    }
+
+    public static class Point {
+        public double x;
+        public double y;
+
+        public Point(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
     }
 
     static class Visitor {

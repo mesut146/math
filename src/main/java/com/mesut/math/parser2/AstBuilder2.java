@@ -1,51 +1,48 @@
 package com.mesut.math.parser2;
 
-import com.mesut.math.core.*;
-import com.mesut.math.operator.add;
-import com.mesut.math.operator.div;
-import com.mesut.math.operator.mul;
-import com.mesut.math.operator.pow;
+import com.mesut.math.core.Equation;
+import com.mesut.math.core.cons;
+import com.mesut.math.core.func;
+import com.mesut.math.core.variable;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AstBuilder {
+public class AstBuilder2 {
 
     public static func make(String line) throws IOException {
         Lexer lexer = new Lexer(new StringReader(line));
         Parser parser = new Parser(lexer);
-        return new AstBuilder().visitEq(parser.eq());
+        return new AstBuilder2().visitLine(parser.line());
     }
 
-    public func visitEq(Ast.eq eq) {
-        if (eq.eq1 != null) {
-            return new Equation(visitLhs(eq.eq1.lhs), visitExpr(eq.eq1.expr));
-        }
-        else {
-            return visitExpr(eq.expr);
-        }
+    private func visitLine(Ast.line line) {
+        func e = visitExpr(line.expr);
+        if (line.g1 == null) return e;
+        return new Equation(e, visitExpr(line.g1.expr));
     }
 
-    private func visitLhs(Ast.lhs lhs) {
-        if (lhs.var != null) {
-            return visitVar(lhs.var);
-        }
-        else {
-            return visitFuncCall(lhs.funcCall);
-        }
-    }
 
     private func visitFuncCall(Ast.funcCall funcCall) {
         List<func> args = new ArrayList<>();
         if (funcCall.args != null) {
-            args.add(visitExpr(funcCall.args.expr));
+            args.add(visitLine(funcCall.args.line));
             for (Ast.argsg1 g1 : funcCall.args.rest) {
-                args.add(visitExpr(g1.expr));
+                args.add(visitLine(g1.line));
             }
         }
-        return new FuncCall(funcCall.IDENT.value, args);
+        return func.makeFunc(visitName(funcCall.name), args);
+    }
+
+    private String visitName(Ast.name name) {
+        if (name.IDENT != null) {
+            return name.IDENT.value;
+        }
+        else {
+            return name.PI.value;
+        }
     }
 
     private func visitVar(Ast.var var) {
@@ -53,45 +50,62 @@ public class AstBuilder {
     }
 
     private func visitExpr(Ast.expr expr) {
-        func res = visitTerm(expr.term);
+        func res = visitMul(expr.mul);
         for (Ast.exprg1 g1 : expr.rest) {
             if (g1.g2.PLUS != null) {
-                res = new add(res, visitExpr(g1.expr));
+                res = res.add(visitMul(g1.mul));
             }
             else {
-                res = new add(res, visitExpr(g1.expr).negate());
+                res = res.add(visitMul(g1.mul).negate());
             }
         }
         return res;
     }
 
-    private func visitTerm(Ast.term term) {
-        func res = visitPow(term.pow);
-        for (Ast.termg1 g1 : term.rest) {
+    private func visitMul(Ast.mul term) {
+        func res = visitUnary(term.unary);
+        for (Ast.mulg1 g1 : term.rest) {
             if (g1.g2.STAR != null) {
-                res = new mul(res, visitTerm(g1.term));
+                res = res.mul(visitUnary(g1.unary));
             }
             else {
-                res = new div(res, visitTerm(g1.term).negate());
+                res = res.div(visitUnary(g1.unary).negate());
             }
         }
         return res;
     }
 
     private func visitPow(Ast.pow pow) {
-        func res = visitUnary(pow.unary);
-        for (Ast.powg1 g1 : pow.rest) {
-            res = new pow(res, visitPow(g1.pow));
+        func res = visitBang(pow.bang);
+        if (pow.rest != null) {
+            res = res.pow(visitUnaryOrBang(pow.rest.unaryOrBang));
         }
         return res;
     }
 
-    private func visitUnary(Ast.unary unary) {
-        if (unary.unary1 != null) {
-            return visitElem(unary.unary1.elem).negate();
+    private func visitUnaryOrBang(Ast.unaryOrBang unaryOrBang) {
+        if (unaryOrBang.unaryorbang1 != null) {
+            return visitUnary(unaryOrBang.unaryorbang1.unary);
         }
         else {
-            return visitElem(unary.unary2.elem).fac();
+            return visitBang(unaryOrBang.bang);
+        }
+    }
+
+    private func visitBang(Ast.bang bang) {
+        func lhs = visitElem(bang.elem);
+        if (bang.BANG != null) {
+            return lhs.fac();
+        }
+        return lhs;
+    }
+
+    private func visitUnary(Ast.unary unary) {
+        if (unary.unary1 != null) {
+            return visitUnary(unary.unary1.unary).negate();
+        }
+        else {
+            return visitPow(unary.pow);
         }
     }
 

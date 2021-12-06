@@ -59,26 +59,24 @@ public class Integral extends func {
             if (lower.isReal() && upper.isReal()) {
                 return signOther(new Integral(func.getImaginary(), dv, lower, upper));
             }
-
         }
         return signOther(new Integral(func.getImaginary(), dv));
     }
 
     @Override
     public String toLatex() {
-        StringBuilder s = new StringBuilder("\\int");
         if (hasLimits()) {
-            s.append(String.format("_{%s}^{%s}", lower, upper, func, dv));
+            return String.format("\\int_{%s}^{%s} %s ,d%s", lower, upper, func, dv);
         }
-        s.append(String.format("%s d%s", lower, upper, func, dv));
-        return s.toString();
+        else {
+            return String.format("\\int_ %s ,d%s", func, dv);
+        }
     }
 
     @Override
     public void vars(Set<variable> vars) {
-        if (func != null) {
-            func.vars(vars);
-        }
+        func.vars(vars);
+
         if (hasLimits()) {//if improper then remove dummy var
             vars.remove(dv);
             lower.vars(vars);
@@ -162,6 +160,7 @@ public class Integral extends func {
         boolean isUp = upper.asCons().isInf();
         if (isLow) {
             if (isUp) {//both
+                //x=t/(t-1)
                 variable nv = variable.t;
                 func tsq = nv.pow(2);
                 func ext = cons.ONE.add(tsq).div(cons.ONE.sub(tsq).pow(2));
@@ -199,14 +198,15 @@ public class Integral extends func {
         double sum = 0;
         double k = Config.integral.interval;
         double low = lower.eval();
-        double dx = (upper.eval() - low) / k;
+        double dx = (upper.eval() - low + 1) / k;
 
         double convRange = Math.pow(10, -Config.integral.convDecimal);
         int curTries = 0;
         double curVal = 0;
-        for (int i = 1; i < k; i++) {
+        for (int i = 1; i <= k; i++) {
             double p = low + i * dx;
             curVal = func.eval(dv, p) * dx;
+            System.out.println(sum);
             //check if we converged enough
             /*if (Math.abs(curVal) <= convRange) {
                 curTries++;
@@ -345,7 +345,6 @@ public class Integral extends func {
         lower = lower.substitute(v, p);
         upper = upper.substitute(v, p);
         return this;
-        //return new Integral(a.substitude0(v,p),this.v);
     }
 
 }

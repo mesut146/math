@@ -1,5 +1,6 @@
 package com.mesut.math;
 
+import com.mesut.math.core.cons;
 import com.mesut.math.core.set;
 import com.mesut.math.funcs.*;
 import com.mesut.math.integral.*;
@@ -18,9 +19,11 @@ public class Config {
     public static int numericDerivativePrecision = 5;
     public static int maxIteration = 100000;//sigma
     public static int digits = 5;//sigma
-    public static boolean lnFullImaginary = true;
+    public static boolean lnFullImaginary = false;
 
     public static void init() {
+        cons.init();
+
         register("exp", exp.class);
         register("ln", ln.class);
         register("log10", log10.class);
@@ -66,6 +69,12 @@ public class Config {
         register("ramp", ramp.class);
         register("step", step.class);
 
+        register("fac", fac.class);
+        register("perm", perm.class);
+        register("permutation", perm.class);
+        register("comb", comb.class);
+        register("combination", comb.class);
+
     }
 
     public static class add {
@@ -91,7 +100,7 @@ public class Config {
 
     public static class integral {
         public static int interval = 100000;//divide to this much sub intervals
-        public static int convDecimal = 16;//number of decimal for convergence
+        public static int convDecimal = 5;//number of decimal for convergence
         public static int convMaxTries = 10;//if sum doesn't grow this iteration we stop
         public static boolean converge = false;
     }

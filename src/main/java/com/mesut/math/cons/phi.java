@@ -11,7 +11,6 @@ public class phi extends cons {
         functional = true;
         //val = 1.61803398875;
         val = (Math.sqrt(5) + 1) / 2;
-        //a=parse("(1+sqrt(5))/2");
     }
 
     @Override
@@ -28,6 +27,5 @@ public class phi extends cons {
     public func copy0() {
         return new phi();
     }
-
 
 }

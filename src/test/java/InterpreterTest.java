@@ -1,11 +1,14 @@
 import com.mesut.math.Interpreter;
 import com.mesut.math.parser.ParseException;
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class InterpreterTest {
 
     @Test
-    public void calls() throws ParseException {
+    public void calls() throws ParseException, IOException {
         Interpreter interpreter = new Interpreter();
         interpreter.execute("a = x^2");
         interpreter.execute("1 + a(2)");
@@ -14,7 +17,7 @@ public class InterpreterTest {
     }
 
     @Test
-    public void deriv() throws ParseException {
+    public void deriv() throws ParseException, IOException {
         Interpreter interpreter = new Interpreter();
         interpreter.execute("a = x^2");
         interpreter.execute("derivative(a) + 3");
@@ -23,53 +26,57 @@ public class InterpreterTest {
     }
 
     @Test
-    public void integral() throws ParseException {
+    public void integral() throws ParseException, IOException {
         Interpreter interpreter = new Interpreter();
-        interpreter.execute("a = x^2");
-        interpreter.execute("b=int(a,x,1,3)");
-        interpreter.execute("b");
+        //interpreter.execute("a = x^2");
+        //interpreter.execute("b=int(a,x,1,3)");
+        //interpreter.execute("b");
+
+        //interpreter.execute("int(ln(1-x)/x,x,-1,1)");
+        //interpreter.execute("int(e^(-x^2),x,0,inf)");
     }
 
     @Test
-    public void multiVar() throws ParseException {
+    public void multiVar() throws ParseException, IOException {
         Interpreter interpreter = new Interpreter();
         interpreter.execute("a = x + y ^ 2");
-        interpreter.execute("a(x=1,y=3)");
+        interpreter.execute("a(x=1,y=3)");//10
         interpreter.execute("b = a(x=1,y=y+1)");
-        interpreter.execute("b");
+        interpreter.execute("b");//1+(y+1)^2
     }
 
     @Test
-    public void factor() throws ParseException {
+    public void factor() throws IOException {
         Interpreter interpreter = new Interpreter();
         interpreter.execute("factor(100)");
         interpreter.execute("a = factor(100)");
         interpreter.execute("b = factor(100) * factor(200)");
-        interpreter.execute("b");
+        interpreter.execute("b");//20000
     }
 
     @Test
-    public void prime() throws ParseException {
+    public void prime() throws ParseException, IOException {
         Interpreter interpreter = new Interpreter();
-        interpreter.execute("prime(1)");
-        interpreter.execute("prime(2)");
-        interpreter.execute("prime(3)");
-        interpreter.execute("prime(10)");
-        interpreter.execute("prime(348513)");
+        interpreter.execute("prime(1)");//2
+        interpreter.execute("prime(2)");//3
+        interpreter.execute("prime(3)");//5
+        interpreter.execute("prime(10)");//29
+        interpreter.execute("prime(348513)");//4999999
     }
 
     @Test
-    public void primeSet() throws ParseException {
+    public void primeSet() throws ParseException, IOException {
         Interpreter interpreter = new Interpreter();
-        interpreter.execute("pset(10)");
+        interpreter.execute("pset(10)");//p{2, 3, 5, 7}
         interpreter.execute("pset(100)");
+        interpreter.execute("pset(50,100)");
         interpreter.execute("pset(10)^2");
-        interpreter.execute("pi(100)");
-        interpreter.execute("pi(100)+1");
+        Assert.assertEquals("25", interpreter.execute("pi(100)").text);
+        Assert.assertEquals("26", interpreter.execute("pi(100)+1").text);
     }
 
     @Test
-    public void set() throws ParseException {
+    public void set() throws IOException {
         Interpreter interpreter = new Interpreter();
         interpreter.execute("set(1,10)");
         interpreter.execute("factor(set(1,10))");
@@ -77,11 +84,11 @@ public class InterpreterTest {
     }
 
     @Test
-    public void countPrime() throws ParseException {
+    public void countPrime() throws IOException {
         Interpreter interpreter = new Interpreter();
-        interpreter.execute("countPrime(set(50,100))");
-        interpreter.execute("pset(50,100)");
-        interpreter.execute("countPrime(set(1,50)^2+1)");
+        Assert.assertEquals("10", interpreter.execute("countPrime(set(50,100))").text);
+        Assert.assertEquals("11", interpreter.execute("countPrime(set(1,50)^2+1)").text);
         interpreter.execute("factor(set(1,50)^2+1)");
     }
+
 }

@@ -1,0 +1,12 @@
+int(f(x),x,a,inf)
+x=t/(1-t)
+
+
+x+k=y
+//shift lower bound so that it is not zero
+int(f(y-k),y,a+k,inf)
+y=1/t
+int(-f(1/t-k)/t^2,t,1/(a+k),0)
+
+//if 1/(a+k) > 0
+int(f(1/t-k)/t^2,t,0,1/(a+k))

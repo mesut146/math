@@ -12,9 +12,10 @@ import java.util.List;
 
 public class LinearSystem {
 
-    List<lin> list = new ArrayList<>();
+    //coefficient matrix
     public matrix cmatrix;
     public matrix resultMatrix;
+    List<lin> list = new ArrayList<>();
     List<variable> vars;
     func lin;
 
@@ -40,17 +41,19 @@ public class LinearSystem {
             vars.removeAll(tmp);
             vars.addAll(tmp);
         }
+        if (vars.size() != list.size()) {
+            throw new RuntimeException("variable count and equation count doesn't match");
+        }
         Collections.sort(vars);
 
         for (lin lin : list) {
-            func f = lin.getF();
             double[] carr = new double[vars.size()];
             int index = 0;
-            //set all vars except current to zero so that we get the coeff
+            //set all vars except current to zero so that we get the coefficient
             for (variable v : vars) {
                 double[] all = new double[vars.size()];
                 all[vars.indexOf(v)] = 1;
-                double c = f.eval(vars.toArray(new variable[0]), all);
+                double c = lin.getF().eval(vars.toArray(new variable[0]), all);
                 carr[index++] = c;
             }
             cmatrix.addRow(carr);

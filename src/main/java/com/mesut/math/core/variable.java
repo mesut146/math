@@ -40,7 +40,7 @@ public class variable extends func implements Comparable<variable> {
 
     @Override
     public void vars(Set<variable> vars) {
-        vars.add(this);
+        vars.add(copy0());//removes sign
     }
 
     @Override
@@ -127,7 +127,7 @@ public class variable extends func implements Comparable<variable> {
     }
 
     @Override
-    public func copy0() {
+    public variable copy0() {
         return new variable(name);
     }
 

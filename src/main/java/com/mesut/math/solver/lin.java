@@ -17,11 +17,6 @@ public class lin extends func {
         this.hasVal = true;
     }
 
-    public lin(func f) {
-        this.f = f;
-        this.hasVal = false;
-    }
-
     @Override
     public String toString() {
         if (hasVal) {

@@ -11,33 +11,21 @@ import java.util.Set;
 //numeric factorial
 
 public class fac extends func {
+
     public fac(func f) {
         a = f;
-        alter.add(new gamma(f.add(1)));
     }
 
     public fac(int i) {
         this(new cons(i));
     }
 
-    public static int compute(int x) {
-        int result = 1;
+    public static long compute(int x) {
+        long result = 1;
         for (int i = 2; i <= x; i++) {
             result *= i;
         }
         return result;
-    }
-
-    @Override
-    public func getReal() {
-        // TODO: Implement this method
-        return null;
-    }
-
-    @Override
-    public func getImaginary() {
-        // TODO: Implement this method
-        return null;
     }
 
     @Override
@@ -109,11 +97,6 @@ public class fac extends func {
     @Override
     public func substitute0(variable v, func p) {
         return signOther(new fac(a.substitute0(v, p)));
-    }
-
-    @Override
-    public func simplify() {
-        return this;
     }
 
 
