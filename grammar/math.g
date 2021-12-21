@@ -42,10 +42,5 @@ funcCall: name "(" args? ")";
 name: IDENT | PI;
 args: line rest=("," line)*;
 
-fx: name "(" fxargs? ")";
-fxargs: fxarg ("," fxarg)*;
-//fxarg: expr | name "=" expr;
-fxarg: var;
-
 cons: E | PI | PHI | I | INF | NUM;
 var: IDENT;

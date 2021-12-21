@@ -29,18 +29,18 @@ public class taylor extends add {
     public void calc(int n) {
         center = var.sub(at);
 
-        f.add(makeTerm(func.eval(at), 0, center));
+        list.add(makeTerm(func.eval(at), 0, center));
 
         for (int i = 1; i <= n; i++) {
             func = func.derivative();
             double coeff = func.eval(at) / new fac(i).eval();
-            f.add(makeTerm(coeff, i, center));
+            list.add(makeTerm(coeff, i, center));
         }
         simplify();
     }
 
     public void put(double coeff, int power, func center) {
-        f.add(makeTerm(coeff, power, center));
+        list.add(makeTerm(coeff, power, center));
     }
 
     private func makeTerm(double coeff, int pow, func center) {
@@ -97,8 +97,8 @@ public class taylor extends add {
             this.coeff = coeff;
             this.pow = pow;
             this.center = center;
-            this.f.add(new cons(coeff));
-            this.f.add(center.pow(pow));
+            this.list.add(new cons(coeff));
+            this.list.add(center.pow(pow));
         }
 
         /*@Override

@@ -21,4 +21,21 @@ public class ParserTest {
         Assert.assertEquals(-8, (int) func.parse("-2^3").eval());
         Assert.assertEquals(64, (int) func.parse("2^3!").eval());
     }
+
+    @Test
+    public void func() {
+        Assert.assertEquals(1, func.parse("sin(pi/4)^2+cos(pi/4)^2").eval(), 0.00001);
+    }
+
+    @Test
+    public void eq() {
+        func f = func.parse("f(x,y) = x^2+y");
+        System.out.println(f);
+    }
+
+    @Test
+    public void eq2() {
+        func f = func.parse("f(y=1,x=sin(x))");
+        System.out.println(f);
+    }
 }

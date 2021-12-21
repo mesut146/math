@@ -3,6 +3,7 @@ package com.mesut.math.funcs;
 import com.mesut.math.core.func;
 import com.mesut.math.core.variable;
 
+//permutation
 public class perm extends func {
 
     public perm(func a, func b) {

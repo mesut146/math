@@ -60,7 +60,7 @@ public class div extends func {
 
     @Override
     public String toLatex() {
-        return String.format("\\frac{%s,%s}", a, b);
+        return String.format("\\frac{%s}{%s}", a.toLatex(), b.toLatex());
     }
 
     @Override
@@ -161,7 +161,7 @@ public class div extends func {
     }
 
     private func group0(add a) {
-        List<func> l = a.f;
+        List<func> l = a.list;
         //x^5+x^3
         List<func> base = getFree();
         List<func> pow = getFree();

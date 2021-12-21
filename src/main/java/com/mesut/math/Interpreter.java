@@ -230,6 +230,10 @@ public class Interpreter {
         public Output(String text) {
             this.text = text;
         }
+
+        public void print() {
+            System.out.println(text);
+        }
     }
 
     public static class Point {
@@ -260,7 +264,7 @@ public class Interpreter {
         }
 
         public func visit(add f) {
-            for (ListIterator<func> it = f.f.listIterator(); it.hasNext(); ) {
+            for (ListIterator<func> it = f.list.listIterator(); it.hasNext(); ) {
                 func term = it.next();
                 it.set(visit(term));
             }
@@ -268,7 +272,7 @@ public class Interpreter {
         }
 
         public func visit(mul f) {
-            for (ListIterator<func> it = f.f.listIterator(); it.hasNext(); ) {
+            for (ListIterator<func> it = f.list.listIterator(); it.hasNext(); ) {
                 func term = it.next();
                 it.set(visit(term));
             }

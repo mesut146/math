@@ -20,12 +20,12 @@ public class add extends func {
         /*for(func term:args){
             f.add(term);
         }*/
-        Collections.addAll(f, args);
+        Collections.addAll(list, args);
     }
 
     public add(List<func> args) {
         //type = types.add;
-        f = args;
+        list = args;
     }
 
     public static holder e3(func f1, func f2) {
@@ -52,7 +52,7 @@ public class add extends func {
     public static holder rm(mul t) {
         double d = 1;
         List<func> l = getFree();
-        for (func p : t.f) {
+        for (func p : t.list) {
             if (p.isCons0()) {
                 d *= p.eval();
             }
@@ -72,7 +72,7 @@ public class add extends func {
     @Override
     public func get0(variable[] vars, cons[] vals) {
         func res = cons.ZERO;
-        for (func term : f) {
+        for (func term : list) {
             res = res.add(term.get(vars, vals));
         }
         return signOther(res);
@@ -81,7 +81,7 @@ public class add extends func {
     @Override
     public double eval(variable[] v, double[] vals) {
         double sum = 0;
-        for (func f1 : f) {
+        for (func f1 : list) {
             sum += f1.eval(v, vals);
         }
         return sign * sum;
@@ -90,7 +90,7 @@ public class add extends func {
     @Override
     public cons evalc(variable[] vars, double[] vals) {
         cons sum = cons.ZERO;
-        for (func term : f) {
+        for (func term : list) {
             sum = (cons) sum.add(term.evalc(vars, vals));
         }
         return sc(sum);
@@ -100,7 +100,7 @@ public class add extends func {
     public func derivative(variable v) {
         func res = cons.ZERO;
         //add res = new add(cons.ZERO);
-        for (func term : f) {
+        for (func term : list) {
             res = res.add(term.derivative(v));
             //res.f.add(term.derivative(v));
         }
@@ -110,7 +110,7 @@ public class add extends func {
     @Override
     public func integrate(variable v) {
         func res = cons.ZERO;
-        for (func term : f) {
+        for (func term : list) {
             res = res.add(term.integrate(v));
         }
         return signOther(res);
@@ -124,14 +124,14 @@ public class add extends func {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < f.size(); i++) {
-            func term = f.get(i);
+        for (int i = 0; i < list.size(); i++) {
+            func term = list.get(i);
             if (i == 0 && sign * term.sign == -1) {
                 sb.append("-");
             }
             sb.append(term.toString2());
-            if (i < f.size() - 1) {
-                int s = f.get(i + 1).sign * sign;
+            if (i < list.size() - 1) {
+                int s = list.get(i + 1).sign * sign;
                 if (s == 1) {
                     sb.append("+");
                 }
@@ -146,10 +146,10 @@ public class add extends func {
     public func simplify() {
         List<func> list = getFree();
         //System.out.println(f);
-        for (func term : f) {
+        for (func term : this.list) {
             if (term.isAdd()) {
                 //merge two adds
-                for (func inner : term.f) {
+                for (func inner : term.list) {
                     list.add(term.signf(inner));
                 }
             }
@@ -163,17 +163,17 @@ public class add extends func {
         }
         set(list);
         cons0();
-        if (f.size() == 0) {
+        if (this.list.size() == 0) {
             return cons.ZERO;
         }
-        else if (f.size() == 1) {
-            return signf(f.get(0));
+        else if (this.list.size() == 1) {
+            return signf(this.list.get(0));
         }
         //System.out.println("f="+f);
         mu();
         //System.out.println("fmu="+f);
-        if (f.size() == 1) {
-            return signf(f.get(0));
+        if (this.list.size() == 1) {
+            return signf(this.list.get(0));
         }
         return this;
     }
@@ -182,8 +182,8 @@ public class add extends func {
         double sum = 0;
         List<func> list = getFree();
         int idx = 0;
-        for (int i = 0; i < f.size(); i++) {
-            func term = f.get(i);
+        for (int i = 0; i < this.list.size(); i++) {
+            func term = this.list.get(i);
             if (term.isCons0()) {
                 sum += term.eval();
                 idx = i;
@@ -204,15 +204,15 @@ public class add extends func {
     //2i+3i=5i
     public void mu() {
         List<func> l = getFree();
-        boolean b[] = new boolean[f.size()];
+        boolean b[] = new boolean[list.size()];
 
-        for (int i = 0; i < f.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
 
             if (!b[i]) {
-                func v = f.get(i);
+                func v = list.get(i);
                 double k = 1;
-                for (int j = i + 1; j < f.size(); j++) {
-                    holder q = e3(v, f.get(j));
+                for (int j = i + 1; j < list.size(); j++) {
+                    holder q = e3(v, list.get(j));
                     if (q.b) {
                         b[j] = true;
                         k += q.d;
@@ -231,13 +231,13 @@ public class add extends func {
 
     @Override
     public boolean eq0(func f1) {
-        return Util.isEq(f, f1.f);
+        return Util.isEq(list, f1.list);
     }
 
     @Override
     public func substitute0(variable v, func p) {
         List<func> arr = getFree();
-        for (func term : f) {
+        for (func term : list) {
             arr.add(term.substitute0(v, p));
         }
         return new add(arr).simplify();
@@ -245,19 +245,16 @@ public class add extends func {
 
     @Override
     public func copy0() {
-        return new add(f);
+        return new add(list);
     }
 
     @Override
     public String toLatex() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < f.size(); i++) {
-            sb.append(f.get(i).toLatex());
-            if (i < f.size() - 1) {
-                if (f.get(i + 1).sign == -1) {
-                    sb.append("-");
-                }
-                else {
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(list.get(i).toLatex());
+            if (i < list.size() - 1) {
+                if (list.get(i + 1).sign != -1) {
                     sb.append("+");
                 }
             }
@@ -269,8 +266,8 @@ public class add extends func {
     public func getReal() {
         add res = new add();
         res.sign = sign;
-        for (func t : f) {
-            res.f.add(t.getReal());
+        for (func t : list) {
+            res.list.add(t.getReal());
         }
         return res.simplify();
     }
@@ -279,8 +276,8 @@ public class add extends func {
     public func getImaginary() {
         add res = new add();
         res.sign = sign;
-        for (func t : f) {
-            res.f.add(t.getImaginary());
+        for (func t : list) {
+            res.list.add(t.getImaginary());
         }
         return res.simplify();
     }
@@ -288,7 +285,7 @@ public class add extends func {
 
     @Override
     public void vars(Set<variable> vars) {
-        for (func term : f) {
+        for (func term : list) {
             term.vars(vars);
         }
     }

@@ -31,7 +31,7 @@ public class taylorsym extends taylor {
     public void calc(int n, boolean fac) {
         func center = var.sub(at);
 
-        f.add(makeTerm(func.substitute(var, at).simplify(), 0, center));
+        list.add(makeTerm(func.substitute(var, at).simplify(), 0, center));
 
         for (int i = 1; i <= n; i++) {
             func = func.derivative();
@@ -42,7 +42,7 @@ public class taylorsym extends taylor {
             else {
                 coeff = func.substitute(var, at).simplify().div(new fac(i));
             }
-            f.add(makeTerm(coeff, i, center));
+            list.add(makeTerm(coeff, i, center));
         }
         simplify();
     }

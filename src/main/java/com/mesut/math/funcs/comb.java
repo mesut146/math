@@ -3,6 +3,7 @@ package com.mesut.math.funcs;
 import com.mesut.math.core.func;
 import com.mesut.math.core.variable;
 
+//combination
 public class comb extends func {
 
     public comb(func a, func b) {

@@ -7,7 +7,7 @@ import com.mesut.math.funcs.fac;
 import com.mesut.math.funcs.inv;
 import com.mesut.math.funcs.sqrt;
 import com.mesut.math.operator.*;
-import com.mesut.math.parser2.AstBuilder2;
+import com.mesut.math.parser.AstBuilder;
 import com.mesut.math.taylor;
 import com.mesut.math.taylorsym;
 import com.mesut.math.trigonometry.atan;
@@ -28,7 +28,7 @@ public abstract class func {
     public int sign = 1;//positive by default
     public boolean fx = false;
     public func a = null, b = null;//left - right for div and others
-    public List<func> f = new ArrayList<>();//list of internal functions(args)
+    public List<func> list = new ArrayList<>();//list of internal functions(args)
     public List<func> alter = new ArrayList<>();//alternative representations
 
     //TODO make args Object autocast
@@ -74,7 +74,7 @@ public abstract class func {
 
     public static func parse(String expr) {
         try {
-            return AstBuilder2.make(expr).simplify();
+            return AstBuilder.make(expr).simplify();
             //return new MathParser(new StringReader(expr)).expr().simplify();
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,8 +87,8 @@ public abstract class func {
     }
 
     public void set(List<func> l) {
-        f.clear();
-        f.addAll(l);
+        list.clear();
+        list.addAll(l);
         l.clear();
     }
 
@@ -585,6 +585,10 @@ public abstract class func {
 
     public variable asVar() {
         return (variable) this;
+    }
+
+    public String latexParen() {
+        return "\\left(" + toLatex() + "\\right)";
     }
 }
 

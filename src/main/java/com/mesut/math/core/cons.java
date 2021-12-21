@@ -159,6 +159,9 @@ public class cons extends func {
             return "NaN";
         }
         if (inf) {
+            if (sign == -1) {
+                return "-\\infty";
+            }
             return "\\infty";
         }
         if (Config.useBigDecimal) {

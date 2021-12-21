@@ -12,25 +12,19 @@ import java.util.Set;
 
 public class Integral extends func {
 
-    public func func;
+    public func f;
     public variable dv;
     public func lower, upper;
 
     //f(x),dv
-    public Integral(Object func, Object var) {
-        this.func = Util.cast(func);
+    public Integral(Object f, Object var) {
+        this.f = Util.cast(f);
         this.dv = Util.var(var);
     }
 
-    //f(x) dx
-    public Integral(Object func) {
-        this.func = Util.cast(func);
-        this.dv = this.func.vars().get(0);
-    }
-
     //f(x),dv,lower,upper
-    public Integral(Object func, Object var, Object lower, Object upper) {
-        this(func, var);
+    public Integral(Object f, Object var, Object lower, Object upper) {
+        this(f, var);
         this.lower = Util.cast(lower);
         this.upper = Util.cast(upper);
     }
@@ -47,35 +41,35 @@ public class Integral extends func {
     public func getReal() {
         if (hasLimits()) {
             if (lower.isReal() && upper.isReal()) {
-                return signOther(new Integral(func.getReal(), dv, lower, upper));
+                return signOther(new Integral(f.getReal(), dv, lower, upper));
             }
         }
-        return signOther(new Integral(func.getReal(), dv));
+        return signOther(new Integral(f.getReal(), dv));
     }
 
     @Override
     public func getImaginary() {
         if (hasLimits()) {
             if (lower.isReal() && upper.isReal()) {
-                return signOther(new Integral(func.getImaginary(), dv, lower, upper));
+                return signOther(new Integral(f.getImaginary(), dv, lower, upper));
             }
         }
-        return signOther(new Integral(func.getImaginary(), dv));
+        return signOther(new Integral(f.getImaginary(), dv));
     }
 
     @Override
     public String toLatex() {
         if (hasLimits()) {
-            return String.format("\\int_{%s}^{%s} %s ,d%s", lower, upper, func, dv);
+            return String.format("\\[\\int_{%s}^{%s} %s \\,d%s\\]", lower.toLatex(), upper.toLatex(), f.toLatex(), dv.toLatex());
         }
         else {
-            return String.format("\\int_ %s ,d%s", func, dv);
+            return String.format("\\[\\int_ %s \\,d%s\\]", f.toLatex(), dv.toLatex());
         }
     }
 
     @Override
     public void vars(Set<variable> vars) {
-        func.vars(vars);
+        f.vars(vars);
 
         if (hasLimits()) {//if improper then remove dummy var
             vars.remove(dv);
@@ -99,6 +93,7 @@ public class Integral extends func {
         }
     }
 
+    //make variable by preferring given vars
     public variable makeDummy(List<variable> vars) {
         List<String> pref = Arrays.asList("x", "t", "u", "y", "u", "w");
         List<String> str = new ArrayList<>();
@@ -132,7 +127,7 @@ public class Integral extends func {
             res.lower = res.lower.get0(vars, vals);
             res.upper = res.upper.get0(vars, vals);
         }
-        res.func = res.func.get0(vars, vals);
+        res.f = res.f.get0(vars, vals);
         return res;
     }
 
@@ -140,6 +135,13 @@ public class Integral extends func {
     public double eval() {
         //check single variable
         makeFinite();
+        if (!lower.isConstant() || !upper.isConstant()) {
+            throw new RuntimeException("integral limits must be constant");
+        }
+        if (a.eval() == b.eval()) return 0;
+        if (a.eval() > b.eval()) {
+            throw new RuntimeException("lower bound must be less than higher bound");
+        }
         return riemannSum();
     }
 
@@ -154,73 +156,74 @@ public class Integral extends func {
         return new cons(eval(vars, vals));
     }
 
-    //scale infinite bounds to 0,1 range
+    //scale infinite bounds to 0,1  or -1,1 range
     public void makeFinite() {
         boolean isLow = lower.asCons().isInf();
         boolean isUp = upper.asCons().isInf();
+        variable nv = variable.t;
         if (isLow) {
             if (isUp) {//both
                 //x=t/(t-1)
-                variable nv = variable.t;
                 func tsq = nv.pow(2);
                 func ext = cons.ONE.add(tsq).div(cons.ONE.sub(tsq).pow(2));
                 func np = nv.div(cons.ONE.sub(tsq));
-                this.func = func.substitute(dv, np).mul(ext);
+                this.f = f.substitute(dv, np).mul(ext);
                 this.dv = nv;
                 this.lower = cons.ONE.negate();
                 this.upper = cons.ONE;
             }
             else {//low only
-                variable nv = variable.t;
                 func ext = nv.pow(-2);
                 func np = upper.sub(cons.ONE.sub(nv).div(nv));
-                this.func = func.substitute(dv, np).mul(ext);
+                this.f = f.substitute(dv, np).mul(ext);
                 this.dv = nv;
                 this.lower = cons.ZERO;
                 this.upper = cons.ONE;
             }
         }
         else if (isUp) {//up only
-            variable nv = variable.t;
             func ext = cons.ONE.div(cons.ONE.sub(nv).pow(2));
             func np = lower.add(nv.div(cons.ONE.sub(nv)));
-            this.func = func.substitute(dv, np).mul(ext);
+            this.f = f.substitute(dv, np).mul(ext);
             this.dv = nv;
             this.lower = cons.ZERO;
             this.upper = cons.ONE;
         }
     }
 
-    public double riemannSum() {
-        if (!lower.isConstant() || !upper.isConstant()) {
-            throw new Error("integral limits must be constant");
+    //scale into 0,1 range
+    void scale() {
+        double a = lower.eval();
+        double b = upper.eval();
+        variable nv = variable.t;
+        if (a == 0) {
+            //x=u*b   dx=b*du
+            f = upper.mul(f.substitute(dv, upper.mul(nv)));
+            return;
         }
+        if (b == 0) {
+            //x=u*a dx=a*du
+            f = lower.mul(f.substitute(dv, lower.mul(nv))).negate();
+        }
+        dv = nv;
+        lower = cons.ZERO;
+        upper = cons.ONE;
+    }
+
+    public double riemannSum() {
         double sum = 0;
         double k = Config.integral.interval;
         double low = lower.eval();
         double dx = (upper.eval() - low + 1) / k;
 
-        double convRange = Math.pow(10, -Config.integral.convDecimal);
-        int curTries = 0;
-        double curVal = 0;
+        double curVal;
         for (int i = 1; i <= k; i++) {
             double p = low + i * dx;
-            curVal = func.eval(dv, p) * dx;
-            System.out.println(sum);
-            //check if we converged enough
-            /*if (Math.abs(curVal) <= convRange) {
-                curTries++;
-                if (curTries == Config.integral.convMaxTries) {
-                    //break;
-                }
-            }*/
+            curVal = f.eval(dv, p);
             sum += curVal;
-            //System.out.println(i + "-sum=" + sum);
-            /*if ((k / 10) % i == 0) {
-                System.out.println("sum=" + sum);
-            }*/
+            System.out.println(sum * dx);
         }
-        return sum;
+        return sum * dx;
     }
 
     //todo
@@ -242,14 +245,14 @@ public class Integral extends func {
         double a = lower.eval();
         double b = upper.eval();
 
-        return (b - a) * this.func.eval((a + b) / 2);
+        return (b - a) * this.f.eval((a + b) / 2);
     }
 
     public double trapezoidalRule() {
         double a = lower.eval();
         double b = upper.eval();
 
-        return (b - a) * (this.func.eval(a) + this.func.eval(b)) / 2;
+        return (b - a) * (this.f.eval(a) + this.f.eval(b)) / 2;
     }
 
     public double composizeTrapezoidalRule(int n) {
@@ -257,23 +260,19 @@ public class Integral extends func {
         double b = upper.eval();
 
         double total = (b - a) / n;
-        variable sigVar = variable.t;
-        func newFunc = new cons(a).add(sigVar.mul(total));
+        return 0;
 
-        sigma sigma = new sigma(this.func.substitute(dv, newFunc), sigVar, 1, n - 1);
-        double rest = sigma.eval();
-        return total * (this.func.eval(a) / 2 + this.func.eval(b) / 2 + rest);
     }
 
     @Override
     public func derivative(variable v) {
         if (dv.eq(v) && !hasLimits()) {//not always
-            return signf(func);
+            return signf(f);
         }
         if (hasLimits()) {
             List<variable> l1 = lower.vars();
             List<variable> l2 = upper.vars();
-            List<variable> l3 = func.vars();
+            List<variable> l3 = f.vars();
             boolean b1 = l1.contains(v);
             boolean b2 = l2.contains(v);
             if (b1 || b2) {
@@ -281,8 +280,8 @@ public class Integral extends func {
 
                 }
                 else {//fubuni's theorem
-                    func ls = func.substitute(dv, upper).mul(upper.derivative(v));
-                    func rs = func.substitute(dv, lower).mul(lower.derivative(v));
+                    func ls = f.substitute(dv, upper).mul(upper.derivative(v));
+                    func rs = f.substitute(dv, lower).mul(lower.derivative(v));
                     return ls.sub(rs);
                 }
             }
@@ -292,18 +291,18 @@ public class Integral extends func {
             if(b1){
                 return a.substitude(dv,a1).mul(a1.derivative(v)).negate();
             }*/
-            return new Integral(func.derivative(v), this.dv, lower, upper);
+            return new Integral(f.derivative(v), this.dv, lower, upper);
         }
-        return new Integral(func.derivative(v), this.dv);
+        return new Integral(f.derivative(v), this.dv);
     }
 
     @Override
     public func integrate(variable v) {
         if (!this.dv.eq(v)) {
             if (hasLimits()) {
-                return new Integral(func.integrate(v), this.dv, lower, upper);
+                return new Integral(f.integrate(v), this.dv, lower, upper);
             }
-            return new Integral(func.integrate(v), this.dv);
+            return new Integral(f.integrate(v), this.dv);
         }
         return null;
     }
@@ -311,23 +310,23 @@ public class Integral extends func {
     @Override
     public func copy0() {
         if (hasLimits()) {
-            return new Integral(func, dv, lower, upper);
+            return new Integral(f, dv, lower, upper);
         }
-        return new Integral(func, dv);
+        return new Integral(f, dv);
     }
 
     @Override
     public String toString2() {
         if (hasLimits()) {
-            return String.format("Integral{%s d%s,%s,%s}", func, dv, lower, upper);
+            return String.format("Integral{%s d%s,%s,%s}", f, dv, lower, upper);
         }
-        return String.format("Integral{%s d%s}", func, dv);
+        return String.format("Integral{%s d%s}", f, dv);
     }
 
     @Override
     public boolean eq0(func f) {
         Integral other = (Integral) f;
-        boolean eqNolimit = func.eq(other.func) && dv.eq(other.dv);
+        boolean eqNolimit = this.f.eq(other.f) && dv.eq(other.dv);
         if (hasLimits() == other.hasLimits()) {
             if (hasLimits()) {//both have limits
                 return eqNolimit && lower.eq(other.lower) && upper.eq(other.upper);
@@ -341,7 +340,7 @@ public class Integral extends func {
 
     @Override
     public func substitute0(variable v, func p) {
-        func = func.substitute(v, p);
+        f = f.substitute(v, p);
         lower = lower.substitute(v, p);
         upper = upper.substitute(v, p);
         return this;

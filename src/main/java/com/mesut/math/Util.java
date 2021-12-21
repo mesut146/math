@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Util {
+
     public static func cast(Object obj) {
         //start from subtype
         if (obj instanceof variable) {

@@ -12,7 +12,7 @@ public class poly extends add {
 
     public poly(String s) {
         add p = (add) func.parse(s);
-        f = p.f;
+        list = p.list;
     }
 
     @Override
@@ -28,12 +28,12 @@ public class poly extends add {
         //System.out.println(this);
         //System.out.println(f);
         List<func> l = getFree();
-        for (func c : this.f) {
-            for (func d : f.f) {
+        for (func c : this.list) {
+            for (func d : f.list) {
                 l.add(c.mul(d));
             }
         }
-        this.f = l;
+        this.list = l;
         return this.order().simplify();
     }
 
@@ -42,7 +42,7 @@ public class poly extends add {
             return Integer.MAX_VALUE;
         }
         else if (p.isMul()) {
-            func pw = p.f.get(1);
+            func pw = p.list.get(1);
 
             if (pw.eq(variable.x)) {
                 return 1;
@@ -57,7 +57,7 @@ public class poly extends add {
 
     poly order() {
         //System.out.println("f1="+f);
-        Collections.sort(f, new Comparator<func>() {
+        Collections.sort(list, new Comparator<func>() {
             @Override
             public int compare(func p1, func p2) {
                 //c1*x^n1  c2*x^n2

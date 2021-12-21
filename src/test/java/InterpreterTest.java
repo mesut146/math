@@ -1,5 +1,4 @@
 import com.mesut.math.Interpreter;
-import com.mesut.math.parser.ParseException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -8,7 +7,7 @@ import java.io.IOException;
 public class InterpreterTest {
 
     @Test
-    public void calls() throws ParseException, IOException {
+    public void calls() throws IOException {
         Interpreter interpreter = new Interpreter();
         interpreter.execute("a = x^2");
         interpreter.execute("1 + a(2)");
@@ -17,7 +16,7 @@ public class InterpreterTest {
     }
 
     @Test
-    public void deriv() throws ParseException, IOException {
+    public void deriv() throws IOException {
         Interpreter interpreter = new Interpreter();
         interpreter.execute("a = x^2");
         interpreter.execute("derivative(a) + 3");
@@ -26,7 +25,7 @@ public class InterpreterTest {
     }
 
     @Test
-    public void integral() throws ParseException, IOException {
+    public void integral() throws IOException {
         Interpreter interpreter = new Interpreter();
         //interpreter.execute("a = x^2");
         //interpreter.execute("b=int(a,x,1,3)");
@@ -37,12 +36,12 @@ public class InterpreterTest {
     }
 
     @Test
-    public void multiVar() throws ParseException, IOException {
+    public void multiVar() throws IOException {
         Interpreter interpreter = new Interpreter();
         interpreter.execute("a = x + y ^ 2");
-        interpreter.execute("a(x=1,y=3)");//10
+        Assert.assertEquals("10", interpreter.execute("a(x=1,y=3)").text);//10
         interpreter.execute("b = a(x=1,y=y+1)");
-        interpreter.execute("b");//1+(y+1)^2
+        Assert.assertEquals("1+(y+1)^2", interpreter.execute("b").text);
     }
 
     @Test
@@ -55,7 +54,7 @@ public class InterpreterTest {
     }
 
     @Test
-    public void prime() throws ParseException, IOException {
+    public void prime() throws IOException {
         Interpreter interpreter = new Interpreter();
         interpreter.execute("prime(1)");//2
         interpreter.execute("prime(2)");//3
@@ -65,7 +64,7 @@ public class InterpreterTest {
     }
 
     @Test
-    public void primeSet() throws ParseException, IOException {
+    public void primeSet() throws  IOException {
         Interpreter interpreter = new Interpreter();
         interpreter.execute("pset(10)");//p{2, 3, 5, 7}
         interpreter.execute("pset(100)");

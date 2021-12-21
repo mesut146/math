@@ -17,12 +17,12 @@ public class mul extends func {
     int id;
 
     public mul(func... args) {
-        Collections.addAll(f, args);
+        Collections.addAll(list, args);
         id = idc++;
     }
 
     public mul(List<func> args) {
-        f.addAll(args);
+        list.addAll(args);
         id = idc++;
     }
 
@@ -33,7 +33,7 @@ public class mul extends func {
 
     @Override
     public void vars(Set<variable> vars) {
-        for (func term : f) {
+        for (func term : list) {
             term.vars(vars);
         }
     }
@@ -41,8 +41,8 @@ public class mul extends func {
     @Override
     public func get0(variable[] vars, cons[] vals) {
         mul res = new mul();
-        for (func term : f) {
-            res.f.add(term.get(vars, vals));
+        for (func term : list) {
+            res.list.add(term.get(vars, vals));
         }
         return signOther(res.simplify());
     }
@@ -50,7 +50,7 @@ public class mul extends func {
     @Override
     public double eval(variable[] v, double[] vals) {
         double res = 1;
-        for (func term : f) {
+        for (func term : list) {
             res *= term.eval(v, vals);
         }
         return sign * res;
@@ -59,7 +59,7 @@ public class mul extends func {
     @Override
     public cons evalc(variable[] vars, double[] vals) {
         func m = cons.ONE;
-        for (func term : f) {
+        for (func term : list) {
             m = m.mul(term.evalc(vars, vals));
         }
         return sc(m);
@@ -80,8 +80,8 @@ public class mul extends func {
     }
 
     public func byParts() {
-        func a = f.get(0);
-        func b = f.get(1);
+        func a = list.get(0);
+        func b = list.get(1);
         func g = b.integrate();
         func h = a.derivative().mul(g);
         //System.out.printf("a=%s,b=%s,g=%s,h=%s%n", a, b, g, h);
@@ -108,19 +108,19 @@ public class mul extends func {
     }
 
     func left() {
-        return f.get(0);
+        return list.get(0);
     }
 
     func right() {
-        return f.size() == 2 ? f.get(1) : new mul(f.subList(1, f.size()));
+        return list.size() == 2 ? list.get(1) : new mul(list.subList(1, list.size()));
     }
 
     @Override
     public String toString2() {
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < f.size(); i++) {
-            func term = f.get(i);
+        for (int i = 0; i < list.size(); i++) {
+            func term = list.get(i);
 
             if (term.isAdd()) {
                 sb.append(term.top());
@@ -131,7 +131,7 @@ public class mul extends func {
             else {
                 sb.append(term);
             }
-            if (i < f.size() - 1) {
+            if (i < list.size() - 1) {
                 sb.append("*");
             }
         }
@@ -142,8 +142,8 @@ public class mul extends func {
     public String toLatex() {
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < f.size(); i++) {
-            func term = f.get(i);
+        for (int i = 0; i < list.size(); i++) {
+            func term = list.get(i);
 
             if (term.isAdd()) {
                 sb.append("(");
@@ -154,7 +154,7 @@ public class mul extends func {
                 sb.append(term.toLatex());
             }
 
-            if (i < f.size() - 1) {
+            if (i < list.size() - 1) {
                 sb.append("*");
             }
         }
@@ -166,13 +166,13 @@ public class mul extends func {
             return this;
         }
         List<func> list = getFree();
-        for (func term : f) {
+        for (func term : this.list) {
             term = term.simplify();
             if (term.is(0)) {
                 return cons.ZERO;
             }
             if (term.isMul()) {//merge
-                list.addAll(term.f);
+                list.addAll(term.list);
                 sign *= term.sign;
                 term.sign = 1;
             }
@@ -185,22 +185,22 @@ public class mul extends func {
         }
         set(list);
         //System.out.println("after f="+f+" s="+sign);
-        if (f.size() == 0) {
+        if (this.list.size() == 0) {
             return signf(cons.ONE);
         }
-        if (f.size() == 1) {
-            return signf(f.get(0));
+        if (this.list.size() == 1) {
+            return signf(this.list.get(0));
         }
         //log("before mu");
         mu();
         //log("after mu");
-        if (f.size() == 1) {
-            return signf(f.get(0));
+        if (this.list.size() == 1) {
+            return signf(this.list.get(0));
         }
         cons0();
         //log("after cons");
-        if (f.size() == 1) {
-            return signf(f.get(0));
+        if (this.list.size() == 1) {
+            return signf(this.list.get(0));
         }
         return this;
     }
@@ -212,8 +212,8 @@ public class mul extends func {
         List<func> l = getFree();
         //System.out.println("f="+f);
         //System.out.println("cl="+pr(f));
-        for (int i = 0; i < f.size(); i++) {
-            func p = f.get(i);
+        for (int i = 0; i < list.size(); i++) {
+            func p = list.get(i);
             //System.out.println("p="+p);
             if (p.isCons0()) {
                 if (Config.useBigDecimal) {
@@ -250,14 +250,14 @@ public class mul extends func {
     //  a^x*b^x=(a*b)^x
     public void mu() {
         List<func> list = getFree();
-        boolean[] b = new boolean[f.size()];
+        boolean[] b = new boolean[this.list.size()];
         boolean flag = false;
         //System.out.println("id="+id+" in mu");
-        for (int i = 0; i < f.size() - 1; i++) {
+        for (int i = 0; i < this.list.size() - 1; i++) {
             if (b[i]) {
                 continue;
             }
-            func term = f.get(i);
+            func term = this.list.get(i);
             //System.out.println("v="+v+" org="+f.get(i));
             func base = term;
             func power = cons.ONE;
@@ -267,11 +267,11 @@ public class mul extends func {
                 base = term.a;
             }
             //System.out.println("v="+base+" p="+power);
-            for (int j = i + 1; j < f.size(); j++) {
+            for (int j = i + 1; j < this.list.size(); j++) {
                 if (b[j]) {
                     continue;
                 }
-                holder h = e3(base, f.get(j));
+                holder h = e3(base, this.list.get(j));
                 //System.out.println("h="+h.f);
 
                 if (h.b) {
@@ -295,8 +295,8 @@ public class mul extends func {
                 list.add(term);
             }
         }
-        if (!b[f.size() - 1]) {
-            list.add(f.get(f.size() - 1));
+        if (!b[this.list.size() - 1]) {
+            list.add(this.list.get(this.list.size() - 1));
         }
         //System.out.println("id="+id+" out mu");
         set(list);
@@ -323,13 +323,13 @@ public class mul extends func {
 
     @Override
     public boolean eq0(func f1) {
-        return Util.isEq(f, f1.f);
+        return Util.isEq(list, f1.list);
     }
 
     @Override
     public func substitute0(variable v, func p) {
         List<func> l = getFree();
-        for (func u : f) {
+        for (func u : list) {
             l.add(u.substitute(v, p));
         }
         return new mul(l);
@@ -337,6 +337,6 @@ public class mul extends func {
 
     @Override
     public func copy0() {
-        return new mul(f);
+        return new mul(list);
     }
 }

@@ -99,7 +99,7 @@ public class Config {
     }
 
     public static class integral {
-        public static int interval = 100000;//divide to this much sub intervals
+        public static int interval = 1000;//divide to this much sub intervals
         public static int convDecimal = 5;//number of decimal for convergence
         public static int convMaxTries = 10;//if sum doesn't grow this iteration we stop
         public static boolean converge = false;

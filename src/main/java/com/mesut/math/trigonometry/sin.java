@@ -120,11 +120,11 @@ public class sin extends func {
     a equ(func a) {
         cons k;
         a r = new a();
-        if (a.isMul() && a.f.size() == 2) {
-            if (a.f.get(0).eq(cons.PI) && a.f.get(1).isConstant()) {
+        if (a.isMul() && a.list.size() == 2) {
+            if (a.list.get(0).eq(cons.PI) && a.list.get(1).isConstant()) {
 
             }
-            else if (a.f.get(1).eq(cons.PI) && f.get(0).isConstant()) {
+            else if (a.list.get(1).eq(cons.PI) && list.get(0).isConstant()) {
 
             }
 

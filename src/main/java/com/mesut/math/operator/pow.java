@@ -51,8 +51,15 @@ public class pow extends func {
 
     @Override
     public String toLatex() {
-        // TODO: Implement this method
-        return "(" + a.toLatex() + ")" + "^" + b.toLatex();
+        String as = a.toLatex();
+        String bs = b.toLatex();
+        if (a.isDiv()) {
+            as = a.latexParen();
+        }
+        if (b.isDiv()) {
+            bs = b.latexParen();
+        }
+        return as + "^" + bs;
     }
 
     @Override
@@ -110,7 +117,7 @@ public class pow extends func {
             //System.out.println("du="+du);
             return u.pow(b).div(du).integrate(u).substitute0(u, a);
         }
-        return new Integral(this);
+        return new Integral(this, v);
     }
 
     @Override

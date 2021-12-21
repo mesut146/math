@@ -10,7 +10,9 @@ public class IntegralTest {
         func f = func.parse("e^-x*x^5");
         Integral integral = new Integral(f, "x", 0, cons.INF);
         System.out.println(integral);
-        System.out.println(integral.eval());//120
+        integral.makeFinite();
+        System.out.println(integral.trapezoidalRule());//120
+        System.out.println(integral.composizeTrapezoidalRule(10));//120
     }
 
     @Test

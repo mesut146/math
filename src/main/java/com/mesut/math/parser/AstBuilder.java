@@ -1,4 +1,4 @@
-package com.mesut.math.parser2;
+package com.mesut.math.parser;
 
 import com.mesut.math.core.Equation;
 import com.mesut.math.core.cons;
@@ -10,12 +10,12 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AstBuilder2 {
+public class AstBuilder {
 
     public static func make(String line) throws IOException {
         Lexer lexer = new Lexer(new StringReader(line));
         Parser parser = new Parser(lexer);
-        return new AstBuilder2().visitLine(parser.line());
+        return new AstBuilder().visitLine(parser.line());
     }
 
     private func visitLine(Ast.line line) {
@@ -43,10 +43,6 @@ public class AstBuilder2 {
         else {
             return name.PI.value;
         }
-    }
-
-    private func visitVar(Ast.var var) {
-        return variable.from(var.IDENT.value);
     }
 
     private func visitExpr(Ast.expr expr) {
@@ -111,21 +107,7 @@ public class AstBuilder2 {
 
     private func visitElem(Ast.elem elem) {
         if (elem.cons != null) {
-            if (elem.cons.NUM != null) {
-                return cons.of(Double.parseDouble(elem.cons.NUM.value));
-            }
-            else if (elem.cons.E != null) {
-                return cons.E;
-            }
-            else if (elem.cons.I != null) {
-                return cons.i;
-            }
-            else if (elem.cons.PHI != null) {
-                return cons.PHI;
-            }
-            else {
-                return cons.INF;
-            }
+            return visitCons(elem.cons);
         }
         else if (elem.var != null) {
             return variable.from(elem.var.IDENT.value);
@@ -135,6 +117,30 @@ public class AstBuilder2 {
         }
         else {
             return visitExpr(elem.elem4.expr);
+        }
+    }
+
+    private func visitCons(Ast.cons c) {
+        if (c.NUM != null) {
+            return cons.of(Double.parseDouble(c.NUM.value));
+        }
+        else if (c.E != null) {
+            return cons.E;
+        }
+        else if (c.I != null) {
+            return cons.i;
+        }
+        else if (c.PI != null) {
+            return cons.PI;
+        }
+        else if (c.PHI != null) {
+            return cons.PHI;
+        }
+        else if (c.INF != null) {
+            return cons.INF;
+        }
+        else {
+            throw new RuntimeException("invalid cons: " + c);
         }
     }
 }
