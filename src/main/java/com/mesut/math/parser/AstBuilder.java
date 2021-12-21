@@ -1,9 +1,6 @@
 package com.mesut.math.parser;
 
-import com.mesut.math.core.Equation;
-import com.mesut.math.core.cons;
-import com.mesut.math.core.func;
-import com.mesut.math.core.variable;
+import com.mesut.math.core.*;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -21,6 +18,9 @@ public class AstBuilder {
     private func visitLine(Ast.line line) {
         func e = visitExpr(line.expr);
         if (line.g1 == null) return e;
+        if (!(e.isVariable() || e instanceof FuncCall)) {
+            throw new RuntimeException("invalid lhs");
+        }
         return new Equation(e, visitExpr(line.g1.expr));
     }
 

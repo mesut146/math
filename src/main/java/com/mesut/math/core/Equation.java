@@ -3,7 +3,7 @@ package com.mesut.math.core;
 import java.util.Set;
 
 public class Equation extends func {
-    func left;
+    func left;//var or funcCall
     func right;
 
     public Equation(func left, func right) {

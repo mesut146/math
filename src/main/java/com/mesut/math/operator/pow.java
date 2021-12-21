@@ -14,7 +14,6 @@ import java.util.Set;
 
 public class pow extends func {
 
-
     public pow(func f1, func f2) {
         a = f1;
         b = f2;

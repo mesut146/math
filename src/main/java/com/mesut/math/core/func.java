@@ -263,7 +263,12 @@ public abstract class func {
             //no var means we are cons
             return cons.ZERO;
         }
-        return derivative(set.get(0));
+        else if (set.size() == 1) {
+            return derivative(set.get(0));
+        }
+        else {
+            throw new RuntimeException("specify a derivative variable");
+        }
     }
 
     public func derivative(variable v) {

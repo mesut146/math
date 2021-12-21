@@ -1,4 +1,4 @@
-import com.mesut.math.Interpreter;
+import com.mesut.math.ipret.Interpreter;
 import org.junit.Assert;
 import org.junit.Test;
 
