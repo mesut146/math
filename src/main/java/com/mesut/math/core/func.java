@@ -75,7 +75,6 @@ public abstract class func {
     public static func parse(String expr) {
         try {
             return AstBuilder.make(expr).simplify();
-            //return new MathParser(new StringReader(expr)).expr().simplify();
         } catch (Exception e) {
             e.printStackTrace();
             throw new Error(expr);

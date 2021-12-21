@@ -90,16 +90,14 @@ public class Interpreter {
             func val = checkVal(f.asVar().getName());
             return print(val);
         }
+        else if (f instanceof Equation) {
+            Equation equation = (Equation) normalize(f);
+            add(equation);
+            return null;
+        }
         else {
             f = normalize(f);
-            if (f instanceof Equation) {
-                Equation equation = (Equation) f;
-                add(equation);
-                return null;
-            }
-            else {
-                return print(f);
-            }
+            return print(f);
         }
     }
 

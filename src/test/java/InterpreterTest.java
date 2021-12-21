@@ -45,6 +45,13 @@ public class InterpreterTest {
     }
 
     @Test
+    public void name() throws IOException {
+        Interpreter interpreter = new Interpreter();
+        interpreter.execute("a = x + y");
+        interpreter.execute("a(x=2,b=1)").print();
+    }
+
+    @Test
     public void factor() throws IOException {
         Interpreter interpreter = new Interpreter();
         interpreter.execute("factor(100)");

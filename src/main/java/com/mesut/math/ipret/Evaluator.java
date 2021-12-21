@@ -3,6 +3,8 @@ package com.mesut.math.ipret;
 import com.mesut.math.core.*;
 import com.mesut.math.prime.factor;
 
+import java.util.List;
+
 public class Evaluator extends Visitor {
     Interpreter interpreter;
 
@@ -91,11 +93,20 @@ public class Evaluator extends Visitor {
         else {
             if (call.getArgs().isEmpty()) {
                 //eval
-                //return call.eval();
+                return new cons(call.eval());
             }
             if (call.getArgs().size() == 1) {
                 func arg = call.getArg(0);
-                return rhs.substitute(rhs.vars().get(0), arg);
+                List<variable> vars = rhs.vars();
+                if (vars.size() != 1) {
+                    throw new RuntimeException("one arg is given but multiple var is defined");
+                }
+                if (arg instanceof Equation) {
+                    return rhs.substitute(vars.get(0), ((Equation) arg).getRight());
+                }
+                else {
+                    return rhs.substitute(vars.get(0), arg);
+                }
             }
             else {
                 //named args
