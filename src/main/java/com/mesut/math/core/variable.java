@@ -54,7 +54,7 @@ public class variable extends func implements Comparable<variable> {
             if (eq0(vars[i])) {
                 //TODO: mutable or not?
                 //return new Constant(c[i]).s(sign);
-                return vals[i].signOther(sign);
+                return vals[i].signBy(sign);
             }
         }
 
@@ -68,7 +68,7 @@ public class variable extends func implements Comparable<variable> {
                 return vals[i] * sign;
             }
         }
-        return 0;
+        throw new RuntimeException("can't eval");
     }
 
     @Override

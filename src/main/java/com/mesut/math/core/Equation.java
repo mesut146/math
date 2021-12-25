@@ -48,4 +48,9 @@ public class Equation extends func {
         right = right.substitute(v, p);
         return this;
     }
+
+    @Override
+    public boolean isEq() {
+        return true;
+    }
 }

@@ -28,9 +28,9 @@ public class AstBuilder {
     private func visitFuncCall(Ast.funcCall funcCall) {
         List<func> args = new ArrayList<>();
         if (funcCall.args != null) {
-            args.add(visitLine(funcCall.args.line));
+            args.add(visitExpr(funcCall.args.expr));
             for (Ast.argsg1 g1 : funcCall.args.rest) {
-                args.add(visitLine(g1.line));
+                args.add(visitExpr(g1.expr));
             }
         }
         return func.makeFunc(visitName(funcCall.name), args);

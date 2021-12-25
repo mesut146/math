@@ -29,6 +29,9 @@ skip{
 
 line: expr ("=" expr)?;
 
+//line: expr | fx "=" expr;
+//fx: name "(" fxArgs? ")";
+//fxArgs: var ("," var)*;
 
 expr: mul rest=(("+" | "-") mul)*;
 mul: unary rest=(("*" | "/") unary)*;
@@ -40,7 +43,7 @@ elem: cons | var | funcCall | "(" expr ")";
 
 funcCall: name "(" args? ")";
 name: IDENT | PI;
-args: line rest=("," line)*;
+args: expr rest=("," expr)*;
 
 cons: E | PI | PHI | I | INF | NUM;
 var: IDENT;

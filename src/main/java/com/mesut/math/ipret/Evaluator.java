@@ -12,16 +12,17 @@ public class Evaluator extends Visitor {
         this.interpreter = interpreter;
     }
 
+
     @Override
     public func visit(FuncCall call) {
         switch (call.getName()) {
             case "derivative":
             case "der":
                 if (call.getArgs().isEmpty()) {
-                    throw new RuntimeException("specify a derivative variable");
+                    throw new RuntimeException("specicy an expr");
                 }
-                else if (call.getArgs().size() == 1) {
-                    return call.getArg(0).derivative(call.getArg(0).asVar());
+                if (call.getArgs().size() == 1) {
+                    throw new RuntimeException("specify a derivative variable");
                 }
                 else {
                     func res = call.getArg(0);
@@ -75,7 +76,6 @@ public class Evaluator extends Visitor {
                 return call.getArg(0).getReal();
             }
         }
-        //todo more
         return custom(call);
     }
 
@@ -86,43 +86,21 @@ public class Evaluator extends Visitor {
     }
 
     private func custom(FuncCall call) {
-        func rhs = interpreter.checkVal(call.getName());
+        Equation decl = interpreter.findEq(call.getName());
+        if (decl.getLeft().asCall().getArgs().size() != call.getArgs().size()) {
+            throw new RuntimeException("unmatched arg count");
+        }
+        func rhs = interpreter.checkRhs(call.getName());
         if (call.getArgs().isEmpty()) {
-            return rhs;
+            //eval
+            return new cons(rhs.eval());
         }
-        else {
-            if (call.getArgs().isEmpty()) {
-                //eval
-                return new cons(call.eval());
-            }
-            if (call.getArgs().size() == 1) {
-                func arg = call.getArg(0);
-                List<variable> vars = rhs.vars();
-                if (vars.size() != 1) {
-                    throw new RuntimeException("one arg is given but multiple var is defined");
-                }
-                if (arg instanceof Equation) {
-                    return rhs.substitute(vars.get(0), ((Equation) arg).getRight());
-                }
-                else {
-                    return rhs.substitute(vars.get(0), arg);
-                }
-            }
-            else {
-                //named args
-                //f(x=1,y=2)
-                //todo predefined order preserved
-                //f(x,y) = x+y
-                //f(1,2) = f(x=1,y=2)
-                for (func arg : call.getArgs()) {
-                    if (!(arg instanceof Equation)) {
-                        throw new RuntimeException("named arg is expected");
-                    }
-                    Equation e = (Equation) arg;
-                    rhs = rhs.substitute(e.leftAsVar(), e.getRight());
-                }
-                return rhs;
-            }
+        List<func> declArgs = decl.getLeft().asCall().getArgs();
+        for (int i = 0; i < call.getArgs().size(); i++) {
+            func arg = call.getArg(i);
+            rhs = rhs.substitute(declArgs.get(i).asVar(), arg);
         }
+        return rhs;
+
     }
 }

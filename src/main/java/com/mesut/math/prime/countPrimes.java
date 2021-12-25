@@ -1,5 +1,6 @@
 package com.mesut.math.prime;
 
+import com.mesut.math.core.cons;
 import com.mesut.math.core.func;
 import com.mesut.math.core.set;
 import com.mesut.math.core.variable;
@@ -30,5 +31,18 @@ public class countPrimes extends func {
             }
         }
         return count;
+    }
+
+    @Override
+    public func simplify() {
+        if (vars().isEmpty()) {
+            return new cons(eval()).signBy(sign);
+        }
+        return this;
+    }
+
+    @Override
+    public String toString2() {
+        return "countPrimes(" + set + ")";
     }
 }

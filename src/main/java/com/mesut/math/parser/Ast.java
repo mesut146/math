@@ -282,12 +282,12 @@ public class Ast{
         }
     }
     public static class args{
-        public line line;
+        public expr expr;
         public List<argsg1> rest = new ArrayList<>();
 
         public String toString(){
             StringBuilder sb = new StringBuilder("args{");
-            sb.append(line.toString());
+            sb.append(expr.toString());
             if(!rest.isEmpty()) sb.append(",");
             if(!rest.isEmpty()){
                 sb.append('[');
@@ -302,13 +302,13 @@ public class Ast{
     }
     public static class argsg1{
         public Token COMMA;
-        public line line;
+        public expr expr;
 
         public String toString(){
             StringBuilder sb = new StringBuilder("argsg1{");
             sb.append("'" + COMMA.value + "'");
             sb.append(",");
-            sb.append(line.toString());
+            sb.append(expr.toString());
             return sb.append("}").toString();
         }
     }

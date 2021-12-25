@@ -177,7 +177,7 @@ public class cons extends func {
     public func get0(variable[] vars, cons[] vals) {
         if (functional) {
             if (ff == null) {
-                return new cons(val).signOther(sign);
+                return new cons(val).signBy(sign);
             }
         }
         return this;

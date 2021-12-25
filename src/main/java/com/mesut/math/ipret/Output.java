@@ -1,19 +1,25 @@
 package com.mesut.math.ipret;
 
+import com.mesut.math.core.func;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Output {
-    public String text;
+    public func res;
     List<Point> points = new ArrayList<>();
     //or graph data
 
 
-    public Output(String text) {
-        this.text = text;
+    public Output(func res) {
+        this.res = res.simplify();
     }
 
     public void print() {
-        System.out.println(text);
+        System.out.println(res);
+    }
+
+    public String text() {
+        return res.toString();
     }
 }

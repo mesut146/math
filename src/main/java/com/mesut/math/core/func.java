@@ -318,7 +318,7 @@ public abstract class func {
         return this;
     }
 
-    public func signOther(int s) {
+    public func signBy(int s) {
         sign *= s;
         return this;
     }
@@ -337,7 +337,7 @@ public abstract class func {
     }
 
     public cons sc(func o) {
-        return (cons) o.signOther(sign);
+        return (cons) o.signBy(sign);
     }
 
     //if both are cons the result should be boxed
@@ -506,6 +506,11 @@ public abstract class func {
         return false;
     }
 
+    public boolean isEq() {
+        return false;
+    }
+
+
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof func)) return false;
@@ -528,7 +533,8 @@ public abstract class func {
     }
 
     public boolean eq0(func f) {
-        throw new RuntimeException("eq not defined");
+        if (this == f) return true;
+        return false;
     }
 
     public List<variable> vars() {
@@ -589,6 +595,10 @@ public abstract class func {
 
     public variable asVar() {
         return (variable) this;
+    }
+
+    public FuncCall asCall() {
+        return (FuncCall) this;
     }
 
     public String latexParen() {

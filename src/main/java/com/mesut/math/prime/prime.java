@@ -77,4 +77,11 @@ public class prime extends func {
         return this;
     }
 
+    @Override
+    public func simplify() {
+        if (a.vars().isEmpty()) {
+            return new cons(eval()).signBy(sign);
+        }
+        return this;
+    }
 }

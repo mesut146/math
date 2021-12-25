@@ -147,6 +147,7 @@ public class add extends func {
         List<func> list = getFree();
         //System.out.println(f);
         for (func term : this.list) {
+            term = term.simplify();
             if (term.isAdd()) {
                 //merge two adds
                 for (func inner : term.list) {
